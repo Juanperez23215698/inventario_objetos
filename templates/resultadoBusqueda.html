@@ -1,0 +1,31 @@
+
+{% extends 'consumibles.html' , 'devolutivos.html'%}
+
+{% block body %}
+
+<div id = "resultado" class="text-center">
+    <h4 class = "text-center">Resultado</h4>
+    {% if (miData) %}   <!--Si existe-->>
+    <section>
+        <p>
+            NombreProducto y Existencias: <strong>{{miData.NombreProducto}} {{miData.CantidadProducto}}</strong>
+        </p>
+
+        <p>
+            IdPrducto y Descripcion: <strong>{{miData.IdPrducto}} {{miData.DescripcionProducto}}</strong>
+        </p>
+
+        <p>
+            Observaciones: <strong>{{miData.ObservacionesProducto}}</strong>
+        </p>
+    </section>
+
+    {% else %}
+    <p>No hay resultados para la busqueda:
+        <strong class = "busq colorCrimson"> {{ busqueda }}</strong>
+    </p>
+    {% endif %}
+
+</div>
+
+{% endblock %}

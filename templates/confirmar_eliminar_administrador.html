@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Confirmar Eliminación - Inventario de Objetos{% endblock %}
+
+{% block content %}
+
+<style>
+    .regresar {
+        color: #39a900;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .regresar i {
+        margin-right: 5px;
+    }
+
+    h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .panel {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .panel-title {
+        background-color: #039be5;
+        color: white;
+        padding: 15px;
+        font-size: 1.5em;
+    }
+
+    .panel-content {
+        padding: 20px;
+        background-color: #f5f5f5;
+        color: #333;
+        font-size: 1.2em;
+    }
+
+    .panel-content p {
+        margin-bottom: 20px;
+    }
+
+    .panel-content ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .panel-content ul li {
+        margin-bottom: 10px;
+    }
+
+    .panel-content ul li strong {
+        color: #39a900;
+    }
+
+    .mdl-button--raised {
+        margin-top: 20px;
+        margin-right: 10px;
+    }
+
+    .mdl-button--colored_confi {
+        background-color: #39a900;
+        color: white;
+    }
+
+    .mdl-button--colored_confi:hover {
+        background-color: #2b8200;
+    }
+
+    .mdl-button--cancel {
+        background-color: #9e9e9e;
+        color: white;
+    }
+
+    .mdl-button--cancel:hover {
+        background-color: #757575;
+    }
+</style>
+
+<a href="/mostrar_administradores" class="regresar">
+    <i class="fas fa-arrow-left"></i> Regresar
+</a>
+
+<h1>Confirmar Eliminación</h1>
+
+<div class="mdl-tabs__panel is-active" id="tabDeleteProduct">
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+            <div class="full-width panel mdl-shadow--2dp">
+                <div class="full-width panel-title bg-primary text-center tittles">
+                    Confirmar Eliminación
+                </div>
+                <div class="full-width panel-content">
+                    <p>¿Estás seguro de que deseas eliminar el siguiente administrador?</p>
+                    <ul style="display: contents;">
+                        <li><strong>Nombre:</strong> {{ usuario.NombreUsuario }}</li>
+                        <li><strong>Apellidos:</strong> {{ usuario.ApellidoUsuario }}</li>
+                        <li><strong>Tipo Identificación:</strong> {{ usuario.TipoIdentificacion }}</li>
+                        <li><strong>Número de Identificación:</strong> {{ usuario.NumeroIdentificacion }}</li>
+                        <li><strong>Correo:</strong> {{ usuario.CorreoUsuario }}</li>
+                        <li><strong>Número de Celular:</strong> {{ usuario.CelularUsuario }}</li>
+                        <li><strong>Contraseña:</strong> {{ usuario.ContrasenaUsuario }}</li>
+                    </ul>
+                    <form method="POST" action="{{ url_for('eliminar_administrador', id=usuario.IdUsuario) }}">
+                        <button type="submit"
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored_confi">
+                            Confirmar Eliminación
+                        </button>
+                    </form>
+                    <a href="{{ url_for('listar_administradores') }}"
+                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--cancel"
+                        style="text-decoration: none; color: white;">
+                        Cancelar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

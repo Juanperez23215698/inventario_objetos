@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Página de Inicio{% endblock %}
+
+{% block content %}
+<div class="contenedor-botones">
+    <div>
+        <a href="/mostrar_inventario" style="text-decoration: none; color: white;" class="boton-cuadrado">
+            <i class="fa fa-box-open" style="color: white;"></i>
+            <span>Inventario</span>
+        </a>
+        <a href="/mostrar_objetos" style="text-decoration: none; color: white;" class="boton-cuadrado">
+            <i class="fas fa-box" style="color: white;"></i>
+            <span>Objetos</span>
+        </a>
+    </div>
+    <div>
+        <a href="/prestamos" style="text-decoration: none; color: white;" class="boton-cuadrado">
+            <i class="fas fa-handshake" style="color: white;"></i>
+            <span>Préstamos</span>
+        </a>
+        <a href="/usuarios" style="text-decoration: none; color: white;" class="boton-cuadrado">
+            <i class="fa-solid fa-users" style="color: white;"></i>
+            <span>Usuarios</span>
+        </a>
+    </div>
+</div>
+{% endblock %}

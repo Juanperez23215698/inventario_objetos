@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/login.css">
+    <title>Iniciar Sesión - Inventario de Objetos</title>
+</head>
+
+<body>
+
+    <!-- Barra de Menú -->
+    <div class="navbar">
+        <ul>
+            <!-- Logo -->
+            <!-- <li><a href="/#home" class="logo">
+                    <img src="/static/img/facebook.png">
+                </a></li> -->
+
+            <li><a href="/"><i class="fas fa-home"></i> Inicio</a></li>
+            <li><a href="/quienes_somos"><i class="fa fa-fw fa-search"></i> ¿Quiénes Somos?</a></li>
+            <li><a href="/sobre_nosotros"><i class="fa-solid fa-users"></i> Sobre Nosotros</a></li>
+            <li><a class="active" href="/loginUsu"><i class="fa fa-fw fa-user"></i> Iniciar Sesión</a></li>
+            <li><a href="/register"><i class="fa fa-fw fa-user"></i> Registrarme</a></li>
+        </ul>
+    </div>
+
+    <!-- Contenido -->
+
+    <header class="header">
+
+        <div class="search">
+
+        </div>
+    </header>
+    <div class="background"></div>
+    <section class="home">
+        <div class="content">
+            <a href="#" class="logo"></a>
+            <h2>¡Bienvenido!</h2>
+            <h3>Inventario de Objetos en Bodega</h3>
+            <pre>"EL ORDEN ES LA MEJOR SOLUCIÓN"</pre>
+        </div>
+
+        <div class="login">
+            <h2>Inicia sesión</h2>
+            <form action="/loginUsu" method="post"> <!-- Cambiado a "/login" -->
+                <div class="input">
+                    <input type="text" class="input1" placeholder="Correo electrónico" required name="txtCorreo">
+                    <i class="fa-solid fa-envelope"></i>
+                </div>
+                <div class="input">
+                    <input type="password" class="input1" placeholder="Contraseña" required name="txtPassword">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <div class="check">
+                    <label> <input type="checkbox">Recordar</label>
+                    <a href="#">¿Olvido su contraseña?</a>
+                </div>
+                <div class="button">
+                    <button class="btn">Iniciar sesion</button>
+                </div>
+                <div class="sign-up">
+                    <p>¿No tienes una cuenta?</p>
+                    <a class="nav-link" href="/register" style="margin-left: 10px;">Registrate</a>
+                </div>
+            </form>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+
+    <footer>
+        <h3>www.sena.edu.co</h3>
+        <nav>
+            <ul>
+                <li><a href="https://www.instagram.com/senacomunica/"><img src="/static/img/instagram.png" alt="instagram_icon"></a></li>
+                <li><a href="https://www.facebook.com/SENA/"><img src="/static/img/facebook.png" alt="facebook_icon"></a></li>
+                <li><a href="https://twitter.com/SENAComunica"><img src="/static/img/gorjeo.png" alt="twitter_icon"></a></li>
+                <li><a href="https://www.youtube.com/@SENAComunica"><img src="/static/img/youtube.png" alt="youtube_icon"></a></li>
+                <li><a href="https://linkedin.com/school/servicio-nacional-de-aprendizaje-sena-/"><img src="/static/img/linkedin.png" alt="linkedin_icon"></a></li>
+            </ul>
+            <p>@SENAComunica</p>
+        </nav>
+        <br>
+        <p>&copy; 2024 Servicio Nacional de Aprendizaje - SENA</p>
+    </footer>
+
+</body>
+
+</html>z
