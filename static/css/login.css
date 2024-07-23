@@ -11,7 +11,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #aaa;
+    background-color: #ffffff;
     /*background-image: url('/static/img/background_img.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -48,7 +48,7 @@ body {
 }
 
 .navbar a:hover {
-    color: #000;
+    color: #dfdfdf;
 }
 
 ul {
@@ -104,7 +104,7 @@ li a {
     position: absolute;
     right: 110px;
     top: 22px;
-    color: #fff;
+    color: #000000;
 }
 
 .background {
@@ -142,7 +142,7 @@ li a {
 .content a {
     position: relative;
     text-decoration: none;
-    color: #fff;
+    color: #000000;
     font-size: 3em;
     font-weight: 700;
     top: -40px;
@@ -152,20 +152,20 @@ li a {
 .content h2 {
     font-size: 3.5em;
     text-align: center;
-    color: #fff;
+    color: #000000;
 }
 
 .content h3 {
     font-size: 2em;
     text-align: center;
-    color: #fff;
+    color: #000000;
 }
 
 .content pre {
     margin-top: 20px;
     text-align: center;
     font-size: 1em;
-    color: #fff;
+    color: #000000;
 }
 
 .content .icon {
@@ -177,26 +177,26 @@ li a {
 
 .content .icon i {
     margin-right: 20px;
-    color: #fff;
+    color: #000000;
 }
 
 .icon img {
     margin-right: 50px;
-    color: #fff;
+    color: #000000;
 }
 
 .login {
     width: 450px;
     position: relative;
     padding: 100px 30px;
-    backdrop-filter: blur(20px);
+    /* backdrop-filter: blur(20px); */
 }
 
 .login h2 {
     font-size: 2em;
     text-align: center;
     margin-bottom: 20px;
-    color: #fff;
+    color: #000000;
 }
 
 .login .input {
@@ -215,14 +215,14 @@ li a {
     background: transparent;
     border: none;
     outline: none;
-    border-bottom: 2px solid #fff;
-    color: #fff;
+    border-bottom: 2px solid #000000;
+    color: #000000;
     width: 100%;
     height: 100%;
 }
 
 ::placeholder {
-    color: #fff;
+    color: #000000;
     font-size: 18px;
 }
 
@@ -230,19 +230,19 @@ li a {
     position: relative;
     right: -370px;
     bottom: 27px;
-    color: #fff;
+    color: #000000;
 }
 
 .check {
     display: flex;
     justify-content: space-between;
     margin-bottom: 40px;
-    color: #fff;
+    color: #000000;
 }
 
 .check a {
     text-decoration: none;
-    color: #fff;
+    color: #000000;
 }
 
 .check a:hover {
@@ -265,6 +265,13 @@ button {
     font-weight: 700;
     border-radius: 7px;
     color: #fff;
+    transition: transform 0.3s ease; /* Suaviza la transición */
+    cursor: default; /* Cursor por defecto cuando no se pasa el cursor por encima */
+}
+  
+button:hover {
+    cursor: pointer; /* Cambia el cursor a una manito */
+    transform: translateY(-7px) scale(0.9);
 }
 
 button:active {
@@ -278,12 +285,12 @@ button:active {
 
 .login .sign-up a {
     text-decoration: none;
-    color: #fff;
+    color: #000000;
     font-weight: 700;
 }
 
 .login .sign-up p {
-    color: #fff;
+    color: #000000;
 }
 
 .sign-up a:hover {

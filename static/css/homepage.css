@@ -71,7 +71,6 @@ li a {
     grid-template-columns: repeat(2, 1fr);
     align-items: center;
     gap: 4.5rem;
-    margin-top: 70px;
     padding-bottom: 100px;
 }
 
