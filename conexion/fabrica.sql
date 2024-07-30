@@ -1,3 +1,4 @@
+Drop database fabrica;
 CREATE DATABASE fabrica;
 USE fabrica;
 
@@ -101,9 +102,9 @@ CREATE TABLE `usuarios` (
     `NombreUsuario` varchar(255) DEFAULT NULL,
     `ApellidoUsuario` varchar(255) DEFAULT NULL,
     `TipoIdentificacion` enum('CC','TI') DEFAULT NULL,
-    `NumeroIdentificacion` int(11) DEFAULT NULL,
+    `NumeroIdentificacion` int(20) DEFAULT NULL,
     `CorreoUsuario` varchar(255) DEFAULT NULL,
-    `CelularUsuario` int(11) DEFAULT NULL,
+    `CelularUsuario` int(20) DEFAULT NULL,
     `ContrasenaUsuario` varchar(50),
     PRIMARY KEY (`IdUsuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -122,7 +123,7 @@ CREATE TABLE `instructores` (
     `NombreInstructor` varchar(255) DEFAULT NULL,
     `ApellidoInstructor` varchar(255) DEFAULT NULL,
     `TipoIdentificacion` enum('CC','TI') DEFAULT NULL,
-    `NumeroIdentificacion` int(11) DEFAULT NULL,
+    `NumeroIdentificacion` int(20) DEFAULT NULL,
     `CorreoInstructor` varchar(255) DEFAULT NULL,
     `CelularInstructor` int(11) DEFAULT NULL,
     PRIMARY KEY (`IdInstructor`)
