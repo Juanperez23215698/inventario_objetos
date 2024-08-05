@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Préstamos - Inventario de Objetos{% endblock %}
+
+{% block content %}
+
+<a href="/inicio_login" class="regresar" style="color: #39a900; text-decoration: none;">
+    <i class="fas fa-arrow-left"></i> Regresar
+</a>
+
+<!-- Contenido -->
+<h1>Elija una categoría deseada de préstamos:</h1>
+<div class="container" style="max-width: 100%; justify-content: center;">
+
+    <a href="/mostrar_prestamos" style="text-decoration: none; justify-content: center; color: white;"
+        class="round-button">
+        <i class="fas fa-globe"></i>
+        <span>Todos</span>
+    </a>
+    <a href="/mostrar_prestamos_en_curso" style="text-decoration: none; justify-content: center; color: white;"
+        class="round-button">
+        <i class="fas fa-spinner"></i>
+        <span>En curso</span>
+    </a>
+    <a href="/mostrar_prestamos_culminados" style="text-decoration: none; justify-content: center; color: white;"
+        class="round-button">
+        <i class="fas fa-check-circle"></i>
+        <span>Culminados</span>
+    </a>
+</div>
+
+{% endblock %}

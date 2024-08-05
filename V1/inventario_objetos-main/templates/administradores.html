@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block title %}Administradores - Inventario de Objetos{% endblock %}
+
+{% block content %}
+<a href="/usuarios" class="regresar" style="color: #39a900; text-decoration: none;">
+    <i class="fas fa-arrow-left"></i> Regresar
+</a>
+
+<h1>Administradores</h1>
+
+<section class="full-width header-well">
+    <div class="full-width header-well-icon">
+        <i class="fa-solid fa-user-tie"></i>
+    </div>
+    <div class="full-width header-well-text">
+        <p class="text-condensedLight">
+            Bienvenido al panel de gestión de administradores, donde puedes registrar nuevos administradores, ver la
+            lista completa con su información detallada, editar sus detalles existentes y eliminar administradores según
+            sea necesario para mantener la seguridad y eficiencia de la plataforma.
+        </p>
+    </div>
+</section>
+
+<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+    <div class="mdl-tabs__tab-bar">
+        <a href="#tabNewAdmin" class="mdl-tabs__tab is-active" style="text-decoration: none; color: black;">Nuevo</a>
+        <a href="#tabListAdmin" class="mdl-tabs__tab" style="text-decoration: none; color: black;">Lista</a>
+    </div>
+    <div class="mdl-tabs__panel is-active" id="tabNewAdmin">
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--12-col">
+                <div class="full-width panel mdl-shadow--2dp">
+                    <div class="full-width panel-tittle bg-primary text-center tittles">
+                        Nuevo Administrador
+                    </div>
+                    <div class="full-width panel-content">
+                        <form method="POST" action="{{ url_for('register_admin') }}">
+                            <div class="mdl-grid">
+                                <div class="mdl-cell mdl-cell--12-col">
+                                    <legend class="text-condensedLight"><i class="zmdi zmdi-border-color"></i>
+                                        &nbsp; DATOS ADMINISTRADOR</legend><br>
+                                </div>
+                                <div class="mdl-cell mdl-cell--12-col">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <select class="mdl-textfield__input" id="TipoIdentificacion"
+                                            name="TipoIdentificacion">
+                                            <option value="" disabled="" selected="">Seleccionar Tipo de Identificación
+                                            </option>
+                                            <option value="CC">Cédula de Ciudadanía</option>
+                                            <option value="TI">Tarjeta de Identidad</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--12-col">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text" id="NumeroIdentificacion"
+                                            pattern="[a-zA-Z0-9]{5,15}" name="NumeroIdentificacion">
+                                        <label class="mdl-textfield__label" for="NumeroIdentificacion">Número de
+                                            Identificación</label>
+                                        <span class="mdl-textfield__error">Número de Identificación Inválido (Debe
+                                            tener entre 5 y 15 caracteres alfanuméricos)</span>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text" id="NombreUsuario"
+                                            pattern="[A-Za-zÁÉÍÓÚÑáéíóúñ\s'-]{2,50}" name="NombreUsuario">
+                                        <label class="mdl-textfield__label" for="NombreUsuario">Nombre</label>
+                                        <span class="mdl-textfield__error">Nombre Inválido (Debe tener entre 2 y 50
+                                            caracteres)</span>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text" id="ApellidoUsuario"
+                                            pattern="[A-Za-zÁÉÍÓÚÑáéíóúñ\s'-]{2,50}" name="ApellidoUsuario">
+                                        <label class="mdl-textfield__label" for="ApellidoUsuario">Apellido</label>
+                                        <span class="mdl-textfield__error">Apellido Inválido (Debe tener entre 2 y
+                                            50 caracteres)</span>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="tel" id="CelularUsuario"
+                                            name="CelularUsuario" pattern="[0-9]{1,10}">
+                                        <label class="mdl-textfield__label" for="CelularUsuario">Número de
+                                            Celular</label>
+                                        <span class="mdl-textfield__error">Número de Celular Inválido (Debe tener
+                                            entre 1 y 11 dígitos)</span>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--12-col">
+                                    <br>
+                                    <legend class="text-condensedLight"><i class="zmdi zmdi-border-color"></i>
+                                        &nbsp; DETALLES DE CUENTA</legend><br>
+                                </div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="email" id="CorreoUsuario"
+                                            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                                            name="CorreoUsuario">
+                                        <label class="mdl-textfield__label" for="CorreoUsuario">Correo
+                                            Electrónico</label>
+                                        <span class="mdl-textfield__error">Correo Electrónico Inválido</span>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="password" id="ContrasenaUsuario"
+                                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}"
+                                            name="ContrasenaUsuario">
+                                        <label class="mdl-textfield__label" for="ContrasenaUsuario">Contraseña</label>
+                                        <span class="mdl-textfield__error">Contraseña Inválida (Debe contener al
+                                            menos 8 caracteres, una letra mayúscula, una letra minúscula, un dígito
+                                            y un carácter especial)</span>
+                                        <br>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-center">
+                                <button type="submit"
+                                    class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            <div class="mdl-tooltip" for="btn-addAdmin">Agregar Administrador</div>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista Administradores -->
+    <div class="mdl-tabs__panel" id="tabListAdmin">
+        <br>
+        {% if usuarios %}
+        <p style="color: black;">Administradores encontrados: {{ usuarios|length }}</p>
+        <div class="mdl-grid" style="margin-left: -25px; margin-right: -25px;">
+            <div
+                class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
+                <div class="full-width panel mdl-shadow--2dp">
+                    <div class="tabla_administradores">
+                        <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;" class="mdl-data-table__cell--non-numeric">ID</th>
+                                    <th style="text-align: left;" class="mdl-data-table__cell--non-numeric">Nombre
+                                        Administrador</th>
+                                    <th style="text-align: left;" class="mdl-data-table__cell--non-numeric">Tipo
+                                        Identificación</th>
+                                    <th style="text-align: left;" class="mdl-data-table__cell--non-numeric">Número de
+                                        Identificación</th>
+                                    <th style="text-align: left;" class="mdl-data-table__cell--non-numeric">Correo
+                                        Administrador</th>
+                                    <th style="text-align: left;" class="mdl-data-table__cell--non-numeric">Contraseña
+                                    </th>
+                                    <th style="text-align: left;" class="mdl-data-table__cell--non-numeric">Celular
+                                        Administrador</th>
+                                    <th style="text-align: right;">Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for mostrar in usuarios %}
+                                <tr>
+                                    <td style="text-align: left;" class="mdl-data-table__cell--non-numeric">{{
+                                        mostrar.IdUsuario }}</td>
+                                    <td style="text-align: left;" class="mdl-data-table__cell--non-numeric">{{
+                                        mostrar.NombreUsuario }} {{ mostrar.ApellidoUsuario }}</td>
+                                    <td style="text-align: left;" class="mdl-data-table__cell--non-numeric">{{
+                                        mostrar.TipoIdentificacion }}</td>
+                                    <td style="text-align: left;" class="mdl-data-table__cell--non-numeric">{{
+                                        mostrar.NumeroIdentificacion }}</td>
+                                    <td style="text-align: left;" class="mdl-data-table__cell--non-numeric">{{
+                                        mostrar.CorreoUsuario }}</td>
+                                        <td style="text-align: left;" class="mdl-data-table__cell--non-numeric">{{
+                                            mostrar.ContrasenaUsuario }}</td>
+                                    <td style="text-align: center;" class="mdl-data-table__cell--non-numeric">{{
+                                        mostrar.CelularUsuario }}</td>
+                                    <td>
+                                        <a class="icon_edit"
+                                            href="{{ url_for('editar_administrador', id=mostrar.IdUsuario) }}"
+                                            style="color: #39a900; text-decoration: none;"><i class="fas fa-edit"></i>
+                                            Editar</a>
+                                        <a class="icon_delete"
+                                            href="{{ url_for('confirmar_eliminar_administrador', id=mostrar.IdUsuario) }}"
+                                            style="color: red; text-decoration: none;"><i class="fas fa-trash-alt"></i>
+                                            Eliminar</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <p>No hay administradores para mostrar.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

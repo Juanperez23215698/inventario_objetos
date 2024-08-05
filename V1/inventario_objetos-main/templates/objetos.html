@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+
+{% block title %}Objetos - Inventario de Objetos{% endblock %}
+
+{% block content %}
+
+
+<!-- Contenido -->
+
+<a href="/inicio_login" class="regresar" style="color: #39a900; text-decoration: none;">
+    <i class="fas fa-arrow-left"></i> Regresar
+</a>
+
+<h1>Inventario de Objetos</h1>
+
+
+
+
+
+
+<!-- Tabla Objetos Registro y Lista -->
+
+<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+    <div class="mdl-tabs__tab-bar">
+        <a href="#tabNewProduct" class="mdl-tabs__tab is-active" style="text-decoration: none; color: black;">Nuevo</a>
+        <a href="#tabListProducts" class="mdl-tabs__tab" style="text-decoration: none; color: black;">Lista</a>
+    </div>
+
+    <div class="mdl-tabs__panel is-active" id="tabNewProduct">
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--12-col">
+                <div class="full-width panel mdl-shadow--2dp">
+                    <div class="full-width panel-tittle bg-primary text-center tittles">
+                        Nuevo Producto
+                    </div>
+                    <div class="full-width panel-content">
+                        <form method="POST" action="{{ url_for('registrar_producto') }}">
+                            <div class="mdl-grid">
+                                <div class="mdl-cell mdl-cell--12-col">
+                                    <legend class="text-condensedLight"><i class="zmdi zmdi-border-color"></i>
+                                        &nbsp; INFORMACIÓN BÁSICA</legend><br>
+                                </div>
+                                <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text"
+                                            pattern="-?[A-Za-z0-9áéíóúÁÉÍÓÚ ]*(\.[0-9]+)?" name="NombreProducto"
+                                            id="NombreProducto">
+                                        <label class="mdl-textfield__label" for="NombreProducto">Nombre Producto</label>
+                                        <span class="mdl-textfield__error">Nombre inválido</span>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--12-col">
+                                    <legend class="text-condensedLight"><i class="zmdi zmdi-border-color"></i>
+                                        &nbsp; Descripción Producto</legend><br>
+                                </div>
+                                <div class="mdl-cell mdl-cell--12-col">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text"
+                                            pattern="-?[A-Za-z0-9áéíóúÁÉÍÓÚ ]*(\.[0-9]+)?" name="DescripcionProducto"
+                                            id="DescripcionProducto">
+                                        <label class="mdl-textfield__label" for="DescripcionProducto">Descripción
+                                            Producto</label>
+                                        <span class="mdl-textfield__error">DescripcionProducto inválido</span>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--12-col">
+                                    <legend class="text-condensedLight"><i class="zmdi zmdi-border-color"></i>
+                                        &nbsp; TIPO PRODUCTO</legend><br>
+                                </div>
+                                <div class="mdl-cell mdl-cell--12-col">
+                                    <div class="mdl-textfield mdl-js-textfield">
+                                        <select class="mdl-textfield__input" name="TipoProducto">
+                                            <option value="" disabled="" selected="">Seleccionar Tipo</option>
+                                            <option value="Devolutivos">Devolutivos</option>
+                                            <option value="Consumibles">Consumibles</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?"
+                                            id="CantidadProducto" name="CantidadProducto">
+                                        <label class="mdl-textfield__label" for="StrockProduct">Cantidad</label>
+                                        <span class="mdl-textfield__error">Número inválido</span>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text" id="ObservacionesProducto"
+                                            name="ObservacionesProducto">
+                                        <label class="mdl-textfield__label" for="markProduct">Obervaciones
+                                            Producto</label>
+                                        <span class="mdl-textfield__error">Obervaciones Inválidas</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-center">
+                                <button type="submit"
+                                    class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            <div class="mdl-tooltip" for="btn-addProduct">Agregar Producto</div>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <div class="mdl-tabs__panel" id="tabListProducts">
+        <form name="formSearch" method="POST" action="{{ url_for('search_route') }}" class="search-container"
+            autocomplete="off">
+            <input type="search" name="buscar" class="search_input" placeholder="Buscar...">
+            <button type="submit" class="search_btn">
+                <i class="fa-solid fa-magnifying-glass"></i> Buscar
+            </button>
+
+            <div class="filter-dropdown">
+                <button class="filter-btn">
+                    <i class="fa-solid fa-sliders"></i> Filtrar
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Menor stock</a>
+                    <a href="#">Mayor stock</a>
+                    <a href="#">Ordenar A-Z</a>
+                    <a href="#">Formación</a>
+                    <a href="#">Consumibles</a>
+                </div>
+            </div>
+        </form>
+
+        {% if objetos %}
+        <p style="color: black;">Objetos encontrados: {{ objetos|length }}</p>
+        <div class="mdl-grid">
+            {% for mostrar in objetos %}
+            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--4-col-tablet mdl-cell--4-col-desktop">
+                <div class="full-width text-center" style="padding: 30px 0;">
+                    <div class="mdl-card mdl-shadow--2dp full-width product-card">
+                        <div class="mdl-card__supporting-text">
+                            <div class="mdl-card__actions">
+                                <span class="nombre_objeto">{{ mostrar.NombreProducto }}</span>
+                                <span class="boton_prestar">
+                                    <a class="icon_prestar" style="color: #015dca; text-decoration: none;"
+                                        href="{{ url_for('confirmar_prestamo_objeto', id=mostrar.IdProducto) }}">
+                                        <i class="fas fa-handshake"></i> Prestar
+                                    </a>
+
+                                </span>
+                            </div>
+                        </div>
+                        <div class="mdl-card__actions mdl-card--border">
+                            <small class="titulo_objeto">Número ID: <span class="resultado"> {{
+                                    mostrar.IdProducto }}</span></small><br>
+                            <small class="titulo_objeto">Descripción: <span class="resultado">{{
+                                    mostrar.DescripcionProducto }}</span></small><br>
+                            <small class="titulo_objeto">Tipo Producto: <span class="resultado">{{ mostrar.TipoProducto
+                                    }}</span></small><br>
+                            <small class="titulo_objeto">Cantidad: <span class="resultado">{{ mostrar.CantidadProducto
+                                    }}</span></small><br>
+                            <small class="titulo_objeto">Observaciones: <span class="resultado">{{
+                                    mostrar.ObservacionesProducto }}</span></small>
+                            <br><br>
+                            <div class="button_edit">
+                                <a class="icon_edit" style="color: white; text-decoration: none;"
+                                    href="{{ url_for('editar_objeto', id=mostrar.IdProducto) }}">
+                                    <i class="fas fa-edit"></i> Editar
+                                </a>
+                            </div>
+                            <div class="button_delete">
+                                <a class="icon_delete" style="color: white; text-decoration: none;"
+                                    href="{{ url_for('confirmar_eliminar_objeto', id=mostrar.IdProducto) }}">
+                                    <i class="fas fa-trash-alt"></i> Eliminar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No hay objetos para mostrar.</p>
+        {% endif %}
+    </div>
+</div>
+
+
+{% endblock %}

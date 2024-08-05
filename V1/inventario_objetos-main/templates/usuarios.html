@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Usuarios - Inventario de Objetos{% endblock %}
+
+{% block content %}
+
+<a href="/inicio_login" class="regresar" style="color: #39a900; text-decoration: none;">
+    <i class="fas fa-arrow-left"></i> Regresar
+</a>
+
+<!-- Contenido -->
+
+<div class="sidebar" id="sidebar">
+    <div class="header">
+        <img src="/static/img/" alt="">
+        <div class="close-btn" id="close-btn">
+            <i class="fas fa-times"></i>
+        </div>
+    </div>
+    <ul>
+        <li><a href="/inventario.html">Inventario</a></li>
+        <li><a href="/mostrar_objetos.html">Objetos</a></li>
+        <li><a href="/prestamos.html">Préstamos</a></li>
+        <li><a href="/usuarios.html">Usuarios</a></li>
+    </ul>
+</div>
+
+<h1>Elija una categoría deseada de usuarios:</h1>
+<div class="contenedor-botones">
+
+    <a href="/mostrar_administradores" class="boton-cuadrado" style="text-decoration: none;">
+        <i class="fa-solid fa-user-tie" style="color: white;"></i>
+        <span style="color: white;">Administradores</span>
+    </a>
+    <a href="/mostrar_instructores" class="boton-cuadrado" style="text-decoration: none;">
+        <i class="fa-solid fa-chalkboard-user" style="color: white;"></i>
+        <span style="color: white; text-decoration: none;">Instructores</span>
+    </a>
+</div>
+
+{% endblock %}
