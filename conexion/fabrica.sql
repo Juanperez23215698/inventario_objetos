@@ -1,35 +1,15 @@
+-- Drop database fabrica; 
 CREATE DATABASE fabrica;
 USE fabrica;
 
--- phpMyAdmin SQL Dump
--- version 5.2.0
--- https://www.phpmyadmin.net/
---
--- Servidor: 127.0.0.1
--- Tiempo de generación: 08-05-2024 a las 05:55:16
--- Versión del servidor: 10.4.25-MariaDB
--- Versión de PHP: 8.1.10
+
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
---
--- Base de datos: `fabrica`
-
-
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `devoluciones`
---
 
 CREATE TABLE `devoluciones` (
     `IdDevoluciones` int(11) NOT NULL,
@@ -46,11 +26,7 @@ CREATE TABLE `devoluciones` (
 
 SELECT * FROM devoluciones;
 
--- --------------------------------------------------------
 
---
--- Estructura de tabla para la tabla `prestamos`
---
 
 CREATE TABLE `prestamos` (
     `IdPrestamo` int(11) NOT NULL,
@@ -65,11 +41,7 @@ CREATE TABLE `prestamos` (
 SELECT * FROM prestamos;
 
 
--- --------------------------------------------------------
 
---
--- Estructura de tabla para la tabla `productosgenerales`
---
 
 CREATE TABLE `productosgenerales` (
     `IdProducto` int NOT NULL AUTO_INCREMENT,
@@ -91,19 +63,15 @@ VALUES
 
 SELECT * FROM productosgenerales;
 
--- --------------------------------------------------------
 
---
--- Estructura de tabla para la tabla `usuarios`
---
 CREATE TABLE `usuarios` (
     `IdUsuario` int NOT NULL AUTO_INCREMENT,
     `NombreUsuario` varchar(255) DEFAULT NULL,
     `ApellidoUsuario` varchar(255) DEFAULT NULL,
     `TipoIdentificacion` enum('CC','TI') DEFAULT NULL,
-    `NumeroIdentificacion` int(11) DEFAULT NULL,
+    `NumeroIdentificacion` int(20) DEFAULT NULL,
     `CorreoUsuario` varchar(255) DEFAULT NULL,
-    `CelularUsuario` int(11) DEFAULT NULL,
+    `CelularUsuario` int(20) DEFAULT NULL,
     `ContrasenaUsuario` varchar(50),
     PRIMARY KEY (`IdUsuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -111,18 +79,18 @@ CREATE TABLE `usuarios` (
 INSERT INTO usuarios (NombreUsuario, ApellidoUsuario, TipoIdentificacion, NumeroIdentificacion, CorreoUsuario, CelularUsuario, ContrasenaUsuario)
 VALUES
     ('Santiago', 'Urrea', 'CC', 1031648741, 'santi@gmail.com',  3246016033, 'santi777'),
-    ('Juan', 'Guzman', 'CC', 101781711, 'jp@gmail.com',  3105527890, 'jp777');
+    ('Juan', 'Guzman', 'CC', 101781711, 'jp@gmail.com',  3105527890, 'jp777'),
+    -- Mas usuarios de prueba 
+    ('Juan', 'Cardenas', 'CC', 1131104356, 'juanchotv123@gmail.com', 3053577992, '123');
 SELECT * FROM usuarios;
 
---
--- Estructura de tabla para la tabla `instructores`
---
+
 CREATE TABLE `instructores` (
     `IdInstructor` int NOT NULL AUTO_INCREMENT,
     `NombreInstructor` varchar(255) DEFAULT NULL,
     `ApellidoInstructor` varchar(255) DEFAULT NULL,
     `TipoIdentificacion` enum('CC','TI') DEFAULT NULL,
-    `NumeroIdentificacion` int(11) DEFAULT NULL,
+    `NumeroIdentificacion` int(20) DEFAULT NULL,
     `CorreoInstructor` varchar(255) DEFAULT NULL,
     `CelularInstructor` int(11) DEFAULT NULL,
     PRIMARY KEY (`IdInstructor`)
@@ -130,25 +98,28 @@ CREATE TABLE `instructores` (
 INSERT INTO instructores (NombreInstructor, ApellidoInstructor, TipoIdentificacion, NumeroIdentificacion, CorreoInstructor, CelularInstructor)
 VALUES
     ('Uldarico', 'Andrade', 'CC', 30567429, 'uandrade@soy.sena.edu.co',  3246016033),
-    ('Fernando', 'Galindo', 'CC', 72648591, 'fegasu@gmail.com',  3105527890);
+    ('Fernando', 'Galindo', 'CC', 72648591, 'fegasu@gmail.com',  3105527890),
+    -- Mas inserciones de prueba 
+    ('María', 'López', 'CC', 12345678, 'mlopez@example.com', 3101234567),
+    ('Juan', 'Pérez', 'CC', 87654321, 'jperez@example.com', 3201234567),
+    ('Ana', 'Gómez', 'CC', 11223344, 'agomez@example.com', 3001234567),
+    ('Luis', 'Rodríguez', 'CC', 55667788, 'lrodriguez@example.com', 3107654321),
+    ('Carla', 'Fernández', 'CC', 99887766, 'cfernandez@example.com', 3151234567),
+    ('Pedro', 'Martínez', 'CC', 44556677, 'pmartinez@example.com', 3111234567),
+    ('Lucía', 'Sánchez', 'CC', 33445566, 'lsanchez@example.com', 3121234567),
+    ('Miguel', 'Ramírez', 'CC', 22334455, 'mramirez@example.com', 3131234567),
+    ('Elena', 'Torres', 'CC', 66778899, 'etorres@example.com', 3141234567),
+    ('Carlos', 'Vargas', 'CC', 88990011, 'cvargas@example.com', 3157654321);
 SELECT * FROM instructores;
 
---
--- Índices para tablas volcadas
---
 
---
--- Indices de la tabla `devoluciones`
---
 ALTER TABLE `devoluciones`
     ADD PRIMARY KEY (`IdDevoluciones`),
     ADD KEY `IdInstructor` (`IdInstructor`),
     ADD KEY `IdPrestamo` (`IdPrestamo`),
     ADD KEY `IdProducto` (`IdProducto`);
 
---
--- Indices de la tabla `prestamos`
---
+
 ALTER TABLE `prestamos`
     ADD PRIMARY KEY (`IdPrestamo`),
     ADD KEY `IdInstructor` (`IdInstructor`),
@@ -156,51 +127,33 @@ ALTER TABLE `prestamos`
 
 select * from prestamos;
 
---
--- AUTO_INCREMENT de la tabla `devoluciones`
---
+
 ALTER TABLE `devoluciones`
     MODIFY `IdDevoluciones` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT de la tabla `prestamos`
---
+
 ALTER TABLE `prestamos`
     MODIFY `IdPrestamo` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT de la tabla `productosgenerales`
---
+
 ALTER TABLE `productosgenerales`
     MODIFY `IdProducto` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT de la tabla `usuarios`
---
+
 ALTER TABLE `usuarios`
     MODIFY `IdUsuario` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT de la tabla `instructores`
---
+
 ALTER TABLE `instructores`
     MODIFY `IdInstructor` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- Restricciones para tablas volcadas
---
 
---
--- Filtros para la tabla `devoluciones`
---
 ALTER TABLE `devoluciones`
     ADD CONSTRAINT `devoluciones_ibfk_1` FOREIGN KEY (`IdInstructor`) REFERENCES `instructores` (`IdInstructor`),
     ADD CONSTRAINT `devoluciones_ibfk_2` FOREIGN KEY (`IdPrestamo`) REFERENCES `prestamos` (`IdPrestamo`),
     ADD CONSTRAINT `devoluciones_ibfk_3` FOREIGN KEY (`IdProducto`) REFERENCES `productosgenerales` (`IdProducto`);
 
---
--- Filtros para la tabla `prestamos`
---
+
 ALTER TABLE `prestamos`
     ADD CONSTRAINT `prestamos_ibfk_1` FOREIGN KEY (`IdInstructor`) REFERENCES `instructores` (`IdInstructor`),
     ADD CONSTRAINT `prestamos_ibfk_2` FOREIGN KEY (`IdProducto`) REFERENCES `productosgenerales` (`IdProducto`);
@@ -208,18 +161,13 @@ ALTER TABLE `prestamos`
 
 
 
---
--- Inserts para la tabla `prestamos`
---
 INSERT INTO prestamos (IdInstructor, IdProducto, FechaHoraPrestamo, CantidadPrestamo, EstadoPrestamo, ObservacionesPrestamo)
 VALUES
     (1, 4, '2024-06-12 10:30:00', 1, 'En curso', 'N/A'),
     (2, 1, '2024-06-12 10:30:00', 1, 'En curso', 'N/A');
 SELECT * FROM prestamos;
 
---
--- Vista para la tabla `prestamos`
---
+
 CREATE VIEW vista_prestamos AS
 SELECT p.IdPrestamo, p.IdInstructor, i.NombreInstructor, i.ApellidoInstructor, p.IdProducto, pg.NombreProducto, p.FechaHoraPrestamo, p.CantidadPrestamo, p.EstadoPrestamo, p.ObservacionesPrestamo
 FROM prestamos p
@@ -228,9 +176,7 @@ JOIN instructores i ON p.IdInstructor = i.IdInstructor;
 
 SELECT * FROM vista_prestamos;
 
---
--- Vista para la tabla `devoluciones`
---
+
 CREATE VIEW vista_devoluciones AS
 SELECT 
     d.IdDevoluciones,
@@ -324,6 +270,3 @@ COMMIT;
 
 
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
