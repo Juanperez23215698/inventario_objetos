@@ -1,0 +1,2 @@
+pip install Flask Flask-MySQLdb mysql-connector-python Flask-SQLAlchemy Flask-Migrate Flask-WTF Flask-Login Flask-Bcrypt python-dotenv
+pip install Flask Flask-SQLAlchemy Flask-Migrate Flask-Login Flask-Bcrypt Flask-WTF python-dotenv Flask-DebugToolbar Flask-Mail Flask-CORS Flask-RESTful Flask-SocketIO Flask-Caching
