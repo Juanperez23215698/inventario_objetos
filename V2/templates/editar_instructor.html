@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Instructor - Inventario de Usuarios{% endblock %}
+
+{% block content %}
+
+<a href="/mostrar_instructores" class="regresar" style="color: #39a900; text-decoration: none;">
+    <i class="fas fa-arrow-left"></i> Regresar
+</a>
+
+<h1>Editar Instructor</h1>
+
+<div class="mdl-tabs__panel is-active" id="tabNewInstructor">
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+            <div class="full-width panel mdl-shadow--2dp">
+                <div class="full-width panel-tittle bg-primary text-center tittles">
+                    Editar Instructor
+                </div>
+                <div class="full-width panel-content">
+                    <form method="POST" >
+                        <div class="mdl-grid">
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <legend class="text-condensedLight"><i class="zmdi zmdi-border-color"></i>
+                                    &nbsp; INFORMACIÓN BÁSICA</legend><br>
+                            </div>
+                            <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" name="NombreInstructor"
+                                        value="{{ instructor.NombreInstructor }}" pattern="[A-Za-záéíóúÁÉÍÓÚ\s'-]*"
+                                        id="NombreInstructor">
+                                    <label class="mdl-textfield__label" for="NombreInstructor">Nombre Instructor</label>
+                                    <span class="mdl-textfield__error">Nombre inválido</span>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" name="ApellidoInstructor"
+                                        value="{{ instructor.ApellidoInstructor }}" pattern="[A-Za-záéíóúÁÉÍÓÚ\s'-]*"
+                                        id="ApellidoInstructor">
+                                    <label class="mdl-textfield__label" for="ApellidoInstructor">Apellido Instructor</label>
+                                    <span class="mdl-textfield__error">Apellido inválido</span>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <legend class="text-condensedLight"><i class="zmdi zmdi-border-color"></i>
+                                    &nbsp; TIPO IDENTIFICACIÓN</legend><br>
+                            </div>
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    <select class="mdl-textfield__input" name="TipoIdentificacion">
+                                        <option value="CC" {% if instructor.TipoIdentificacion == 'CC' %}selected{% endif %}>Cédula de Ciudadanía</option>
+                                        <option value="TI" {% if instructor.TipoIdentificacion == 'TI' %}selected{% endif %}>Tarjeta de Identidad</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" name="NumeroIdentificacion"
+                                        value="{{ instructor.NumeroIdentificacion }}" pattern="[0-9]*"
+                                        id="NumeroIdentificacion">
+                                    <label class="mdl-textfield__label" for="NumeroIdentificacion">Número Identificación</label>
+                                    <span class="mdl-textfield__error">Número inválido</span>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="email" name="CorreoInstructor"
+                                        value="{{ instructor.CorreoInstructor }}" id="CorreoInstructor">
+                                    <label class="mdl-textfield__label" for="CorreoInstructor">Correo Instructor</label>
+                                    <span class="mdl-textfield__error">Correo inválido</span>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="tel" name="CelularInstructor"
+                                        value="{{ instructor.CelularInstructor }}" pattern="[0-9]*"
+                                        id="CelularInstructor">
+                                    <label class="mdl-textfield__label" for="CelularInstructor">Celular Instructor</label>
+                                    <span class="mdl-textfield__error">Celular inválido</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-center">
+                            <button
+                                class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary"
+                                id="btn-editInstructor">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <div class="mdl-tooltip" for="btn-editInstructor">Editar Instructor</div>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

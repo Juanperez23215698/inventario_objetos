@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Inventario - Inventario de Objetos{% endblock %}
+
+{% block content %}
+<a href="/inicio_login" class="regresar" style="color: #39a900; text-decoration: none;">
+    <i class="fas fa-arrow-left"></i> Regresar
+</a>
+
+<h1>Inventario de Objetos</h1>
+
+<div class="search-container">
+    <form name="formSearch" method="POST" action="{{ url_for('search_route') }}" class="search-container"
+        autocomplete="off">
+        <input type="search" name="buscar" class="search_input" placeholder="Buscar...">
+        <button type="submit" class="search_btn">
+            <i class="fa-solid fa-magnifying-glass"></i> Buscar
+        </button>
+    </form>
+
+    <div class="filter-dropdown">
+        <button class="filter-btn">
+            <i class="fa-solid fa-sliders"></i> Filtrar
+        </button>
+        <div class="dropdown-content">
+            <a href="#">Menor stock</a>
+            <a href="#">Mayor stock</a>
+            <a href="#">Ordenar A-Z</a>
+            <a href="#">Formación</a>
+            <a href="#">Consumibles</a>
+        </div>
+    </div>
+</div>
+
+<div class="full-width divider-menu-h"></div>
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">
+        <div class="table-responsive">
+            {% if inventario %}
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive">
+                <thead>
+                    <tr>
+                        <th style="text-align: end;" class="mdl-data-table__cell--non-numeric">ID</th>
+                        <th style="text-align: end;" class="mdl-data-table__cell--non-numeric">Nombre Producto</th>
+                        <th style="text-align: end;" class="mdl-data-table__cell--non-numeric">Stock</th>
+                        <th style="text-align: end;" class="mdl-data-table__cell--non-numeric">Descripcion</th>
+                        <th style="text-align: end;" class="mdl-data-table__cell--non-numeric">Tipo Objeto</th>
+                        <th style="text-align: end;" class="mdl-data-table__cell--non-numeric">Observaciones</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for mostrar in inventario %}
+                    <tr>
+                        <td style="text-align: end;" class="mdl-data-table__cell--non-numeric">{{ mostrar.IdProducto }}
+                        </td>
+                        <td style="text-align: end;" class="mdl-data-table__cell--non-numeric">{{ mostrar.NombreProducto
+                            }}</td>
+                        <td style="text-align: end;" class="mdl-data-table__cell--non-numeric">{{
+                            mostrar.CantidadProducto }}</td>
+                            <td style="text-align: end;" class="mdl-data-table__cell--non-numeric">{{ mostrar.DescripcionProducto
+                                }}</td>
+                        <td style="text-align: end;" class="mdl-data-table__cell--non-numeric">{{ mostrar.TipoProducto
+                            }}</td>
+                        <td style="text-align: end;" class="mdl-data-table__cell--non-numeric">{{
+                            mostrar.ObservacionesProducto }}</td>
+                        <td>
+                            <a class="icon_edit" href="{{ url_for('editar_objeto', id=mostrar.IdProducto) }}"
+                                style="color: #39a900; text-decoration: none;">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            <a class="icon_delete" href="{{ url_for('confirmar_eliminar_objeto', id=mostrar.IdProducto) }}"
+                                style="color: red; text-decoration: none;"><i class="fas fa-trash-alt"></i> Eliminar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No hay objetos para mostrar.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

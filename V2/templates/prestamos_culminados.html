@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Todos Culminados - Inventario de Objetos{% endblock %}
+
+{% block content %}
+<a href="/prestamos" class="regresar" style="color: #39a900; text-decoration: none;">
+    <i class="fas fa-arrow-left"></i> Regresar
+</a>
+
+<h1>Préstamos Culminados</h1>
+
+<div class="search-container">
+    <form name="formSearch" method="POST" action="{{ url_for('search_route') }}" class="search-container" autocomplete="off">
+        <input type="search" name="buscar" class="search_input" placeholder="Buscar...">
+        <button type="submit" class="search_btn">
+            <i class="fa-solid fa-magnifying-glass"></i> Buscar
+        </button>
+    </form>
+
+    <div class="filter-dropdown">
+        <button class="filter-btn">
+            <i class="fa-solid fa-sliders"></i> Filtrar
+        </button>
+        <div class="dropdown-content">
+            <a href="#">Menor stock</a>
+            <a href="#">Mayor stock</a>
+            <a href="#">Ordenar A-Z</a>
+            <a href="#">Formación</a>
+            <a href="#">Consumibles</a>
+        </div>
+    </div>
+</div>
+
+<div class="full-width divider-menu-h"></div>
+<div class="mdl-grid" style=" margin-left: 5px; margin-right: 5px;">
+    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">
+        <div class="table-responsive">
+            {% if prestamos %}
+            <p style="color: black;">Préstamos culminados encontrados: {{ prestamos|length }}</p>
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive">
+                <thead>
+                    <tr>
+                        <th style="text-align: left;" class="mdl-data-table__cell--non-numeric">ID Devoluciones</th>
+                        <th style="text-align: left;" class="mdl-data-table__cell--non-numeric">ID Préstamo</th>
+                        <th style="text-align: left;" class="mdl-data-table__cell--non-numeric">ID Instructor</th>
+                        <th style="text-align: left;" class="mdl-data-table__cell--non-numeric">ID Producto</th>
+                        <th style="text-align: end;" class="mdl-data-table__cell--non-numeric">Fecha y Hora del Préstamo</th>
+                        <th style="text-align: end;" class="mdl-data-table__cell--non-numeric">Estado del Préstamo</th>
+                        <th style="text-align: end;" class="mdl-data-table__cell--non-numeric">Cantidad de Préstamo</th>
+                        <th style="text-align: end;" class="mdl-data-table__cell--non-numeric">Estado del Préstamo</th>
+                        <th style="text-align: end;" class="mdl-data-table__cell--non-numeric">Observaciones del Préstamo</th>
+                        <th style="text-align: end;" class="mdl-data-table__cell--non-numeric">Modo Tiempo Lugar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for mostrar in prestamos %}
+                    <tr>
+                        <td style="text-align: center;" class="mdl-data-table__cell--non-numeric">{{ mostrar.IdDevoluciones }}</td>
+                        <td style="text-align: center;" class="mdl-data-table__cell--non-numeric">{{ mostrar.IdPrestamo }}</td>
+                        <td style="text-align: left;" class="mdl-data-table__cell--non-numeric">{{ mostrar.IdInstructor }} - {{ mostrar.NombreInstructor }} {{ mostrar.ApellidoInstructor }}</td>
+                        <td style="text-align: left;" class="mdl-data-table__cell--non-numeric">{{ mostrar.IdProducto }} - {{ mostrar.NombreProducto }}</td>
+                        <td style="text-align: end;" class="mdl-data-table__cell--non-numeric">{{ mostrar.FechaHoraDevolucion }}</td>
+                        <td style="text-align: center;" class="mdl-data-table__cell--non-numeric">{{ mostrar.EstadoDevolucion }}</td>
+                        <td style="text-align: center;" class="mdl-data-table__cell--non-numeric">{{ mostrar.CantidadDevolutiva }}</td>
+                        <td style="text-align: end;" class="mdl-data-table__cell--non-numeric">{{ mostrar.EstadoPrestamo }}</td>
+                        <td style="text-align: end;" class="mdl-data-table__cell--non-numeric">{{ mostrar.Observaciones }}</td>
+                        <td style="text-align: end;" class="mdl-data-table__cell--non-numeric">{{ mostrar.ModoTiempoLugar }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No hay préstamos culminados para mostrar.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
