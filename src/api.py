@@ -3,7 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 
 app = Flask(__name__)
+<<<<<<< Updated upstream
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/fabrica'
+=======
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/fabrica'
+>>>>>>> Stashed changes
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)        
@@ -53,6 +57,7 @@ def create_productos_generales():
 
     return producto_general_schema.jsonify(new_producto_general)
 
+<<<<<<< Updated upstream
 @app.route('/productosgenerales', methods=['GET'])
 def obt_productos_generales():
     all_productos_generales = ProductosGenerales.query.all()
@@ -112,5 +117,7 @@ def update_partial_producto_general(id):
 
 
 
+=======
+>>>>>>> Stashed changes
 if __name__ == '__main__':
     app.run(debug=True)
