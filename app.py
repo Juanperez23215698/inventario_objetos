@@ -49,9 +49,15 @@ def inventario():
     return render_template('inventario.html')
 
 # REGISTRARME
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def registrar_usuarios():
+    if request.method == 'POST':
+        if registrar(request):
+            return redirect(url_for('inicio_login')) 
+        else:
+            return render_template('register.html', error="Error en el registro. Inténtalo de nuevo.")
     return render_template('register.html')
+
 
 # SOBRE NOSOTROS - ABOUT US
 @app.route('/sobre_nosotros')

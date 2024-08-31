@@ -22,64 +22,55 @@
             <li><a href="/"><i class="fas fa-home"></i> Inicio</a></li>
             <li><a href="/quienes_somos"><i class="fa fa-fw fa-search"></i> ¿Quiénes Somos?</a></li>
             <li><a href="/sobre_nosotros"><i class="fa-solid fa-users"></i> Sobre Nosotros</a></li>
-            <li><a href="/templates/login.html"><i class="fa fa-fw fa-user"></i> Iniciar Sesión</a></li>
+            <li><a href="/loginUsu"><i class="fa fa-fw fa-user"></i> Iniciar Sesión</a></li>
             <li><a class="active" href="/register"><i class="fa fa-fw fa-user"></i> Registrarme</a></li>
         </ul>
     </div>
 
     <!-- Contenido -->
 
-    <form class="formulario" method="POST" action="/registro">
+    <form class="formulario" method="POST" action="/register">
         <h1>Regístrate</h1>
         <br>
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
         <div class="input-contenedor">
             <i class="fas fa-user icon"></i>
-            <input type="text" placeholder="Nombre completo" pattern="[A-Za-z\s]+"
-                title="Ingrese solo letras y espacios" required name="txtNombre">
+            <input type="text" placeholder="Nombre completo" pattern="[A-Za-z\s]+" title="Ingrese solo letras y espacios" required name="txtNombre">
         </div>
         <div class="input-contenedor">
             <i class="fas fa-user icon"></i>
-            <input type="text" placeholder=" Apellidos" pattern="[A-Za-z\s]+" title="Ingrese solo letras y espacios"
-                required name="txtApellido">
+            <input type="text" placeholder="Apellidos" pattern="[A-Za-z\s]+" title="Ingrese solo letras y espacios" required name="txtApellido">
         </div>
         <div class="input-contenedor">
             <i class="fa-solid fa-envelope icon"></i>
             <input type="email" placeholder="Correo electrónico" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" required name="txtCorreo">
         </div>
         <div class="input-contenedor">
-            <i class="fas fa-user icon"></i>
+            <i class="fas fa-id-card icon"></i>
             <select name="txtTipoDoc" required>
-                <option value="" disabled selected>Selecciona el tipo de documento</option>
+                <option value="" disabled selected>Seleccione tipo de documento</option>
                 <option value="CC">Cédula de Ciudadanía</option>
-                <option value="CE">Cédula de Extranjería</option>
-                <option value="PP">Pasaporte</option>
+                <option value="TI">Tarjeta de Identidad</option>
             </select>
         </div>
         <div class="input-contenedor">
             <i class="fas fa-id-card icon"></i>
-            <input type="text" placeholder=" Número de documento" pattern="[0-9]+" title="Ingrese solo números" required
-                name="txtNumeroDocumento">
-        </div>
-        <div class="input-contenedor">
-            <i class="fas fa-calendar icon"></i>
-            <input type="date" placeholder=" Fecha de nacimiento" required name="txtFechaNacimiento">
+            <input type="text" placeholder="Número de documento" pattern="[0-9]+" title="Ingrese solo números" required name="txtNumeroDocumento">
         </div>
         <div class="input-contenedor">
             <i class="fas fa-phone icon"></i>
-            <input type="tel" placeholder=" Celular" pattern="[0-9]+" title="Ingrese solo números" required
-                name="txtNumeroTelefono">
+            <input type="tel" placeholder="Celular" pattern="[0-9]+" title="Ingrese solo números" required name="txtNumeroTelefono">
         </div>
         <div class="input-contenedor">
             <i class="fa-solid fa-lock icon"></i>
-            <input type="text" placeholder=" Contraseña" title="Ingrese solo letras y numeros" required
-                name="txtPassword">
+            <input type="password" placeholder="Contraseña" title="Ingrese solo letras y números" required name="txtPassword">
         </div>
         <input type="submit" value="Registrarme" class="button">
         <p>Al registrarte aceptas los términos y condiciones</p>
         <p>¿Ya tienes cuenta? <a class="link" href="/login">Iniciar Sesión</a></p>
-        </div>
     </form>
-
 
     <!-- Footer -->
 
