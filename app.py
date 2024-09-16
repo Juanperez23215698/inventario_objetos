@@ -587,10 +587,21 @@ def listar_prestamos_en_curso():
 def listar_prestamos_culminados():
     return mostrar_prestamos_culminados()
 
+# BUSCADOR
+@app.route('/buscar', methods=['GET', 'POST'])
+def buscar_route():
+    if request.method == "POST":
+        return buscar(request)
+    return redirect(url_for('inventario_objetos'))
 
+# ... (otras importaciones y código) ...
 
-
-
+@app.route('/filtrar_inventario', methods=['GET'])
+def filtrar_inventario():
+    filtro = request.args.get('filtro', 'id')
+    orden = request.args.get('orden', 'asc')
+    inventario = filtrar_inventario(filtro, orden)
+    return render_template("inventario.html", inventario=inventario)
 
 # REDIRECCIONANDO CUANDO LA PAGINA NO EXISTE
 @app.errorhandler(404)
