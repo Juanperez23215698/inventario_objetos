@@ -1,5 +1,9 @@
 from flask import session, request, render_template
 from conexion.conexionBD import connectionBD
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
 
 # FUNCION LOGIN
 
@@ -427,3 +431,4 @@ def buscar_prestamos_culminados(search):
     finally:
         if connection and connection.is_connected():
             connection.close()
+
