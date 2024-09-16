@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Todos Culminados - Inventario de Objetos{% endblock %}
+{% block title %}Préstamos Culminados - Inventario de Objetos{% endblock %}
 
 {% block content %}
 <a href="/prestamos" class="regresar" style="color: #39a900; text-decoration: none;">
@@ -10,33 +10,21 @@
 <h1>Préstamos Culminados</h1>
 
 <div class="search-container">
-    <form name="formSearch" method="POST" action="{{ url_for('search_route') }}" class="search-container" autocomplete="off">
-        <input type="search" name="buscar" class="search_input" placeholder="Buscar...">
-        <button type="submit" class="search_btn">
-            <i class="fa-solid fa-magnifying-glass"></i> Buscar
-        </button>
-    </form>
-
-    <div class="filter-dropdown">
-        <button class="filter-btn">
-            <i class="fa-solid fa-sliders"></i> Filtrar
-        </button>
-        <div class="dropdown-content">
-            <a href="#">Menor stock</a>
-            <a href="#">Mayor stock</a>
-            <a href="#">Ordenar A-Z</a>
-            <a href="#">Formación</a>
-            <a href="#">Consumibles</a>
-        </div>
-    </div>
+    <input type="search" id="searchInput" class="search_input" placeholder="Buscar por nombre, ID, instructor o producto...">
 </div>
 
+<!-- Mensaje de búsqueda -->
+<div id="searchMessage" class="search-message" style="display: none;">
+    <p>Mostrando resultados para la búsqueda: "<span id="searchTerm"></span>"</p>
+    <p>Se encontraron <span id="resultCount"></span> resultado(s).</p>
+</div>
+
+<p style="color: black;">Préstamos culminados encontrados: {{ prestamos|length }}</p>
+
 <div class="full-width divider-menu-h"></div>
-<div class="mdl-grid" style=" margin-left: 5px; margin-right: 5px;">
+<div class="mdl-grid" style="margin-left: 5px; margin-right: 5px;">
     <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">
         <div class="table-responsive">
-            {% if prestamos %}
-            <p style="color: black;">Préstamos culminados encontrados: {{ prestamos|length }}</p>
             <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive">
                 <thead>
                     <tr>
@@ -52,7 +40,7 @@
                         <th style="text-align: end;" class="mdl-data-table__cell--non-numeric">Modo Tiempo Lugar</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="prestamosTableBody">
                     {% for mostrar in prestamos %}
                     <tr>
                         <td style="text-align: center;" class="mdl-data-table__cell--non-numeric">{{ mostrar.IdDevoluciones }}</td>
@@ -69,11 +57,74 @@
                     {% endfor %}
                 </tbody>
             </table>
-            {% else %}
-            <p>No hay préstamos culminados para mostrar.</p>
-            {% endif %}
         </div>
     </div>
 </div>
-{% endblock %}
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    var typingTimer;
+    var doneTypingInterval = 300;
+
+    $('#searchInput').on('input', function() {
+        clearTimeout(typingTimer);
+        var searchTerm = $(this).val();
+        
+        if (searchTerm) {
+            typingTimer = setTimeout(function() {
+                performSearch(searchTerm);
+            }, doneTypingInterval);
+        } else {
+            $('#searchMessage').hide();
+            performSearch('');
+        }
+    });
+
+    function performSearch(searchTerm) {
+        $.ajax({
+            url: '/buscar_prestamos_culminados_ajax',
+            type: 'POST',
+            data: JSON.stringify({'buscar': searchTerm}),
+            contentType: 'application/json;charset=UTF-8',
+            success: function(response) {
+                updateTable(response.prestamos);
+                updateSearchMessage(searchTerm, response.prestamos.length);
+            }
+        });
+    }
+
+    function updateTable(prestamos) {
+        var tableBody = $('#prestamosTableBody');
+        tableBody.empty();
+        $.each(prestamos, function(i, prestamo) {
+            var row = `
+                <tr>
+                    <td style="text-align: center;" class="mdl-data-table__cell--non-numeric">${prestamo.IdDevoluciones}</td>
+                    <td style="text-align: center;" class="mdl-data-table__cell--non-numeric">${prestamo.IdPrestamo}</td>
+                    <td style="text-align: left;" class="mdl-data-table__cell--non-numeric">${prestamo.IdInstructor} - ${prestamo.NombreInstructor} ${prestamo.ApellidoInstructor}</td>
+                    <td style="text-align: left;" class="mdl-data-table__cell--non-numeric">${prestamo.IdProducto} - ${prestamo.NombreProducto}</td>
+                    <td style="text-align: end;" class="mdl-data-table__cell--non-numeric">${prestamo.FechaHoraDevolucion}</td>
+                    <td style="text-align: center;" class="mdl-data-table__cell--non-numeric">${prestamo.EstadoDevolucion}</td>
+                    <td style="text-align: center;" class="mdl-data-table__cell--non-numeric">${prestamo.CantidadDevolutiva}</td>
+                    <td style="text-align: end;" class="mdl-data-table__cell--non-numeric">${prestamo.EstadoPrestamo}</td>
+                    <td style="text-align: end;" class="mdl-data-table__cell--non-numeric">${prestamo.Observaciones}</td>
+                    <td style="text-align: end;" class="mdl-data-table__cell--non-numeric">${prestamo.ModoTiempoLugar}</td>
+                </tr>
+            `;
+            tableBody.append(row);
+        });
+    }
+
+    function updateSearchMessage(searchTerm, resultCount) {
+        if (searchTerm) {
+            $('#searchTerm').text(searchTerm);
+            $('#resultCount').text(resultCount);
+            $('#searchMessage').show();
+        } else {
+            $('#searchMessage').hide();
+        }
+    }
+});
+</script>
+{% endblock %}

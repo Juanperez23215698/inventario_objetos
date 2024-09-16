@@ -261,32 +261,27 @@ def buscar_productos(search):
         if connection and connection.is_connected():
             connection.close()    
 
-def buscar_prestamos(search, tipo_prestamo):
+def buscar_prestamos(search):
     connection = None
     try:
         connection = connectionBD()
         cursor = connection.cursor(dictionary=True)
 
         query = """
-            SELECT p.IdPrestamo, pr.NombreProducto, u.NombreUsuario, 
-                   p.FechaPrestamo, p.FechaDevolucionEstimada
-            FROM Prestamos p
-            JOIN Productos pr ON p.IdProducto = pr.IdProducto
-            JOIN Usuarios u ON p.IdUsuario = u.IdUsuario
-            WHERE p.FechaDevolucionReal IS NULL
+            SELECT p.*, i.NombreInstructor, i.ApellidoInstructor, pr.NombreProducto
+            FROM prestamos p
+            JOIN instructores i ON p.IdInstructor = i.IdInstructor
+            JOIN productosgenerales pr ON p.IdProducto = pr.IdProducto
+            WHERE p.IdPrestamo LIKE %s
+            OR i.NombreInstructor LIKE %s
+            OR i.ApellidoInstructor LIKE %s
+            OR pr.NombreProducto LIKE %s
+            OR p.EstadoPrestamo LIKE %s
+            ORDER BY p.FechaHoraPrestamo DESC
         """
-
-        params = []
-
-        if search:
-            query += """ AND (pr.NombreProducto LIKE %s 
-                        OR u.NombreUsuario LIKE %s 
-                        OR p.IdPrestamo LIKE %s)"""
-            params = [f"%{search}%", f"%{search}%", f"%{search}%"]
         
-        query += " ORDER BY p.FechaPrestamo DESC"
-
-        cursor.execute(query, params)
+        search_param = f"%{search}%"
+        cursor.execute(query, (search_param, search_param, search_param, search_param, search_param))
         resultados = cursor.fetchall()
         cursor.close()
         
@@ -328,6 +323,106 @@ def filtrar_inventario(filtro, orden):
         return inventario
     except Exception as e:
         print(f"Error en la función filtrar_inventario: {e}")
+        return []
+    finally:
+        if connection and connection.is_connected():
+            connection.close()
+
+#BUSCAR PRESTAMOS 
+def buscar_prestamos(search):
+    connection = None
+    try:
+        connection = connectionBD()
+        cursor = connection.cursor(dictionary=True)
+
+        query = """
+            SELECT p.*, i.NombreInstructor, i.ApellidoInstructor, pr.NombreProducto
+            FROM prestamos p
+            JOIN instructores i ON p.IdInstructor = i.IdInstructor
+            JOIN productosgenerales pr ON p.IdProducto = pr.IdProducto
+            WHERE p.IdPrestamo LIKE %s
+            OR i.NombreInstructor LIKE %s
+            OR i.ApellidoInstructor LIKE %s
+            OR pr.NombreProducto LIKE %s
+            OR p.EstadoPrestamo LIKE %s
+            ORDER BY p.FechaHoraPrestamo DESC
+        """
+        
+        search_param = f"%{search}%"
+        cursor.execute(query, (search_param, search_param, search_param, search_param, search_param))
+        resultados = cursor.fetchall()
+        cursor.close()
+        
+        return resultados
+    except Exception as e:
+        print(f"Error en la función buscar_prestamos: {e}")
+        return []
+    finally:
+        if connection and connection.is_connected():
+            connection.close()
+
+#BUSCAR PRESTAMOS EN CURSO
+def buscar_prestamos_en_curso(search):
+    connection = None
+    try:
+        connection = connectionBD()
+        cursor = connection.cursor(dictionary=True)
+
+        query = """
+            SELECT p.*, i.NombreInstructor, i.ApellidoInstructor, pr.NombreProducto
+            FROM prestamos p
+            JOIN instructores i ON p.IdInstructor = i.IdInstructor
+            JOIN productosgenerales pr ON p.IdProducto = pr.IdProducto
+            WHERE p.EstadoPrestamo = 'En curso'
+            AND (p.IdPrestamo LIKE %s
+            OR i.NombreInstructor LIKE %s
+            OR i.ApellidoInstructor LIKE %s
+            OR pr.NombreProducto LIKE %s
+            OR p.EstadoPrestamo LIKE %s)
+            ORDER BY p.FechaHoraPrestamo DESC
+        """
+        
+        search_param = f"%{search}%"
+        cursor.execute(query, (search_param, search_param, search_param, search_param, search_param))
+        resultados = cursor.fetchall()
+        cursor.close()
+        
+        return resultados
+    except Exception as e:
+        print(f"Error en la función buscar_prestamos_en_curso: {e}")
+        return []
+    finally:
+        if connection and connection.is_connected():
+            connection.close()
+
+#BUSCAR PRESTAMOS CULMINADOS
+def buscar_prestamos_culminados(search):
+    connection = None
+    try:
+        connection = connectionBD()
+        cursor = connection.cursor(dictionary=True)
+
+        query = """
+            SELECT * FROM vista_devoluciones
+            WHERE IdDevoluciones LIKE %s
+            OR IdPrestamo LIKE %s
+            OR IdInstructor LIKE %s
+            OR NombreInstructor LIKE %s
+            OR IdProducto LIKE %s
+            OR NombreProducto LIKE %s
+            OR EstadoDevolucion LIKE %s
+            OR EstadoPrestamo LIKE %s
+            ORDER BY FechaHoraDevolucion DESC
+        """
+        
+        search_param = f"%{search}%"
+        cursor.execute(query, (search_param, search_param, search_param, search_param, search_param, search_param, search_param, search_param))
+        resultados = cursor.fetchall()
+        cursor.close()
+        
+        return resultados
+    except Exception as e:
+        print(f"Error en la función buscar_prestamos_culminados: {e}")
         return []
     finally:
         if connection and connection.is_connected():

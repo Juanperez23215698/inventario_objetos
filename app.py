@@ -585,12 +585,33 @@ def listar_prestamos_culminados():
 def listar_prestamos():
     return mostrar_prestamos()
 
-# BUSCADOR
+# BUSCADOR INVENTARIO
 @app.route('/buscar_ajax', methods=['POST'])
 def buscar_ajax():
     search_term = request.json.get('buscar', '')
     inventario = buscar_productos(search_term)
     return jsonify({'inventario': inventario})
+
+#BUSCAR PRESTAMOS 
+@app.route('/buscar_prestamos_ajax', methods=['POST'])
+def buscar_prestamos_ajax():
+    search_term = request.json.get('buscar', '')
+    prestamos = buscar_prestamos(search_term)
+    return jsonify({'prestamos': prestamos})
+
+#BUSCAR PRESTAMOS EN CURSO
+@app.route('/buscar_prestamos_en_curso_ajax', methods=['POST'])
+def buscar_prestamos_en_curso_ajax():
+    search_term = request.json.get('buscar', '')
+    prestamos = buscar_prestamos_en_curso(search_term)
+    return jsonify({'prestamos': prestamos})
+
+#BUSCAR PRESTAMOS CULMINADOS
+@app.route('/buscar_prestamos_culminados_ajax', methods=['POST'])
+def buscar_prestamos_culminados_ajax():
+    search_term = request.json.get('buscar', '')
+    prestamos = buscar_prestamos_culminados(search_term)
+    return jsonify({'prestamos': prestamos})
 
 @app.route('/filtrar_inventario', methods=['GET'])
 def filtrar_inventario():
