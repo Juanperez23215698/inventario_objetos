@@ -89,7 +89,7 @@ def prestar_objeto():
 def ob_generales():
     return render_template('objetos.html')
 
-# PRESTAMOS
+# PRÉSTAMOS
 @app.route('/prestamos')
 def prestamos():
     return render_template('prestamos.html')
@@ -519,13 +519,6 @@ def confirmar_eliminar_administrador(id):
             connection.close()
         return redirect(url_for('listar_administradores'))
 
-
-# MOSTRAR PRÉSTAMOS
-@app.route('/mostrar_prestamos', methods=["GET", "POST"])
-def listar_prestamos():
-    return mostrar_prestamos()
-
-
 # CULMINAR PRESTAMO
 @app.route('/confirmar_devolucion_objeto/<int:id>', methods=['GET'])
 def confirmar_devolucion_objeto(id):
@@ -587,14 +580,17 @@ def listar_prestamos_en_curso():
 def listar_prestamos_culminados():
     return mostrar_prestamos_culminados()
 
-# BUSCADOR
-@app.route('/buscar', methods=['GET', 'POST'])
-def buscar_route():
-    if request.method == "POST":
-        return buscar(request)
-    return redirect(url_for('inventario_objetos'))
+# MOSTRAR PRÉSTAMOS
+@app.route('/mostrar_prestamos', methods=["GET", "POST"])
+def listar_prestamos():
+    return mostrar_prestamos()
 
-# ... (otras importaciones y código) ...
+# BUSCADOR
+@app.route('/buscar_ajax', methods=['POST'])
+def buscar_ajax():
+    search_term = request.json.get('buscar', '')
+    inventario = buscar_productos(search_term)
+    return jsonify({'inventario': inventario})
 
 @app.route('/filtrar_inventario', methods=['GET'])
 def filtrar_inventario():

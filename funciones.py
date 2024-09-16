@@ -2,6 +2,7 @@ from flask import session, request, render_template
 from conexion.conexionBD import connectionBD
 
 # FUNCION LOGIN
+
 def login(request):
     try:
         connection = connectionBD()
@@ -95,18 +96,19 @@ def BuscarObjeto():
 # MOSTRAR INVENTARIO
 
 def mostrar_inventario():
+    connection = None
     try:
         connection = connectionBD()
         cursor = connection.cursor(dictionary=True)
         cursor.execute("SELECT * FROM productosgenerales")
         inventario = cursor.fetchall()
-        cursor.close()
-        connection.close()
         return render_template("inventario.html", inventario=inventario)
     except Exception as e:
         print(f"Error en la función mostrar_objetos: {e}")
+        return render_template("inventario.html", inventario=[], error="Ocurrió un error al cargar el inventario")
     finally:
-        if connection.is_connected():
+        if connection and connection.is_connected():
+            cursor.close()
             connection.close()
 
 # MOSTRAR OBJETOS
@@ -196,7 +198,6 @@ def mostrar_prestamos_en_curso():
         if connection.is_connected():
             connection.close()
 
-            
 # MOSTRAR PRÉSTAMOS CULMINADOS
 def mostrar_prestamos_culminados():
     try:
@@ -215,10 +216,9 @@ def mostrar_prestamos_culminados():
             connection.close()
 
 #FUNCION BUSCAR
-def buscar(request):
+def buscar_productos(search):
     connection = None
     try:
-        search = request.form['buscar']
         connection = connectionBD()
         cursor = connection.cursor(dictionary=True)
 
@@ -253,17 +253,51 @@ def buscar(request):
         resultadoBusqueda = cursor.fetchall()
         cursor.close()
         
-        if resultadoBusqueda:
-            return render_template('inventario.html', inventario=resultadoBusqueda, busqueda=search)
-        else:
-            return render_template('inventario.html', inventario=[], error="No se encontraron productos.", busqueda=search)
+        return resultadoBusqueda
     except Exception as e:
-        print(f"Error en la función Buscar: {e}")
-        return render_template('inventario.html', inventario=[], error="Ocurrió un error en la búsqueda.")
+        print(f"Error en la función buscar_productos: {e}")
+        return []
     finally:
         if connection and connection.is_connected():
-            connection.close()            
+            connection.close()    
 
+def buscar_prestamos(search, tipo_prestamo):
+    connection = None
+    try:
+        connection = connectionBD()
+        cursor = connection.cursor(dictionary=True)
+
+        query = """
+            SELECT p.IdPrestamo, pr.NombreProducto, u.NombreUsuario, 
+                   p.FechaPrestamo, p.FechaDevolucionEstimada
+            FROM Prestamos p
+            JOIN Productos pr ON p.IdProducto = pr.IdProducto
+            JOIN Usuarios u ON p.IdUsuario = u.IdUsuario
+            WHERE p.FechaDevolucionReal IS NULL
+        """
+
+        params = []
+
+        if search:
+            query += """ AND (pr.NombreProducto LIKE %s 
+                        OR u.NombreUsuario LIKE %s 
+                        OR p.IdPrestamo LIKE %s)"""
+            params = [f"%{search}%", f"%{search}%", f"%{search}%"]
+        
+        query += " ORDER BY p.FechaPrestamo DESC"
+
+        cursor.execute(query, params)
+        resultados = cursor.fetchall()
+        cursor.close()
+        
+        return resultados
+    except Exception as e:
+        print(f"Error en la función buscar_prestamos: {e}")
+        return []
+    finally:
+        if connection and connection.is_connected():
+            connection.close()
+            
 # FUNCION FILTRAR INVENTARIO
 def filtrar_inventario(filtro, orden):
     connection = None

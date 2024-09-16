@@ -9,26 +9,16 @@
 
 <h1>Inventario de Objetos</h1>
 
-<!-- Buscador y botón para mostrar todo -->
+<!-- Buscador en tiempo real -->
 <div class="search-container">
-    <form name="formSearch" method="POST" action="{{ url_for('buscar_route') }}" class="search-container" autocomplete="off">
-        <input type="search" name="buscar" class="search_input" placeholder="Buscar por nombre, descripción, ID o tipo...">
-        <button type="submit" class="search_btn">Buscar</button>
-    </form>
-    <a href="{{ url_for('inventario_objetos') }}" class="btn btn-primary">Mostrar Todo</a>
+    <input type="search" id="searchInput" class="search_input" placeholder="Buscar por nombre, descripción, ID o tipo...">
 </div>
 
 <!-- Mensaje de búsqueda -->
-{% if busqueda %}
-<div class="search-message">
-    <p>Mostrando resultados para la búsqueda: "{{ busqueda }}"</p>
-    {% if inventario|length == 0 %}
-    <p>No se encontraron resultados.</p>
-    {% else %}
-    <p>Se encontraron {{ inventario|length }} resultado(s).</p>
-    {% endif %}
+<div id="searchMessage" class="search-message" style="display: none;">
+    <p>Mostrando resultados para la búsqueda: "<span id="searchTerm"></span>"</p>
+    <p>Se encontraron <span id="resultCount"></span> resultado(s).</p>
 </div>
-{% endif %}
 
 <!-- Tabla de inventario -->
 <div class="mdl-grid">
@@ -45,7 +35,7 @@
                     <th>Opciones</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="inventoryTable">
                 {% for producto in inventario %}
                 <tr>
                     <td class="mdl-data-table__cell--non-numeric">{{ producto.IdProducto }}</td>
@@ -68,4 +58,75 @@
         </table>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    var typingTimer;
+    var doneTypingInterval = 300; // Tiempo de espera después de que el usuario deja de escribir (en milisegundos)
+
+    $('#searchInput').on('input', function() {
+        clearTimeout(typingTimer);
+        var searchTerm = $(this).val();
+        
+        if (searchTerm) {
+            typingTimer = setTimeout(function() {
+                performSearch(searchTerm);
+            }, doneTypingInterval);
+        } else {
+            $('#searchMessage').hide();
+            performSearch('');
+        }
+    });
+
+    function performSearch(searchTerm) {
+        $.ajax({
+            url: '/buscar_ajax',
+            type: 'POST',
+            data: JSON.stringify({'buscar': searchTerm}),
+            contentType: 'application/json;charset=UTF-8',
+            success: function(response) {
+                updateTable(response.inventario);
+                updateSearchMessage(searchTerm, response.inventario.length);
+            }
+        });
+    }
+
+    function updateTable(inventario) {
+        var tableBody = $('#inventoryTable');
+        tableBody.empty();
+        $.each(inventario, function(i, producto) {
+            var row = `
+                <tr>
+                    <td class="mdl-data-table__cell--non-numeric">${producto.IdProducto}</td>
+                    <td class="mdl-data-table__cell--non-numeric">${producto.NombreProducto}</td>
+                    <td class="mdl-data-table__cell--non-numeric">${producto.CantidadProducto}</td>
+                    <td class="mdl-data-table__cell--non-numeric">${producto.DescripcionProducto}</td>
+                    <td class="mdl-data-table__cell--non-numeric">${producto.TipoProducto}</td>
+                    <td class="mdl-data-table__cell--non-numeric">${producto.ObservacionesProducto}</td>
+                    <td>
+                        <a class="icon_edit" href="/editar_objeto/${producto.IdProducto}" style="color: #39a900; text-decoration: none;">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <a class="icon_delete" href="/confirmar_eliminar_objeto/${producto.IdProducto}" style="color: red; text-decoration: none;">
+                            <i class="fas fa-trash-alt"></i> Eliminar
+                        </a>
+                    </td>
+                </tr>
+            `;
+            tableBody.append(row);
+        });
+    }
+
+    function updateSearchMessage(searchTerm, resultCount) {
+        if (searchTerm) {
+            $('#searchTerm').text(searchTerm);
+            $('#resultCount').text(resultCount);
+            $('#searchMessage').show();
+        } else {
+            $('#searchMessage').hide();
+        }
+    }
+});
+</script>
 {% endblock %}
