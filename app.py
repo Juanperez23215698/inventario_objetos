@@ -38,10 +38,10 @@ def administradores():
 def inicio_login():
     return render_template('inicio_login.html')
 
-# INSTRUCTORES
-@app.route('/instructores')
-def instructores():
-    return render_template('instructores.html')
+# PRESTATARIOS
+@app.route('/prestatarios')
+def prestatarios():
+    return render_template('prestatarios.html')
 
 # INVENTARIO
 @app.route('/inventario')
@@ -100,22 +100,22 @@ def inventario_objetos():
     return mostrar_inventario()
 
 
-# LISTAR INSTRUCTORES - FUNCIONA
-@app.route('/get_instructores', methods=['GET'])
-def get_instructores():
+# LISTAR PRESTATARIOS - FUNCIONA
+@app.route('/get_prestatarios', methods=['GET'])
+def get_prestatarios():
     try:
         connection = connectionBD()
         cursor = connection.cursor()
-        cursor.execute("SELECT IdInstructor, NombreInstructor, ApellidoInstructor FROM instructores")
-        instructores = cursor.fetchall()
+        cursor.execute("SELECT IdPrestatario, NombrePrestatario, ApellidoPrestatario FROM prestatario")
+        prestatarios = cursor.fetchall()
         cursor.close()
         connection.close()
         
-        opciones = [{'id': instructor[0], 'nombre': instructor[1], 'apellido': instructor[2]} for instructor in instructores]
+        opciones = [{'id': prestatario[0], 'nombre': prestatario[1], 'apellido': prestatario[2]} for prestatario in prestatarios]
         return jsonify(opciones)
     
     except Exception as e:
-        print(f"Error al obtener los instructores: {e}")
+        print(f"Error al obtener los prestatarios: {e}")
         return jsonify([])
 
 
@@ -149,7 +149,7 @@ def confirmar_prestamo_objeto(id):
 @app.route('/registrar_prestamo', methods=['POST'])
 def registrar_prestamo():
     try:
-        id_instructor = request.form.get('instructor')
+        id_prestatario = request.form.get('prestatario')
         id_producto = request.form.get('id_producto')
         fecha_prestamo = request.form.get('fecha_prestamo')
         cantidad_prestamo = request.form.get('cantidad_prestamo')
@@ -160,10 +160,10 @@ def registrar_prestamo():
         cursor = connection.cursor()
         cursor.execute(
             """
-            INSERT INTO prestamos (IdInstructor, IdProducto, FechaHoraPrestamo, CantidadPrestamo, EstadoPrestamo, ObservacionesPrestamo)
+            INSERT INTO prestamos (IdPrestatario, IdProducto, FechaHoraPrestamo, CantidadPrestamo, EstadoPrestamo, ObservacionesPrestamo)
             VALUES (%s, %s, %s, %s, %s, %s)
             """,
-            (id_instructor, id_producto, fecha_prestamo, cantidad_prestamo, estado_prestamo, observaciones_prestamo)
+            (id_prestatario, id_producto, fecha_prestamo, cantidad_prestamo, estado_prestamo, observaciones_prestamo)
         )
         connection.commit()
         cursor.close()
@@ -279,124 +279,121 @@ def confirmar_eliminar_objeto(id):
         return redirect(url_for('inventario_objetos'))
     
 
+# MOSTRAR PRESTATARIOS
+@app.route('/mostrar_prestatarios', methods=["GET", "POST"])
+def listar_prestatarios():
+    return mostrar_prestatarios()
 
-
-
-# MOSTRAR INSTRUCTORES
-@app.route('/mostrar_instructores', methods=["GET", "POST"])
-def listar_instructores():
-    return mostrar_instructores()
-
-# REGISTRAR INSTRUCTOR - FUNCIONA
-@app.route('/registrar_instructor', methods=['POST'])
-def registrar_instructor():
+# REGISTRAR PRESTATARIO - FUNCIONA
+@app.route('/registrar_prestatario', methods=['POST'])
+def registrar_prestatario():
     if request.method == 'POST':
         try:
-            nombre = request.form['NombreInstructor']
-            apellido = request.form['ApellidoInstructor']
+            nombre = request.form['NombrePrestatario']
+            apellido = request.form['ApellidoPrestatario']
             tipoidentificacion = request.form['TipoIdentificacion']
             numeroidentificacion = request.form['NumeroIdentificacion']
-            correoinstructor = request.form['CorreoInstructor']
-            celular = request.form['CelularInstructor']
+            correoprestatario = request.form['CorreoPrestatario']
+            celular = request.form['CelularPrestatario']
 
             connection = connectionBD()
             cursor = connection.cursor()
             cursor.execute("""
-                INSERT INTO instructores (NombreInstructor, ApellidoInstructor, TipoIdentificacion, NumeroIdentificacion, CorreoInstructor, CelularInstructor)
+                INSERT INTO prestatario (NombrePrestatario, ApellidoPrestatario, TipoIdentificacion, NumeroIdentificacion, CorreoPrestatario, CelularPrestatario)
                 VALUES (%s, %s, %s, %s, %s, %s)
-            """, (nombre, apellido, tipoidentificacion, numeroidentificacion, correoinstructor, celular))
+            """, (nombre, apellido, tipoidentificacion, numeroidentificacion, correoprestatario, celular))
             connection.commit()
             cursor.close()
             connection.close()
 
-            return redirect(url_for('listar_instructores'))
+            return redirect(url_for('listar_prestatarios'))
         except Exception as e:
-            print(f"Error al registrar el instructor: {e}")
+            print(f"Error al registrar el prestatario: {e}")
             if 'connection' in locals() and connection.is_connected():
                 connection.close()
-            return render_template('instructores.html', error="Error al registrar el instructor.")
+            return render_template('prestatarios.html', error="Error al registrar el prestatario.")
     else:
-        return redirect(url_for('instructores'))
+        return redirect(url_for('prestatarios'))
 
 
-# EDITAR INSTRUCTOR - FUNCIONA
-@app.route('/editar_instructor/<int:id>', methods=['GET', 'POST'])
-def editar_instructor(id):
+# EDITAR PRESTATARIO - FUNCIONA
+@app.route('/editar_prestatario/<int:id>', methods=['GET', 'POST'])
+def editar_prestatario(id):
     if request.method == 'POST':
         try:
-            nombre = request.form['NombreInstructor']
-            apellido = request.form['ApellidoInstructor']
+            nombre = request.form['NombrePrestatario']
+            apellido = request.form['ApellidoPrestatario']
             tipoidentificacion = request.form['TipoIdentificacion']
             numeroidentificacion = request.form['NumeroIdentificacion']
-            correoinstructor = request.form['CorreoInstructor']
-            celular = request.form['CelularInstructor']
+            correoprestatario = request.form['CorreoPrestatario']
+            celular = request.form['CelularPrestatario']
 
             connection = connectionBD()
             cursor = connection.cursor()
             cursor.execute("""
-                UPDATE instructores
-                SET NombreInstructor = %s, ApellidoInstructor = %s, TipoIdentificacion = %s, NumeroIdentificacion = %s, CorreoInstructor = %s, CelularInstructor = %s
-                WHERE IdInstructor = %s
-            """, (nombre, apellido, tipoidentificacion, numeroidentificacion, correoinstructor, celular, id))
+                UPDATE prestatario
+                SET NombrePrestatario = %s, ApellidoPrestatario = %s, TipoIdentificacion = %s, NumeroIdentificacion = %s, CorreoPrestatario = %s, CelularPrestatario = %s
+                WHERE IdPrestatario = %s
+            """, (nombre, apellido, tipoidentificacion, numeroidentificacion, correoprestatario, celular, id))
             connection.commit()
             cursor.close()
             connection.close()
-            return redirect(url_for('listar_instructores'))
+            return redirect(url_for('listar_prestatarios'))
         except Exception as e:
-            print(f"Error al actualizar el instructor: {e}")
+            print(f"Error al actualizar el prestatario: {e}")
             if 'connection' in locals() and connection.is_connected():
                 connection.close()
-            return render_template('editar_instructor.html', id=id, error=True)
+            return render_template('editar_prestatario.html', id=id, error=True)
     else:
         try:
             connection = connectionBD()
             cursor = connection.cursor(dictionary=True)
-            cursor.execute("SELECT * FROM instructores WHERE IdInstructor = %s", (id,))
-            instructor = cursor.fetchone()
+            cursor.execute("SELECT * FROM prestatario WHERE IdPrestatario = %s", (id,))
+            prestatario = cursor.fetchone()
             cursor.close()
             connection.close()
-            return render_template('editar_instructor.html', instructor=instructor)
+            return render_template('editar_prestatario.html', prestatario=prestatario)
         except Exception as e:
-            print(f"Error al obtener el instructor: {e}")
+            print(f"Error al obtener el prestatario: {e}")
             if 'connection' in locals() and connection.is_connected():
                 connection.close()
-            return redirect(url_for('listar_instructores'))
+            return redirect(url_for('listar_prestatarios'))
     
-# ELIMINAR INSTRUCTOR - FUNCIONA
-@app.route('/eliminar_instructor/<int:id>', methods=['POST'])
-def eliminar_instructor(id):
+# ELIMINAR PRESTATARIO - FUNCIONA
+@app.route('/eliminar_prestatario/<int:id>', methods=['POST'])
+def eliminar_prestatario(id):
     try:
         connection = connectionBD()
         cursor = connection.cursor()
-        cursor.execute("DELETE FROM instructores WHERE IdInstructor = %s", (id,))
+        cursor.execute("DELETE FROM prestatario WHERE IdPrestatario = %s", (id,))
         connection.commit()
         cursor.close()
         connection.close()
-        return redirect(url_for('listar_instructores'))
+        return redirect(url_for('listar_prestatarios'))
 
     except Exception as e:
-        print(f"Error al eliminar el instructor: {e}")
+        print(f"Error al eliminar el prestatario: {e}")
         if 'connection' in locals() and connection.is_connected():
             connection.close()
-        return redirect(url_for('listar_instructores'))
+        return redirect(url_for('listar_prestatarios'))
 
-# CONFIRMAR ELIMINAR INSTRUCTOR
-@app.route('/confirmar_eliminar_instructor/<int:id>')
-def confirmar_eliminar_instructor(id):
+# CONFIRMAR ELIMINAR PRESTATARIO
+@app.route('/confirmar_eliminar_prestatario/<int:id>')
+def confirmar_eliminar_prestatario(id):
     try:
         connection = connectionBD()
         cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM instructores WHERE IdInstructor = %s", (id,))
-        instructor = cursor.fetchone()
+        cursor.execute("SELECT * FROM prestatario WHERE IdPrestatario = %s", (id,))
+        prestatario = cursor.fetchone()
         cursor.close()
         connection.close()
-        return render_template('confirmar_eliminar_instructor.html', instructor=instructor)
+        return render_template('confirmar_eliminar_prestatario.html', prestatario=prestatario)
 
     except Exception as e:
-        print(f"Error al obtener el instructor: {e}")
+        print(f"Error al obtener el prestatario: {e}")
         if 'connection' in locals() and connection.is_connected():
             connection.close()
-        return redirect(url_for('listar_instructores'))
+        return redirect(url_for('listar_prestatarios'))
     
 
 
@@ -541,7 +538,7 @@ def confirmar_devolucion_objeto(id):
 @app.route('/registrar_devolucion', methods=['POST'])
 def registrar_devolucion():
     try:
-        idinstructor = request.form.get('IdInstructor')
+        idprestatario = request.form.get('IdPrestatario')
         idprestamo = request.form.get('IdPrestamo')
         idproducto = request.form.get('IdProducto')
         fechahoradevolucion = request.form.get('FechaHoraDevolucion')
@@ -555,10 +552,10 @@ def registrar_devolucion():
         cursor = connection.cursor()
         cursor.execute(
             """
-            INSERT INTO devoluciones (IdInstructor, IdPrestamo, IdProducto, FechaHoraDevolucion, EstadoDevolucion, Observaciones, EstadoPrestamo, CantidadDevolutiva, ModoTiempoLugar)
+            INSERT INTO devoluciones (IdPrestatario, IdPrestamo, IdProducto, FechaHoraDevolucion, EstadoDevolucion, Observaciones, EstadoPrestamo, CantidadDevolutiva, ModoTiempoLugar)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             """,
-            (idinstructor, idprestamo, idproducto, fechahoradevolucion, estadodevolucion, observacionesdevolucion, estadoprestamo, cantidaddevolutiva, modotiempolugar)
+            (idprestatario, idprestamo, idproducto, fechahoradevolucion, estadodevolucion, observacionesdevolucion, estadoprestamo, cantidaddevolutiva, modotiempolugar)
         )
         connection.commit()
         cursor.close()

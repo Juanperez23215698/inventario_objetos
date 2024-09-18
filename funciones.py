@@ -1,10 +1,5 @@
 from flask import session, request, render_template
 from conexion.conexionBD import connectionBD
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
-from reportlab.lib.styles import getSampleStyleSheet
-
 # FUNCION LOGIN
 
 def login(request):
@@ -149,19 +144,19 @@ def mostrar_administradores():
         if connection.is_connected():
             connection.close()
 
-# MOSTRAR INSTRUCTORES
-def mostrar_instructores():
+# MOSTRAR PRESTATARIOS
+def mostrar_prestatarios():
     try:
         connection = connectionBD()
         cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM instructores")
-        instructores = cursor.fetchall()
+        cursor.execute("SELECT * FROM prestatario")
+        prestatarios = cursor.fetchall()
         cursor.close()
         connection.close()
-        return render_template("instructores.html", instructores=instructores)
+        return render_template("prestatarios.html", prestatarios=prestatarios)
     except Exception as e:
-        print(f"Error en la función mostrar_instructores: {e}")
-        return render_template("instructores.html", instructores=[])
+        print(f"Error en la función mostrar_prestatarios: {e}")
+        return render_template("prestatarios.html", prestatarios=[])
     finally:
         if connection.is_connected():
             connection.close()
@@ -272,13 +267,13 @@ def buscar_prestamos(search):
         cursor = connection.cursor(dictionary=True)
 
         query = """
-            SELECT p.*, i.NombreInstructor, i.ApellidoInstructor, pr.NombreProducto
+            SELECT p.*, i.NombrePrestatario, i.ApellidoPrestatario, pr.NombreProducto
             FROM prestamos p
-            JOIN instructores i ON p.IdInstructor = i.IdInstructor
+            JOIN prestatario i ON p.IdPrestatario = i.IdPrestatario
             JOIN productosgenerales pr ON p.IdProducto = pr.IdProducto
             WHERE p.IdPrestamo LIKE %s
-            OR i.NombreInstructor LIKE %s
-            OR i.ApellidoInstructor LIKE %s
+            OR i.NombrePrestatario LIKE %s
+            OR i.ApellidoPrestatario LIKE %s
             OR pr.NombreProducto LIKE %s
             OR p.EstadoPrestamo LIKE %s
             ORDER BY p.FechaHoraPrestamo DESC
@@ -340,13 +335,13 @@ def buscar_prestamos(search):
         cursor = connection.cursor(dictionary=True)
 
         query = """
-            SELECT p.*, i.NombreInstructor, i.ApellidoInstructor, pr.NombreProducto
+            SELECT p.*, i.NombrePrestatario, i.ApellidoPrestatario, pr.NombreProducto
             FROM prestamos p
-            JOIN instructores i ON p.IdInstructor = i.IdInstructor
+            JOIN prestatario i ON p.IdPrestatario = i.IdPrestatario
             JOIN productosgenerales pr ON p.IdProducto = pr.IdProducto
             WHERE p.IdPrestamo LIKE %s
-            OR i.NombreInstructor LIKE %s
-            OR i.ApellidoInstructor LIKE %s
+            OR i.NombrePrestatario LIKE %s
+            OR i.ApellidoPrestatario LIKE %s
             OR pr.NombreProducto LIKE %s
             OR p.EstadoPrestamo LIKE %s
             ORDER BY p.FechaHoraPrestamo DESC
@@ -373,14 +368,14 @@ def buscar_prestamos_en_curso(search):
         cursor = connection.cursor(dictionary=True)
 
         query = """
-            SELECT p.*, i.NombreInstructor, i.ApellidoInstructor, pr.NombreProducto
+            SELECT p.*, i.NombrePrestatario, i.ApellidoPrestatario, pr.NombreProducto
             FROM prestamos p
-            JOIN instructores i ON p.IdInstructor = i.IdInstructor
+            JOIN prestatario i ON p.IdPrestatario = i.IdPrestatario
             JOIN productosgenerales pr ON p.IdProducto = pr.IdProducto
             WHERE p.EstadoPrestamo = 'En curso'
             AND (p.IdPrestamo LIKE %s
-            OR i.NombreInstructor LIKE %s
-            OR i.ApellidoInstructor LIKE %s
+            OR i.NombrePrestatario LIKE %s
+            OR i.ApellidoPrestatario LIKE %s
             OR pr.NombreProducto LIKE %s
             OR p.EstadoPrestamo LIKE %s)
             ORDER BY p.FechaHoraPrestamo DESC
@@ -410,8 +405,8 @@ def buscar_prestamos_culminados(search):
             SELECT * FROM vista_devoluciones
             WHERE IdDevoluciones LIKE %s
             OR IdPrestamo LIKE %s
-            OR IdInstructor LIKE %s
-            OR NombreInstructor LIKE %s
+            OR IdPrestatario LIKE %s
+            OR NombrePrestatario LIKE %s
             OR IdProducto LIKE %s
             OR NombreProducto LIKE %s
             OR EstadoDevolucion LIKE %s
