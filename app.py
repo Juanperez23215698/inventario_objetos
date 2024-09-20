@@ -48,6 +48,10 @@ def prestatarios():
 def inventario():
     return render_template('inventario.html')
 
+@app.route('/prestar_objetos')
+def prestar_objetos():
+    return render_template('prestar_objetos.html')
+
 # REGISTRARME
 @app.route('/register', methods=['GET', 'POST'])
 def registrar_usuarios():
@@ -642,3 +646,22 @@ def prestamos_culminados():
 def usuarios():
     return render_template('usuarios.html')
 
+@app.route('/get_inventario', methods=['GET'])
+def get_inventario():
+    try:
+        connection = connectionBD()
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT IdProducto, NombreProducto, DescripcionProducto, CantidadProducto FROM productosgenerales")
+        inventario = cursor.fetchall()
+        cursor.close()
+        connection.close()
+        
+        productos = [{'id': producto['IdProducto'], 
+                      'nombre': producto['NombreProducto'], 
+                      'descripcion': producto['DescripcionProducto'], 
+                      'stock': producto['CantidadProducto']} for producto in inventario]
+        
+        return jsonify(productos)
+    except Exception as e:
+        print(f"Error al obtener el inventario: {e}")
+        return jsonify([])

@@ -1,0 +1,319 @@
+{% extends "base.html" %}
+
+{% block title %}Prestar Objetos - Inventario de Objetos{% endblock %}
+
+{% block content %}
+<a href="/inicio_login" class="regresar" style="color: #39a900; text-decoration: none;">
+    <i class="fas fa-arrow-left"></i> Regresar
+</a>
+
+<link rel="stylesheet" href="/static/css/prestar_objetos.css">
+
+<h1>Prestar Objetos</h1>
+
+<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+            <div class="full-width panel mdl-shadow--2dp">
+                <div class="full-width panel-tittle bg-primary text-center tittles">
+                    Detalles del Préstamo
+                </div>
+                <div class="full-width panel-content">
+                    <form method="POST" action="/registrar_prestamo">
+                        <div class="mdl-grid">
+                            <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="nombrePrestatario" name="nombre_prestatario" required>
+                                    <label class="mdl-textfield__label" for="nombrePrestatario">Nombre completo del prestatario</label>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="identificacionPrestatario" name="identificacion_prestatario" required>
+                                    <label class="mdl-textfield__label" for="identificacionPrestatario">Número de identificación</label>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="fichaPrestatario" name="ficha_prestatario" required>
+                                    <label class="mdl-textfield__label" for="fichaPrestatario">Ficha</label>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="tel" id="telefonoPrestatario" name="telefono_prestatario" required>
+                                    <label class="mdl-textfield__label" for="telefonoPrestatario">Número de teléfono</label>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin-bottom: 20px;">
+                                    <input type="datetime-local" class="mdl-textfield__input" style="padding-top: 20px;" min="2024-03-23T11:00" max="2030-11-23T11:00" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" id="FechaPrestamo" name="fecha_prestamo" required>
+                                    <label class="mdl-textfield__label" style="font-size: 14px; top: 8px;" for="FechaPrestamo">Fecha y hora del préstamo</label>
+                                    <span class="mdl-textfield__error">Formato inválido</span>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" pattern=".*" id="ObservacionesPrestamo" name="observaciones_prestamo" required>
+                                    <label class="mdl-textfield__label" for="ObservacionesPrestamo">Observaciones del Préstamo</label>
+                                    <span class="mdl-textfield__error">Observaciones Inválidas</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-center">
+                            <button type="button" id="btnSeleccionarObjetos" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored bg-primary">
+                                Seleccionar Objetos
+                            </button>
+                        </p>
+                        <input type="hidden" id="objetosSeleccionadosInput" name="objetosSeleccionados" value="">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para seleccionar objetos -->
+<div id="modalSeleccionarObjetos" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Seleccionar Objetos</h2>
+        <div class="search-container" style="text-align: right; margin-bottom: 10px;">
+            <input type="search" id="searchInputModal" class="search_input" placeholder="Buscar objetos...">
+        </div>
+        <table id="tablaObjetos" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive">
+            <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--non-numeric">Nombre</th>
+                    <th class="mdl-data-table__cell--non-numeric">Descripción</th>
+                    <th class="mdl-data-table__cell--non-numeric">Stock</th>
+                    <th class="mdl-data-table__cell--non-numeric">Seleccionar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los datos se cargarán aquí dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal de confirmación -->
+<div id="modalConfirmacion" class="modal">
+    <div class="modal-content">
+        <h2>Confirmación</h2>
+        <p>¿Desea prestar otro objeto?</p>
+        <button id="btnSi" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Sí</button>
+        <button id="btnNo" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">No</button>
+    </div>
+</div>
+
+<!-- Modal de detalles del objeto -->
+<div id="modalDetallesObjeto" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Detalles del Objeto</h2>
+        <div id="detallesObjetoContenido">
+            <!-- Los detalles del objeto se cargarán aquí dinámicamente -->
+        </div>
+    </div>
+</div>
+
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--12-col">
+        <div class="full-width panel mdl-shadow--2dp">
+            <div class="full-width panel-tittle bg-primary text-center tittles">
+                Información del Préstamo
+            </div>
+            <div class="full-width panel-content">
+                <table id="tablaPrestamoInfo" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive">
+                    <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric">Nombre del Prestatario</th>
+                            <th class="mdl-data-table__cell--non-numeric">Identificación</th>
+                            <th class="mdl-data-table__cell--non-numeric">Ficha</th>
+                            <th class="mdl-data-table__cell--non-numeric">Teléfono</th>
+                            <th class="mdl-data-table__cell--non-numeric">Objeto Prestado</th>
+                            <th class="mdl-data-table__cell--non-numeric">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Los datos se cargarán aquí dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var modal = document.getElementById("modalSeleccionarObjetos");
+    var modalConfirmacion = document.getElementById("modalConfirmacion");
+    var btn = document.getElementById("btnSeleccionarObjetos");
+    var span = document.getElementsByClassName("close")[0];
+    var btnSi = document.getElementById("btnSi");
+    var btnNo = document.getElementById("btnNo");
+    var objetosSeleccionados = [];
+
+    btn.onclick = function() {
+        modal.style.display = "block";
+        cargarInventario();
+    }
+
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+        if (event.target == modalConfirmacion) {
+            modalConfirmacion.style.display = "none";
+        }
+    }
+
+    function cargarInventario() {
+        fetch('/get_inventario')
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.querySelector('#tablaObjetos tbody');
+                function renderizarTabla(productos) {
+                    tbody.innerHTML = '';
+                    productos.forEach(producto => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td class="mdl-data-table__cell--non-numeric">${producto.nombre}</td>
+                            <td class="mdl-data-table__cell--non-numeric">${producto.descripcion}</td>
+                            <td class="mdl-data-table__cell--non-numeric">${producto.stock}</td>
+                            <td class="mdl-data-table__cell--non-numeric">
+                                <button class="seleccionar-objeto mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-id="${producto.id}">Seleccionar</button>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                    agregarEventListeners();
+                }
+
+                renderizarTabla(data);
+
+                const searchInput = document.getElementById('searchInputModal');
+                let typingTimer;
+                const doneTypingInterval = 300;
+
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(typingTimer);
+                    const searchTerm = this.value.toLowerCase();
+                    
+                    typingTimer = setTimeout(function() {
+                        const filteredProducts = data.filter(producto => 
+                            producto.nombre.toLowerCase().includes(searchTerm) ||
+                            producto.descripcion.toLowerCase().includes(searchTerm)
+                        );
+                        renderizarTabla(filteredProducts);
+                    }, doneTypingInterval);
+                });
+            })
+            .catch(error => console.error('Error al cargar el inventario:', error));
+    }
+
+    function agregarEventListeners() {
+        document.querySelectorAll('.seleccionar-objeto').forEach(button => {
+            button.addEventListener('click', function() {
+                const productoId = this.getAttribute('data-id');
+                const productoNombre = this.closest('tr').querySelector('td').textContent;
+                objetosSeleccionados.push({id: productoId, nombre: productoNombre});
+                modal.style.display = "none";
+                modalConfirmacion.style.display = "block";
+            });
+        });
+    }
+
+    btnSi.onclick = function() {
+        modalConfirmacion.style.display = "none";
+        modal.style.display = "block";
+    }
+
+    btnNo.onclick = function() {
+        modalConfirmacion.style.display = "none";
+        mostrarObjetosSeleccionados();
+    }
+
+    function mostrarObjetosSeleccionados() {
+        const listaObjetos = document.createElement('div');
+        listaObjetos.id = 'listaObjetosSeleccionados';
+        listaObjetos.className = 'lista-objetos-seleccionados';
+
+        const objetosAgrupados = objetosSeleccionados.reduce((acc, obj) => {
+            acc[obj.id] = acc[obj.id] || { nombre: obj.nombre, cantidad: 0 };
+            acc[obj.id].cantidad++;
+            return acc;
+        }, {});
+
+        for (const id in objetosAgrupados) {
+            const objeto = objetosAgrupados[id];
+            const li = document.createElement('div');
+            li.className = 'objeto-seleccionado';
+            li.textContent = objeto.cantidad > 1 ? `${objeto.nombre} (${objeto.cantidad})` : objeto.nombre;
+            listaObjetos.appendChild(li);
+        }
+
+        const form = document.querySelector('form');
+        const existingList = document.getElementById('listaObjetosSeleccionados');
+        const existingButton = document.getElementById('botonPrestar');
+        
+        if (existingList) {
+            form.removeChild(existingList);
+        }
+        if (existingButton) {
+            form.removeChild(existingButton);
+        }
+        
+        form.appendChild(listaObjetos);
+        const botonPrestar = document.createElement('button');
+        botonPrestar.type = 'submit';
+        botonPrestar.className = 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored bg-primary';
+        botonPrestar.textContent = 'Prestar';
+        botonPrestar.style.marginTop = '20px';
+        form.appendChild(botonPrestar);
+
+        const objetosSeleccionadosInput = document.getElementById('objetosSeleccionadosInput');
+        objetosSeleccionadosInput.value = JSON.stringify(objetosSeleccionados);
+
+        actualizarTablaPrestamoInfo();
+    }
+
+    function actualizarTablaPrestamoInfo() {
+        const tbody = document.querySelector('#tablaPrestamoInfo tbody');
+        tbody.innerHTML = '';
+
+        const nombrePrestatario = document.getElementById('nombrePrestatario').value;
+        const identificacion = document.getElementById('identificacionPrestatario').value;
+        const ficha = document.getElementById('fichaPrestatario').value;
+        const telefono = document.getElementById('telefonoPrestatario').value;
+
+        objetosSeleccionados.forEach(objeto => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="mdl-data-table__cell--non-numeric">${nombrePrestatario}</td>
+                <td class="mdl-data-table__cell--non-numeric">${identificacion}</td>
+                <td class="mdl-data-table__cell--non-numeric">${ficha}</td>
+                <td class="mdl-data-table__cell--non-numeric">${telefono}</td>
+                <td class="mdl-data-table__cell--non-numeric">${objeto.nombre}</td>
+                <td class="mdl-data-table__cell--non-numeric">
+                    <button class="ver-detalles mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-id="${objeto.id}">Ver Detalles</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        agregarEventListenersDetalles();
+    }
+
+
+
+});
+</script>
+
+
+{% endblock %}
