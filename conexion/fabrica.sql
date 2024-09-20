@@ -13,7 +13,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `devoluciones` (
     `IdDevoluciones` int(11) NOT NULL,
-    `IdInstructor` int(11) DEFAULT NULL,
+    `IdPrestatario` int(11) DEFAULT NULL,
     `IdPrestamo` int(11) DEFAULT NULL,
     `IdProducto` int(11) DEFAULT NULL,
     `FechaHoraDevolucion` datetime DEFAULT NULL,
@@ -30,7 +30,7 @@ SELECT * FROM devoluciones;
 
 CREATE TABLE `prestamos` (
     `IdPrestamo` int(11) NOT NULL,
-    `IdInstructor` int(11) DEFAULT NULL,
+    `IdPrestatario` int(11) DEFAULT NULL,
     `IdProducto` int(11) DEFAULT NULL,
     `FechaHoraPrestamo` datetime DEFAULT NULL,
     `CantidadPrestamo` int(11) DEFAULT NULL,
@@ -85,17 +85,18 @@ VALUES
 SELECT * FROM usuarios;
 
 
-CREATE TABLE `instructores` (
-    `IdInstructor` int NOT NULL AUTO_INCREMENT,
-    `NombreInstructor` varchar(255) DEFAULT NULL,
-    `ApellidoInstructor` varchar(255) DEFAULT NULL,
+CREATE TABLE `prestatario` (
+    `IdPrestatario` int NOT NULL AUTO_INCREMENT,
+    `NombrePrestatario` varchar(255) DEFAULT NULL,
+    `ApellidoPrestatario` varchar(255) DEFAULT NULL,
     `TipoIdentificacion` enum('CC','TI') DEFAULT NULL,
     `NumeroIdentificacion` int(20) DEFAULT NULL,
-    `CorreoInstructor` varchar(255) DEFAULT NULL,
-    `CelularInstructor` int(11) DEFAULT NULL,
-    PRIMARY KEY (`IdInstructor`)
+    `CorreoPrestatario` varchar(255) DEFAULT NULL,
+    `CelularPrestatario` int(11) DEFAULT NULL,
+    PRIMARY KEY (`IdPrestatario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO instructores (NombreInstructor, ApellidoInstructor, TipoIdentificacion, NumeroIdentificacion, CorreoInstructor, CelularInstructor)
+
+INSERT INTO prestatario (NombrePrestatario, ApellidoPrestatario, TipoIdentificacion, NumeroIdentificacion, CorreoPrestatario, CelularPrestatario)
 VALUES
     ('Uldarico', 'Andrade', 'CC', 30567429, 'uandrade@soy.sena.edu.co',  3246016033),
     ('Fernando', 'Galindo', 'CC', 72648591, 'fegasu@gmail.com',  3105527890),
@@ -110,19 +111,31 @@ VALUES
     ('Miguel', 'Ramírez', 'CC', 22334455, 'mramirez@example.com', 3131234567),
     ('Elena', 'Torres', 'CC', 66778899, 'etorres@example.com', 3141234567),
     ('Carlos', 'Vargas', 'CC', 88990011, 'cvargas@example.com', 3157654321);
-SELECT * FROM instructores;
+SELECT * FROM prestatario;
 
+
+CREATE TABLE prestamo (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_prestatario VARCHAR(255) NOT NULL,
+    identificacion_prestatario VARCHAR(50) NOT NULL,
+    ficha_prestatario VARCHAR(50) NOT NULL,
+    telefono_prestatario VARCHAR(20) NOT NULL,
+    fecha_prestamo DATETIME NOT NULL,
+    observaciones_prestamo TEXT,
+    objetos_prestados JSON NOT NULL,
+    estado_prestamo ENUM('En curso', 'Culminado') DEFAULT 'En curso'
+);
 
 ALTER TABLE `devoluciones`
     ADD PRIMARY KEY (`IdDevoluciones`),
-    ADD KEY `IdInstructor` (`IdInstructor`),
+    ADD KEY `IdPrestatario` (`IdPrestatario`),
     ADD KEY `IdPrestamo` (`IdPrestamo`),
     ADD KEY `IdProducto` (`IdProducto`);
 
 
 ALTER TABLE `prestamos`
     ADD PRIMARY KEY (`IdPrestamo`),
-    ADD KEY `IdInstructor` (`IdInstructor`),
+    ADD KEY `IdPrestatario` (`IdPrestatario`),
     ADD KEY `IdProducto` (`IdProducto`);
 
 select * from prestamos;
@@ -144,24 +157,24 @@ ALTER TABLE `usuarios`
     MODIFY `IdUsuario` int(11) NOT NULL AUTO_INCREMENT;
 
 
-ALTER TABLE `instructores`
-    MODIFY `IdInstructor` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `prestatario`
+    MODIFY `IdPrestatario` int(11) NOT NULL AUTO_INCREMENT;
 
 
 ALTER TABLE `devoluciones`
-    ADD CONSTRAINT `devoluciones_ibfk_1` FOREIGN KEY (`IdInstructor`) REFERENCES `instructores` (`IdInstructor`),
+    ADD CONSTRAINT `devoluciones_ibfk_1` FOREIGN KEY (`IdPrestatario`) REFERENCES `prestatario` (`IdPrestatario`),
     ADD CONSTRAINT `devoluciones_ibfk_2` FOREIGN KEY (`IdPrestamo`) REFERENCES `prestamos` (`IdPrestamo`),
     ADD CONSTRAINT `devoluciones_ibfk_3` FOREIGN KEY (`IdProducto`) REFERENCES `productosgenerales` (`IdProducto`);
 
 
 ALTER TABLE `prestamos`
-    ADD CONSTRAINT `prestamos_ibfk_1` FOREIGN KEY (`IdInstructor`) REFERENCES `instructores` (`IdInstructor`),
+    ADD CONSTRAINT `prestamos_ibfk_1` FOREIGN KEY (`IdPrestatario`) REFERENCES `prestatario` (`IdPrestatario`),
     ADD CONSTRAINT `prestamos_ibfk_2` FOREIGN KEY (`IdProducto`) REFERENCES `productosgenerales` (`IdProducto`);
 
 
 
 
-INSERT INTO prestamos (IdInstructor, IdProducto, FechaHoraPrestamo, CantidadPrestamo, EstadoPrestamo, ObservacionesPrestamo)
+INSERT INTO prestamos (IdPrestatario, IdProducto, FechaHoraPrestamo, CantidadPrestamo, EstadoPrestamo, ObservacionesPrestamo)
 VALUES
     (1, 4, '2024-06-12 10:30:00', 1, 'En curso', 'N/A'),
     (2, 1, '2024-06-12 10:30:00', 1, 'En curso', 'N/A');
@@ -169,10 +182,10 @@ SELECT * FROM prestamos;
 
 
 CREATE VIEW vista_prestamos AS
-SELECT p.IdPrestamo, p.IdInstructor, i.NombreInstructor, i.ApellidoInstructor, p.IdProducto, pg.NombreProducto, p.FechaHoraPrestamo, p.CantidadPrestamo, p.EstadoPrestamo, p.ObservacionesPrestamo
+SELECT p.IdPrestamo, p.IdPrestatario, pr.NombrePrestatario, pr.ApellidoPrestatario, p.IdProducto, pg.NombreProducto, p.FechaHoraPrestamo, p.CantidadPrestamo, p.EstadoPrestamo, p.ObservacionesPrestamo
 FROM prestamos p
 JOIN productosgenerales pg ON p.IdProducto = pg.IdProducto
-JOIN instructores i ON p.IdInstructor = i.IdInstructor;
+JOIN prestatario pr ON p.IdPrestatario = pr.IdPrestatario;
 
 SELECT * FROM vista_prestamos;
 
@@ -180,8 +193,8 @@ SELECT * FROM vista_prestamos;
 CREATE VIEW vista_devoluciones AS
 SELECT 
     d.IdDevoluciones,
-    d.IdInstructor,
-    i.NombreInstructor,
+    d.IdPrestatario,
+    pr.NombrePrestatario,
     d.IdPrestamo,
     d.IdProducto,
     pg.NombreProducto,
@@ -194,7 +207,7 @@ SELECT
 FROM 
     devoluciones d
 JOIN 
-    instructores i ON d.IdInstructor = i.IdInstructor
+    prestatario pr ON d.IdPrestatario = pr.IdPrestatario
 JOIN 
     productosgenerales pg ON d.IdProducto = pg.IdProducto;
 
@@ -203,11 +216,11 @@ SELECT * FROM vista_devoluciones;
 
 
 CREATE VIEW prestamos_en_curso AS
-SELECT p.IdPrestamo, p.IdInstructor, i.NombreInstructor, i.ApellidoInstructor, p.IdProducto, pg.NombreProducto, 
+SELECT p.IdPrestamo, p.IdPrestatario, pr.NombrePrestatario, pr.ApellidoPrestatario, p.IdProducto, pg.NombreProducto, 
     p.FechaHoraPrestamo, p.CantidadPrestamo, p.EstadoPrestamo, p.ObservacionesPrestamo
 FROM prestamos p
 JOIN productosgenerales pg ON p.IdProducto = pg.IdProducto
-JOIN instructores i ON p.IdInstructor = i.IdInstructor
+JOIN prestatario pr ON p.IdPrestatario = pr.IdPrestatario
 WHERE p.EstadoPrestamo = 'En curso';
 
 SELECT * FROM prestamos_en_curso;

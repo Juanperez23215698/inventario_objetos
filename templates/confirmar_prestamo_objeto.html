@@ -137,7 +137,7 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        fetch('/get_instructores')
+        fetch('/get_prestatarios')
             .then(response => response.json())
             .then(data => {
                 const selectInstructor = document.getElementById('select_instructor');
@@ -148,7 +148,7 @@
                     selectInstructor.appendChild(option);
                 });
             })
-            .catch(error => console.error('Error al obtener los instructores:', error));
+            .catch(error => console.error('Error al obtener los prestatarios:', error));
     });
 
 </script>
