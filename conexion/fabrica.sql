@@ -29,14 +29,21 @@ SELECT * FROM devoluciones;
 
 
 CREATE TABLE `prestamos` (
-    `IdPrestamo` int(11) NOT NULL,
-    `IdPrestatario` int(11) DEFAULT NULL,
-    `IdProducto` int(11) DEFAULT NULL,
-    `FechaHoraPrestamo` datetime DEFAULT NULL,
-    `CantidadPrestamo` int(11) DEFAULT NULL,
-    `EstadoPrestamo` enum('En curso', 'Culminados') DEFAULT NULL,
-    `ObservacionesPrestamo` varchar(225) DEFAULT NULL
+    `IdPrestamo` int(11) NOT NULL AUTO_INCREMENT,
+    `NombrePrestatario` varchar(255) NOT NULL,
+    `IdentificacionPrestatario` varchar(50) NOT NULL,
+    `FichaPrestatario` varchar(50) NOT NULL,
+    `TelefonoPrestatario` varchar(20) NOT NULL,
+    `FechaPrestamo` datetime NOT NULL,
+    `ObservacionesPrestamo` text,
+    `ObjetosPrestados` json NOT NULL,
+    PRIMARY KEY (`IdPrestamo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO prestamos (NombrePrestatario, IdentificacionPrestatario, FichaPrestatario, TelefonoPrestatario, FechaPrestamo, ObservacionesPrestamo, ObjetosPrestados)
+VALUES
+    ('Juan Pérez', '12345678', '1234', '555-1234', '2024-06-12 10:30:00', 'N/A', '[{"nombre": "Marcador"}]'),
+    ('Ana Gómez', '87654321', '5678', '555-5678', '2024-06-12 11:00:00', 'N/A', '[{"nombre": "Computador"}]');
 
 SELECT * FROM prestamos;
 

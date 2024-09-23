@@ -10,7 +10,6 @@
 <link rel="stylesheet" href="/static/css/prestar_objetos.css">
 <script src="/static/javascripts/prestar_objetos.js"></script>
 
-
 <h1>Prestar Objetos</h1>
 
 <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
@@ -21,7 +20,7 @@
                     Detalles del Préstamo
                 </div>
                 <div class="full-width panel-content">
-                    <form method="POST" action="/registrar_prestamo">
+                    <form id="confirmarPrestamoForm" method="POST" action="/registrar_prestamo">
                         <div class="mdl-grid">
                             <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -61,61 +60,13 @@
                                     <span class="mdl-textfield__error">Observaciones Inválidas</span>
                                 </div>
                             </div>
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored bg-primary">Prestar</button>
+                            </div>
                         </div>
-                        <p class="text-center">
-                            <button type="button" id="btnSeleccionarObjetos" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored bg-primary">
-                                Seleccionar Objetos
-                            </button>
-                        </p>
-                        <input type="hidden" id="objetosSeleccionadosInput" name="objetosSeleccionados" value="">
                     </form>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal para seleccionar objetos -->
-<div id="modalSeleccionarObjetos" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Seleccionar Objetos</h2>
-        <div class="search-container" style="text-align: right; margin-bottom: 10px;">
-            <input type="search" id="searchInputModal" class="search_input" placeholder="Buscar objetos...">
-        </div>
-        <table id="tablaObjetos" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive">
-            <thead>
-                <tr>
-                    <th class="mdl-data-table__cell--non-numeric">Nombre</th>
-                    <th class="mdl-data-table__cell--non-numeric">Descripción</th>
-                    <th class="mdl-data-table__cell--non-numeric">Stock</th>
-                    <th class="mdl-data-table__cell--non-numeric">Seleccionar</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Los datos se cargarán aquí dinámicamente -->
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<!-- Modal de confirmación -->
-<div id="modalConfirmacion" class="modal">
-    <div class="modal-content">
-        <h2>Confirmación</h2>
-        <p>¿Desea prestar otro objeto?</p>
-        <button id="btnSi" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Sí</button>
-        <button id="btnNo" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">No</button>
-    </div>
-</div>
-
-<!-- Modal de detalles del objeto -->
-<div id="modalDetallesObjeto" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Detalles del Objeto</h2>
-        <div id="detallesObjetoContenido">
-            <!-- Los detalles del objeto se cargarán aquí dinámicamente -->
         </div>
     </div>
 </div>
@@ -150,5 +101,4 @@
         </div>
     </div>
 </div>
-<script src="{{ url_for('static', filename='js/prestar_objetos.js') }}"></script>
 {% endblock %}

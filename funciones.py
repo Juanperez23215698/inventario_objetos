@@ -427,3 +427,25 @@ def buscar_prestamos_culminados(search):
         if connection and connection.is_connected():
             connection.close()
 
+def obtener_prestamos():
+    conn = connectionBD()
+    cursor = conn.cursor()
+    cursor.execute('SELECT id, nombre_prestatario, identificacion, ficha, telefono, fecha_prestamo, observaciones, objetos_prestados FROM prestamos')
+    prestamos = cursor.fetchall()
+    conn.close()
+    
+    prestamos_list = []
+    for prestamo in prestamos:
+        prestamos_list.append({
+            'id': prestamo[0],
+            'nombre_prestatario': prestamo[1],
+            'identificacion': prestamo[2],
+            'ficha': prestamo[3],
+            'telefono': prestamo[4],
+            'fecha_prestamo': prestamo[5],
+            'observaciones': prestamo[6],
+            'objetos_prestados': prestamo[7]
+        })
+    
+    return prestamos_list
+

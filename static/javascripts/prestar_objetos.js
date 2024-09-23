@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (data.success) {
                 alert('Préstamo guardado con éxito');
                 cargarPrestamos();
-                window.location.href = '/prestamos';
+                window.location.href = '/prestar_objetos';
             } else {
                 alert('Error al guardar el préstamo: ' + data.error);
             }
@@ -180,19 +180,20 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch('/get_prestamos')
             .then(response => response.json())
             .then(data => {
+                console.log(data); // Verificar los datos en la consola
                 const tbody = document.querySelector('#tablaPrestamos');
                 tbody.innerHTML = '';
                 data.forEach(prestamo => {
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-                        <td class="mdl-data-table__cell--non-numeric">${prestamo.id}</td>
-                        <td class="mdl-data-table__cell--non-numeric">${prestamo.nombre_prestatario}</td>
-                        <td class="mdl-data-table__cell--non-numeric">${prestamo.identificacion_prestatario}</td>
-                        <td class="mdl-data-table__cell--non-numeric">${prestamo.ficha_prestatario}</td>
-                        <td class="mdl-data-table__cell--non-numeric">${prestamo.telefono_prestatario}</td>
-                        <td class="mdl-data-table__cell--non-numeric">${prestamo.fecha_prestamo}</td>
-                        <td class="mdl-data-table__cell--non-numeric">${prestamo.observaciones_prestamo}</td>
-                        <td class="mdl-data-table__cell--non-numeric">${JSON.parse(prestamo.objetos_prestados).map(obj => obj.nombre).join(', ')}</td>
+                        <td class="mdl-data-table__cell--non-numeric">${prestamo.IdPrestamo}</td>
+                        <td class="mdl-data-table__cell--non-numeric">${prestamo.NombrePrestatario}</td>
+                        <td class="mdl-data-table__cell--non-numeric">${prestamo.IdentificacionPrestatario}</td>
+                        <td class="mdl-data-table__cell--non-numeric">${prestamo.FichaPrestatario}</td>
+                        <td class="mdl-data-table__cell--non-numeric">${prestamo.TelefonoPrestatario}</td>
+                        <td class="mdl-data-table__cell--non-numeric">${prestamo.FechaPrestamo}</td>
+                        <td class="mdl-data-table__cell--non-numeric">${prestamo.ObservacionesPrestamo}</td>
+                        <td class="mdl-data-table__cell--non-numeric">${JSON.parse(prestamo.ObjetosPrestados).map(obj => obj.nombre).join(', ')}</td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -201,4 +202,27 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     cargarPrestamos();
+
+    document.getElementById('confirmarPrestamoForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var form = event.target;
+        var formData = new FormData(form);
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                cargarPrestamos(); // Recargar la tabla
+            } else {
+                alert(data.message); // Mostrar mensaje de error
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al registrar el préstamo');
+        });
+    });
 });

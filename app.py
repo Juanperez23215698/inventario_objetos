@@ -676,7 +676,8 @@ def guardar_prestamo():
         connection = connectionBD()
         cursor = connection.cursor()
         
-        sql = """
+        # Insertar el préstamo
+        sql_prestamo = """
         INSERT INTO prestamo (
             nombre_prestatario, 
             identificacion_prestatario, 
@@ -688,7 +689,7 @@ def guardar_prestamo():
         ) VALUES (%s, %s, %s, %s, %s, %s, %s)
         """
         
-        valores = (
+        valores_prestamo = (
             datos['nombrePrestatario'],
             datos['identificacionPrestatario'],
             datos['fichaPrestatario'],
@@ -698,7 +699,17 @@ def guardar_prestamo():
             json.dumps(datos['objetosSeleccionados'])
         )
         
-        cursor.execute(sql, valores)
+        cursor.execute(sql_prestamo, valores_prestamo)
+        
+        # Actualizar la cantidad de productos
+        for objeto in datos['objetosSeleccionados']:
+            sql_update = """
+            UPDATE productosgenerales
+            SET CantidadProducto = CantidadProducto - 1
+            WHERE IdProducto = %s
+            """
+            cursor.execute(sql_update, (objeto['id'],))
+        
         connection.commit()
         
         cursor.close()
@@ -707,18 +718,10 @@ def guardar_prestamo():
         return jsonify({"success": True, "message": "Préstamo guardado con éxito"})
     except Exception as e:
         print(f"Error al guardar el préstamo: {e}")
+        if 'connection' in locals() and connection.is_connected():
+            connection.rollback()
+            connection.close()
         return jsonify({"success": False, "error": str(e)})
 
-@app.route('/get_prestamos', methods=['GET'])
-def get_prestamos():
-    try:
-        connection = connectionBD()
-        cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM prestamo ORDER BY id DESC")
-        prestamos = cursor.fetchall()
-        cursor.close()
-        connection.close()
-        return jsonify(prestamos)
-    except Exception as e:
-        print(f"Error al obtener los préstamos: {e}")
-        return jsonify([])
+if __name__ == '__main__':
+    app.run(debug=True)
