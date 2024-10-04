@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Culminar Préstamo - Inventario de Objetos{% endblock %}
+
+{% block content %}
+
+<!-- Contenido -->
+
+<a href="/mostrar_prestamos" class="regresar" style="color: #39a900; text-decoration: none;">
+    <i class="fas fa-arrow-left"></i> Regresar
+</a>
+
+<h1>Culminar Préstamo</h1>
+
+<!-- Formulario para prestamo de objeto -->
+<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+            <div class="full-width panel mdl-shadow--2dp">
+                <div class="full-width panel-tittle bg-primary text-center tittles">
+                    Detalles del Objeto
+                </div>
+                <div class="full-width panel-content">
+                    <form method="POST" action="/registrar_devolucion">
+                        <div class="mdl-grid">
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <legend class="text-condensedLight"><i class="zmdi zmdi-border-color"></i> &nbsp;
+                                    DATOS DE LA DEVOLUCIÓN</legend><br>
+                            </div>
+                            
+                            
+                            <div class="mdl-cell mdl-cell--4-col">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" pattern=".*"
+                                        id="IdInstructor" name="IdInstructor" value="{{ prestamo.IdInstructor }}" readonly>
+                                    <label class="mdl-textfield__label" for="IdInstructor">ID del instructor</label>
+                                    <span class="mdl-textfield__error">ID del instructor Inválida</span>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--4-col">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" pattern=".*"
+                                        id="IdPrestamo" name="IdPrestamo" value="{{ prestamo.IdPrestamo }}" readonly>
+                                    <label class="mdl-textfield__label" for="IdPrestamo">ID del préstamo</label>
+                                    <span class="mdl-textfield__error">ID del préstamo Inválida</span>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--4-col">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" pattern=".*"
+                                        id="IdProducto" name="IdProducto" value="{{ prestamo.IdProducto }}" readonly>
+                                    <label class="mdl-textfield__label" for="IdProducto">ID del producto</label>
+                                    <span class="mdl-textfield__error">ID del producto Inválida</span>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+                                    style="margin-bottom: 20px;">
+                                    <input type="datetime-local" class="mdl-textfield__input"
+                                        style="padding-top: 20px;" min="2024-03-23T11:00" max="2030-11-23T11:00"
+                                        pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" id="FechaHoraDevolucion"
+                                        name="FechaHoraDevolucion" required>
+                                    <label class="mdl-textfield__label" style="font-size: 14px; top: 8px;"
+                                        for="FechaHoraDevolucion">Fecha y hora de devolución</label>
+                                    <span class="mdl-textfield__error">Formato inválido</span>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--8-col mdl-cell--8-col-tablet">
+                                <div class="mdl-textfield mdl-js-textfield">
+                                    <select class="mdl-textfield__input" name="EstadoDevolucion" id="EstadoDevolucion"
+                                        required>
+                                        <option value="" disabled selected></option>
+                                        <option value="Bueno">Bueno</option>
+                                        <option value="Mal Estado">Mal Estado</option>
+                                    </select>
+                                    <label class="mdl-textfield__label" for="EstadoDevolucion">Estado
+                                        Devolución</label>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" pattern=".*"
+                                        id="Observaciones"  name="Observaciones" required>
+                                    <label class="mdl-textfield__label" for="Observaciones">Observaciones de devolución</label>
+                                    <span class="mdl-textfield__error">Observaciones Inválidas</span>
+                                </div>
+                            </div>
+                            <input class="mdl-textfield__input" value="Culminados" type="hidden" pattern=".*"
+                                        id="EstadoPrestamo"  name="EstadoPrestamo" required>
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" pattern=".*"
+                                        id="CantidadDevolutiva" name="CantidadDevolutiva" value="{{ prestamo.CantidadPrestamo }}" readonly>
+                                    <label class="mdl-textfield__label" for="CantidadDevolutiva">Cantidad Devolutiva</label>
+                                    <span class="mdl-textfield__error">Cantidad Devolutiva Inválida</span>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" pattern=".*"
+                                        id="ModoTiempoLugar"  name="ModoTiempoLugar" required>
+                                    <label class="mdl-textfield__label" for="ModoTiempoLugar">Modo Tiempo Lugar</label>
+                                    <span class="mdl-textfield__error">Modo Tiempo Lugar Inválidos</span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <p class="text-center">
+                            <button type="submit"
+                                class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary"
+                                id="btn-addProduct">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        <div class="mdl-tooltip" for="btn-addProduct">Prestar Objeto</div>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/static/javascripts/select_search.js"></script>
+
+{% endblock %}

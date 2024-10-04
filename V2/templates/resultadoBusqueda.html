@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Resultados de Búsqueda - Inventario de Objetos{% endblock %}
+
+{% block content %}
+<a href="/mostrar_inventario" class="regresar" style="color: #39a900; text-decoration: none;">
+    <i class="fas fa-arrow-left"></i> Regresar
+</a>
+
+<h1>Resultados de Búsqueda</h1>
+<p>Búsqueda realizada: "{{ busqueda }}"</p>
+
+{% if error %}
+    <p class="error">{{ error }}</p>
+{% elif miData %}
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive">
+                <thead>
+                    <tr>
+                        <th class="mdl-data-table__cell--non-numeric">ID</th>
+                        <th class="mdl-data-table__cell--non-numeric">Nombre Producto</th>
+                        <th class="mdl-data-table__cell--non-numeric">Stock</th>
+                        <th class="mdl-data-table__cell--non-numeric">Descripción</th>
+                        <th class="mdl-data-table__cell--non-numeric">Tipo Objeto</th>
+                        <th class="mdl-data-table__cell--non-numeric">Observaciones</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for producto in miData %}
+                    <tr>
+                        <td class="mdl-data-table__cell--non-numeric">{{ producto.IdProducto }}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{ producto.NombreProducto }}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{ producto.CantidadProducto }}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{ producto.DescripcionProducto }}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{ producto.TipoProducto }}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{ producto.ObservacionesProducto }}</td>
+                        <td>
+                            <a class="icon_edit" href="{{ url_for('editar_objeto', id=producto.IdProducto) }}"
+                                style="color: #39a900; text-decoration: none;">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            <a class="icon_delete" href="{{ url_for('confirmar_eliminar_objeto', id=producto.IdProducto) }}"
+                                style="color: red; text-decoration: none;">
+                                <i class="fas fa-trash-alt"></i> Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% else %}
+    <p>No se encontraron resultados para la búsqueda.</p>
+{% endif %}
+{% endblock %}
