@@ -1,0 +1,333 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Work Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #F0F4F3;
+}
+
+/* Barra de Navegación */
+.navbar {
+    background-color: #11101D;
+    width: 100%;
+    overflow: auto;
+    padding: 8px ;
+    backdrop-filter: blur(30px);
+    border: 2px solid rgba(255,255,255,0.18);
+    box-shadow: 0px 0px 30px rgba(227,228,237,0.37); ;
+}
+
+.logo img {
+    height: 70px;
+    width: auto;
+    
+}
+
+.navbar a {
+    float: left;
+    text-align: center;
+    padding: auto;
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.navbar .active {
+    background-color: #00324D;
+    border-radius: 5px;
+}
+
+.navbar a:hover {
+    color: #000;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-end;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    flex: 1;
+}
+
+/* Contenido */
+
+.header {
+    position: fixed;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 100px;
+    z-index: 99;
+}
+
+.header .nav a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 17px;
+    margin-left: 20px;
+    font-weight: 600;
+}
+
+.header .search input {
+    background: transparent;
+    font-size: 20px;
+    border-radius: 5px;
+    border: 2px solid white;
+    padding-left: 10px;
+    right: 100px;
+    outline: none;
+    color: #fff;
+}
+
+.header .search i {
+    position: absolute;
+    right: 110px;
+    top: 22px;
+    color: #fff;
+}
+
+.background {
+    width: 100%;
+    height: 85vh;
+    background-image: url('/static/img/CREDITOS3.jpg');
+    background-position: center;
+    background-size: cover;
+}
+
+.home {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 75%;
+    height: 75%;
+    transform: translate(-50%, -50%);
+    /*background-image: url(img/36717.jpg);*/
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    margin-top: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    border: none;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    width: 700px;
+    padding: 100px 0;
+}
+
+.content a {
+    position: relative;
+    text-decoration: none;
+    color: #fff;
+    font-size: 3em;
+    font-weight: 700;
+    top: -40px;
+    left: 80px;
+}
+
+.content h2 {
+    font-size: 3.5em;
+    text-align: center;
+    color: #fff;
+}
+
+.content h3 {
+    font-size: 2em;
+    text-align: center;
+    color: #fff;
+}
+
+.content pre {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 1em;
+    color: #fff;
+}
+
+.content .icon {
+    margin-top: 20px;
+    font-size: 1.5em;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.content .icon i {
+    margin-right: 20px;
+    color: #fff;
+}
+
+.icon img {
+    margin-right: 50px;
+    color: #fff;
+}
+
+.login {
+    width: 450px;
+    position: relative;
+    padding: 100px 30px;
+    border: 1px solid white;
+    backdrop-filter: blur(20px);
+    
+}
+
+.login h2 {
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.login .input {
+    position: relative;
+    width: 100%;
+    height: 30px;
+    margin-bottom: 40px;
+}
+
+.login .input .input1 {
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border: none;
+    outline: none;
+    border-bottom: 2px solid #fff;
+    color: #fff;
+    width: 100%;
+    height: 100%;
+}
+
+::placeholder {
+    color: #fff;
+    font-size: 18px;
+}
+
+.login .input i {
+    position: relative;
+    right: -370px;
+    bottom: 27px;
+    color: #fff;
+}
+
+.check {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    color: #fff;
+}
+
+.check a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.check a:hover {
+    text-decoration: underline;
+}
+
+.login .button {
+    width: 100%;
+    height: 40px;
+    margin-bottom: 15px;
+}
+
+button {
+    width: 100%;
+    height: 40px;
+    background-color: #39a900;
+    border: none;
+    outline: none;
+    font-size: 20px;
+    font-weight: 700;
+    border-radius: 7px;
+    color: #fff;
+}
+
+button:active {
+    font-size: 25px;
+}
+
+.login .sign-up {
+    display: flex;
+    justify-content: center;
+}
+
+.login .sign-up a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 700;
+}
+
+.login .sign-up p {
+    color: #fff;
+}
+
+.sign-up a:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+
+footer {
+    background-color: #11101D;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    margin-top: auto;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer nav ul {
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+}
+
+footer nav ul li {
+    display: inline;
+    margin-right: 10px;
+}
+
+footer nav ul li a {
+    text-decoration: none;
+    color: #fff;
+}
+
+footer nav ul li a:hover {
+    color: #aaa;
+}
+
+footer nav ul li a img {
+    width: 30px;
+}

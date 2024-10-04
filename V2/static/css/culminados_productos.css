@@ -1,0 +1,247 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Work Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Barra de Navegación*/
+
+.navbar {
+    width: 100%;
+    overflow: auto;
+    background-color: #39a900;
+    padding: 10px 0;
+}
+
+.navbar .opcionesMenu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.navbar .opcionesMenu li {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navbar .opcionesMenu li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.navbar .opcionesMenu li a:hover {
+    color: #000;
+}
+
+/* Menú Lateral */
+.menu-btn {
+    color: #fff;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 999;
+    transition: opacity 0.3s ease;
+}
+
+.menu-btn.hide {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100vh;
+    background: #39a900;
+    color: #fff;
+    padding-top: 20px;
+    transition: left 0.3s ease;
+    z-index: 998;
+}
+
+.sidebar .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    margin-bottom: 20px;
+}
+
+.sidebar .header img {
+    height: 40px;
+    width: auto;
+}
+
+.sidebar .header h2 {
+    font-size: 20px;
+    color: #fff;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    padding: 20px 25px;
+    cursor: pointer;
+    font-size: larger;
+    transition: background 0.3s ease;
+}
+
+.sidebar li:hover {
+    background: #646464;
+}
+
+.sidebar a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.content {
+    margin-left: 0;
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+}
+
+#sidebar.active {
+    left: 0;
+}
+
+#sidebar.active+.content {
+    margin-left: 250px;
+}
+
+.close-btn {
+    display: none;
+    cursor: pointer;
+    transition: opacity 0.s ease;
+}
+
+#sidebar.active .close-btn {
+    display: block;
+    font-size: 24px;
+    margin-right: 20px;
+}
+
+
+
+/* Contenido */
+
+h1 {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    font-size: 40px;
+    margin-bottom: 20px;
+    color: #2a7d00;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: auto; 
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.round-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+    width: 200px;
+    height: 200px;
+    margin: 10px;
+    border-radius: 50%;
+    background-color: #39a900;
+    color: #fff;
+    transition: background-color 0.3s;
+}
+
+.round-button:hover {
+    background-color: #176b00;
+}
+
+.round-button i {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.round-button span {
+    font-size: 20px;
+}
+
+.round-button.left {
+    margin-right: auto;
+}
+
+.round-button.right {
+    margin-left: auto;
+}
+
+/* Footer */
+
+footer {
+    background-color: #39a900;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    margin-top: auto;
+}
+
+footer .footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer nav ul {
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+}
+
+footer nav ul li {
+    display: inline;
+    margin-right: 10px;
+}
+
+footer nav ul li a {
+    text-decoration: none;
+    color: #fff;
+}
+
+footer nav ul li a:hover {
+    color: #aaa;
+}
+
+footer nav ul li a img {
+    width: 30px;
+}
