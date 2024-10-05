@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/static/css/nav.css">
+  <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+  <div class="sideb">
+      <div class="logo-details">
+          <i class='bx bxs-user icon'></i>
+          <div class="logo_name">Inventario</div>
+          <i class='bx bx-menu' id="btn" ></i>
+      </div>
+      <ul class="nav-list">
+        <li>
+          <a href="#" onclick="loadPage('/mostrar_inventario')">
+            <i class='bx bx-grid-alt'></i>
+            <span class="links_name">Inventario</span>
+          </a>
+            <span class="tooltip">Inventario</span>
+        </li>
+        <li>
+          <a href="#" onclick="loadPage('/mostrar_objetos')">
+            <i class='bx bx-pie-chart-alt-2' ></i>
+            <span class="links_name">Objectos</span>
+          </a>
+          <span class="tooltip">Objectos</span>
+        </li>
+        <li>
+          <a href="#" onclick="toggleSubmenu(this)">
+            <i class='bx bx-cart-alt' ></i>
+            <span class="links_name">Prestamos</span>
+          </a>
+          <ul class="submenu">
+            <li>
+              <a href="#" onclick="loadPage('/mostrar_prestamos')">
+                <i class='bx bx-globe'></i>
+                <span class="links_name">Todos</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" onclick="loadPage('/mostrar_prestamos_en_curso')">
+                <i class='bx bx-loader-circle'></i>
+                <span class="links_name">En Curso</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" onclick="loadPage('/mostrar_prestamos_culminados')">
+                <i class='bx bxs-check-circle' ></i>
+                <span class="links_name">Culminados</span>
+              </a>
+            </li>
+          </ul>
+          <span class="tooltip">Prestamos</span>
+        </li>
+        <li class="profile">
+            <a href="#" onclick="cerrarSesion()">
+                <i class='bx bx-log-out' id="log_out"></i>
+            </a>
+        </li>
+      </ul>
+    </div>
+    <section class="home-sec">
+      <div class="rembe">
+        <img src="/static/img/logo_Sena.png" class="ñel">
+      </div>
+      <div class="text" id="pes">INVENTARIO</div>
+    </section>
+    <script src="/static/javascripts/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Usuario - Inventario de Usuarios{% endblock %}
+
+{% block content %}
+
+<a href="/mostrar_administradores" class="regresar" style="color: #39a900; text-decoration: none;">
+    <i class="fas fa-arrow-left"></i> Regresar
+</a>
+
+<h1>Editar Administrador</h1>
+
+<div class="mdl-tabs__panel is-active" id="tabNewProduct">
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+            <div class="full-width panel mdl-shadow--2dp">
+                <div class="full-width panel-tittle bg-primary text-center tittles">
+                    Editar Administrador
+                </div>
+                <div class="full-width panel-content">
+                    <form method="POST">
+                        <div class="mdl-grid">
+                            <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" name="NombreUsuario"
+                                        value="{{ usuario.NombreUsuario }}" id="NombreUsuario">
+                                    <label class="mdl-textfield__label" for="NombreUsuario">Nombre Usuario</label>
+                                    <span class="mdl-textfield__error">Nombre inválido</span>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" name="ApellidoUsuario"
+                                        value="{{ usuario.ApellidoUsuario }}" id="ApellidoUsuario">
+                                    <label class="mdl-textfield__label" for="ApellidoUsuario">Apellido Usuario</label>
+                                    <span class="mdl-textfield__error">Apellido inválido</span>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <select class="mdl-textfield__input" name="TipoIdentificacion">
+                                        <option value="CC" {% if usuario.TipoIdentificacion == 'CC' %}selected{% endif %}>CC</option>
+                                        <option value="TI" {% if usuario.TipoIdentificacion == 'TI' %}selected{% endif %}>TI</option>
+                                    </select>
+                                    <label class="mdl-textfield__label" for="TipoIdentificacion">Tipo Identificación</label>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="number" name="NumeroIdentificacion"
+                                        value="{{ usuario.NumeroIdentificacion }}" id="NumeroIdentificacion">
+                                    <label class="mdl-textfield__label" for="NumeroIdentificacion">Número Identificación</label>
+                                    <span class="mdl-textfield__error">Número inválido</span>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" name="CorreoUsuario"
+                                        value="{{ usuario.CorreoUsuario }}" id="CorreoUsuario">
+                                    <label class="mdl-textfield__label" for="CorreoUsuario">Correo Usuario</label>
+                                    <span class="mdl-textfield__error">Correo inválido</span>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="number" name="CelularUsuario"
+                                        value="{{ usuario.CelularUsuario }}" id="CelularUsuario">
+                                    <label class="mdl-textfield__label" for="CelularUsuario">Celular Usuario</label>
+                                    <span class="mdl-textfield__error">Celular inválido</span>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="password" name="ContrasenaUsuario"
+                                        value="{{ usuario.ContrasenaUsuario }}" id="ContrasenaUsuario">
+                                    <label class="mdl-textfield__label" for="ContrasenaUsuario">Contraseña Usuario</label>
+                                    <span class="mdl-textfield__error">Contraseña inválida</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-center">
+                            <button
+                                class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary"
+                                id="btn-editUser">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <div class="mdl-tooltip" for="btn-editUser">Editar Administrador</div>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

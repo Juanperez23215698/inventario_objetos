@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')</script>
+    <link rel="stylesheet" href="/static/css/consumibles.css">
+    <link rel="stylesheet" href="/static/css/material.min.css">
+    <title>Objetos Consumibles - Inventario de Objetos</title>
+</head>
+
+<body>
+
+    <!-- Barra de Menú -->
+    <div class="navbar">
+        <ul class="opcionesMenu">
+            <!-- Logo -->
+            <!-- <li><a href="/#home" class="logo">
+                    <img src="/static/img/facebook.png">
+                </a></li> -->
+
+            <li><a href="/templates/homepage.html"><i class="fas fa-home"></i> Inicio</a></li>
+            <li><a href="/templates/quienes_somos.html"><i class="fa fa-fw fa-search"></i> ¿Quiénes Somos?</a></li>
+            <li><a href="/templates/sobre_nosotros.html"><i class="fa-solid fa-users"></i> Sobre Nosotros</a></li>
+            <li><a href="/templates/login.html"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a></li>
+        </ul>
+    </div>
+
+
+    <!-- Menú Lateral -->
+
+    <div class="menu-btn" id="menu-btn">
+        <i class="fas fa-bars"></i>
+    </div>
+    <div class="sidebar" id="sidebar">
+        <div class="header">
+            <img src="/static/img/" alt="">
+            <h2>SENA</h2>
+            <div class="close-btn" id="close-btn">
+                <i class="fas fa-times"></i>
+            </div>
+        </div>
+        <ul>
+            <li><a href="/templates/inventario.html">Inventario</a></li>
+            <li><a href="/templates/objetos.html">Objetos</a></li>
+            <li><a href="/templates/prestamos.html">Préstamos</a></li>
+            <li><a href="/templates/reportes.html">Reportes</a></li>
+            <li><a href="/templates/usuarios.html">Usuarios</a></li>
+        </ul>
+    </div>
+
+
+    <!-- Contenido -->
+
+    <a href="/objetos" class="regresar">
+        <i class="fas fa-arrow-left"></i> Regresar
+    </a>
+
+    <h1>Objetos Consumibles</h1>
+
+
+    <div class="search-container">
+        <form name="formSearch" method="POST" action="{{ url_for('search_route') }}" class="search-container" autocomplete="off">
+            <input type="search" name="buscar" class="search_input" placeholder="Buscar...">
+            <button type="submit" class="search_btn">
+                <i class="fa-solid fa-magnifying-glass"></i> Buscar
+            </button>
+        </form>
+        
+
+
+        <div class="filter-dropdown">
+            <button class="filter-btn">
+                <i class="fa-solid fa-sliders"></i> Filtrar
+            </button>
+            <div class="dropdown-content">
+                <a href="#">Menor stock</a>
+                <a href="#">Mayor stock</a>
+                <a href="#">Ordenar A-Z</a>
+                <a href="#">Formación</a>
+                <a href="#">Consumibles</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="full-width divider-menu-h"></div>
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">
+            <div class="table-responsive">
+                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive">
+                    <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric">Nombre Producto</th>
+                            <th>Código</th>
+                            <th>Stock</th>
+                            <th>Descripción</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="mdl-data-table__cell--non-numeric">Product Name</td>
+                            <td>Product Code</td>
+                            <td>7</td>
+                            <td>$77</td>
+                            <td><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"><i
+                                        class="fa-solid fa-ellipsis"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td class="mdl-data-table__cell--non-numeric">Product Name</td>
+                            <td>Product Code</td>
+                            <td>7</td>
+                            <td>$77</td>
+                            <td><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"><i
+                                        class="fa-solid fa-ellipsis"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td class="mdl-data-table__cell--non-numeric">Product Name</td>
+                            <td>Product Code</td>
+                            <td>7</td>
+                            <td>$77</td>
+                            <td><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"><i
+                                        class="fa-solid fa-ellipsis"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td class="mdl-data-table__cell--non-numeric">Product Name</td>
+                            <td>Product Code</td>
+                            <td>7</td>
+                            <td>$77</td>
+                            <td><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"><i
+                                        class="fa-solid fa-ellipsis"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td class="mdl-data-table__cell--non-numeric">Product Name</td>
+                            <td>Product Code</td>
+                            <td>7</td>
+                            <td>$77</td>
+                            <td><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"><i
+                                        class="fa-solid fa-ellipsis"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td class="mdl-data-table__cell--non-numeric">Product Name</td>
+                            <td>Product Code</td>
+                            <td>7</td>
+                            <td>$77</td>
+                            <td><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"><i
+                                        class="fa-solid fa-ellipsis"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td class="mdl-data-table__cell--non-numeric">Product Name</td>
+                            <td>Product Code</td>
+                            <td>7</td>
+                            <td>$77</td>
+                            <td><button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"><i
+                                        class="fa-solid fa-ellipsis"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+
+    <footer>
+        <h3>www.sena.edu.co</h3>
+        <nav>
+            <ul>
+                <li><a href="https://www.instagram.com/senacomunica/"><img src="/static/img/instagram.png"
+                            alt="instagram_icon"></a></li>
+                <li><a href="https://www.facebook.com/SENA/"><img src="/static/img/facebook.png"
+                            alt="facebook_icon"></a></li>
+                <li><a href="https://twitter.com/SENAComunica"><img src="/static/img/gorjeo.png" alt="twitter_icon"></a>
+                </li>
+                <li><a href="https://www.youtube.com/@SENAComunica"><img src="/static/img/youtube.png"
+                            alt="youtube_icon"></a></li>
+                <li><a href="https://linkedin.com/school/servicio-nacional-de-aprendizaje-sena-/"><img
+                            src="/static/img/linkedin.png" alt="linkedin_icon"></a></li>
+            </ul>
+            <p>@SENAComunica</p>
+        </nav>
+        <br>
+        <p>&copy; 2024 Servicio Nacional de Aprendizaje - SENA</p>
+    </footer>
+
+    
+    <script src="/static/javascripts/filtrar.js"></script>
+</body>
+
+</html>

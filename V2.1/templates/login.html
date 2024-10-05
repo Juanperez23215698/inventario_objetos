@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/login.css">
+    <link rel="stylesheet" href="/static/css/login_pru.css">
+    <title>Iniciar Sesión - Inventario de Objetos</title>
+</head>
+
+<body>
+
+    <!-- Barra de Menú -->
+    <div class="navbar">
+        <ul>
+            <!-- Logo -->
+            <!-- <li><a href="/#home" class="logo">
+                    <img src="/static/img/facebook.png">
+                </a></li> -->
+
+            <li><a href="/"><i class="fas fa-home"></i> Inicio</a></li>
+            <li><a href="/quienes_somos"><i class="fa fa-fw fa-search"></i> ¿Quiénes Somos?</a></li>
+            <li><a href="/sobre_nosotros"><i class="fa-solid fa-users"></i> Sobre Nosotros</a></li>
+                <img src="/static/img/logo_Sena.png" class="ñela">
+            
+        </ul>
+    </div>
+    <!-- Contenido -->
+    <br>
+    <br>
+    <br>
+    <div class="container">
+        <div class="container-form">
+            <form action="/loginUsu" method="post" class="sign-in">
+                <h2>iniciar sesion</h2>
+                
+                <span>use correo y contraseña</span>
+                <div class="container-input">
+                    <ion-icon name="mail"></ion-icon>
+                    <input type="text" placeholder="Email" required name="txtCorreo">
+                </div>
+                <div class="container-input">
+                    <ion-icon name="lock"></ion-icon>
+                    <input type="password" placeholder="password" required name="txtPassword">
+                </div>
+                <a href="#">Olvidaste tu contraseña</a>
+                <button class="button">INICIAR SESION</button>
+            </form>
+        </div>
+        <div class="container-form">
+            <form class="sign-up" method="POST" action="/register">
+                <h2>registro</h2>
+                {% if error %}
+                <p style="color: red;">{{ error }}</p>
+                {% endif %}
+                <span>use su correo para registrarse</span>
+                <div class="container-input">
+                    <ion-icon name="person"></ion-icon>
+                    <input type="text" placeholder="Nombre" required name="txtNombre">
+                </div>
+                <div class="container-input">
+                    <ion-icon name="person"></ion-icon>
+                    <input type="text" placeholder=" Apellidos"  title="Ingrese solo letras y espacios"
+                    required name="txtApellido">
+                </div>
+                <div class="container-input">
+                    <ion-icon name="mail"></ion-icon>
+                    <input type="text" placeholder="Email" required name="txtCorreo">
+                </div>
+                    <select name="txtTipoDoc" required class="container-input">
+                        <option value="" disabled selected>Selecciona el tipo de documento</option>
+                        <option value="CC">Cédula de Ciudadanía</option>
+                        <option value="CE">Cédula de Extranjería</option>
+                        <option value="PP">Pasaporte</option>
+                    </select>
+                <div class="container-input">
+                    <ion-icon name="card"></ion-icon>
+                    <input type="text" placeholder=" Número de documento" pattern="[0-9]+" title="Ingrese solo números" required
+                        name="txtNumeroDocumento">
+                </div>
+                <div class="container-input">
+                    <ion-icon name="call"></ion-icon>
+                    <input type="tel" placeholder=" Celular"  pattern="[0-9]+" title="Ingrese solo números" required
+                        name="txtNumeroTelefono">
+                </div>
+                <div class="container-input">
+                    <ion-icon name="lock"></ion-icon>
+                    <input type="password" placeholder="password" required
+                    name="txtPassword">
+                </div>
+                <button class="button">REGISTRAR</button>
+            </form>
+        </div>
+
+        <div class="container-welcome">
+            <div class="welcome-sign-up welcome">
+                <h3>¡Bienvenido!</h3>
+                <p>"EL ORDEN ES LA MEJOR SOLUCIÓN"</p>
+                <button class="button" id="up">Registrarse</button>
+            </div>
+            <div class="welcome-sign-in welcome">
+                <h3>¡Hola!</h3>
+                <p>Registrese con los datos que se le piden</p>
+                <button class="button" id="in">Iniciar Sesion</button>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <!-- Footer -->
+
+    <footer>
+        <h3>www.sena.edu.co</h3>
+        <nav>
+            <ul>
+                <li><a href="https://www.instagram.com/senacomunica/"><img src="/static/img/instagram.png" alt="instagram_icon"></a></li>
+                <li><a href="https://www.facebook.com/SENA/"><img src="/static/img/facebook.png" alt="facebook_icon"></a></li>
+                <li><a href="https://twitter.com/SENAComunica"><img src="/static/img/gorjeo.png" alt="twitter_icon"></a></li>
+                <li><a href="https://www.youtube.com/@SENAComunica"><img src="/static/img/youtube.png" alt="youtube_icon"></a></li>
+                <li><a href="https://linkedin.com/school/servicio-nacional-de-aprendizaje-sena-/"><img src="/static/img/linkedin.png" alt="linkedin_icon"></a></li>
+            </ul>
+            <p>@SENAComunica</p>
+        </nav>
+        <br>
+        <p>&copy; 2024 Servicio Nacional de Aprendizaje - SENA</p>
+    </footer>
+
+    <script src="/static/javascripts/login.js"></script>
+    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+</body>
+
+</html>
