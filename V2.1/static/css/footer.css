@@ -1,0 +1,428 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.gov-co-footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    text-align: center;
+}
+
+div {
+    display: block;
+    unicode-bidi: isolate;
+}
+
+h5 {
+    font-size: 1.2em;
+    text-transform: uppercase;
+}
+
+p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    unicode-bidi: isolate;
+}
+
+ul.resp-tabs-list,
+p {
+    margin: 0px;
+    padding: 0px;
+}
+
+.conozca p {
+    outline: none;
+    color: #0552C2;
+    text-decoration: none;
+}
+
+i {
+    font-style: italic;
+}
+
+.gov-co-footer .gov-co-footer-presetacion.gov-co-footer-tramites {
+    background: #3AB397;
+}
+
+.gov-co-footer .gov-co-footer-presetacion {
+    position: relative;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    flex-flow: row wrap;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    align-content: space-between;
+    padding: 1rem 0;  /* Añade padding para que tenga espacio interno */
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(15%, #fff), color-stop(15%, #e6effd), color-stop(85%, #e6effd), color-stop(85%, #e6effd));
+    background-image: linear-gradient(to bottom, #fff, #fff 15%, #e6effd 15%, #e6effd 85%, #e6effd 85%);
+}
+
+.gov-co-footer-autoridad {
+    margin-top: 60px;
+}
+
+.gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad {
+    position: relative;
+    width: 90%;
+    max-width: 964px;
+    border-radius: 8px;
+    min-width: 280px;
+    overflow: hidden;
+    margin: 0 auto 15px;
+    padding: 10px 0;
+    background-color: #fff;
+    box-shadow: 0 0 3px gray;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    flex-flow: row wrap;
+}
+
+.gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad>.footer-titulo {
+    width: 100%;
+}
+
+.container-fluid {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.container-fluid:before .row:before {
+    content: " ";
+    display: table;
+}
+
+.row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad>.footer-titulo>div>div>div {
+    width: 95%;
+    overflow: hidden;
+}
+
+.titulo-sede-gov-co {
+    font-family: Montserrat, sans-serif;
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: #4B4B4B;
+    margin-bottom: 16px;
+}
+
+.row:after {
+    clear: both;
+}
+
+.container-fluid:after {
+    clear: both;
+}
+
+#s4-workspace img {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: none;
+    line-height: normal;
+    vertical-align: middle;
+}
+
+.gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad>.footer-presentacion>div>div>div {
+    padding-top: 10px;
+}
+
+.gov-co-footer>.gov-co-footer-pie>.gov-co-footer-auto>.gov-co-logo-pie-mesa {
+    margin-right: 10px;
+}
+
+.gov-co-logo-pie-mesa {
+    width: 48px !important;
+    height: 48px !important;
+    margin-right: 10px !important;
+}
+
+.sub-titulo-sede-gov-co {
+    font-family: Montserrat, sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #4B4B4B;
+}
+
+.gov-detalles {
+    font-family: "Work Sans", sans-serif;
+    font-weight: 400;
+    font-size: .875rem;
+    color: #4b4b4b;
+    line-height: 180%;
+}
+
+.gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad>.footer-presentacion>div>div>div>.contenido-sede-gov-co>p {
+    margin-bottom: 3px;
+}
+
+a {
+    outline: none;
+    color: #0552C2;
+}
+
+a,
+.ms-link:visited {
+    color: #0072c6;
+    text-decoration: none;
+}
+
+a:-webkit-any-link {
+    color: -webkit-link;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad>.footer-politicas {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 30px;
+}
+
+.gov-co-redes-sociales {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.gov-co-redes-sociales .gov-co-link-presentacion {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.gov-co-link-presentacion {
+    font-family: "Work Sans", sans-serif;
+    font-size: .875rem;
+    font-weight: 500;
+    color: #4B4B4B;
+}
+
+a:visited {
+    outline: none;
+    color: #000066;
+}
+
+.gov-co-redes-sociales .social-icon {
+    background-color: #3AB397;
+    padding: 10px;
+    border-radius: 100px;
+    width: 4px;
+    height: 4px;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gov-co-redes-sociales .social-icon span {
+    height: 10px;
+}
+
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.social-icon svg {
+    display: block;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+.gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad>.footer-politicas>div>div>div>.gov-co-politicas {
+    height: auto;
+    justify-content: flex-start;
+    gap: 16px;
+    padding: 10px 0;
+    column-gap: 32px;
+}
+
+.gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad>.footer-politicas>div>div>div>.gov-co-politicas>a {
+    font-size: 11px;
+}
+
+.gov-co-footer>.gov-co-footer-pie {
+    width: 100%;
+    background-color: #36c;
+}
+
+.gov-co-footer>.gov-co-footer-pie>.gov-co-footer-auto {
+    max-width: 1100px;
+    width: 100%;
+    height: 96px;
+    display: -webkit-box;
+    display: flex;
+    flex-wrap: wrap;
+    -webkit-box-pack: center;
+    justify-content: center;
+    align-content: center;
+    margin: 0 auto;
+}
+
+
+.goc-co-link-poli {
+    font-family: Montserrat, sans-serif;
+    font-weight: 700;
+    font-size: .75rem;
+}
+
+.gov-co-footer>.gov-co-footer-pie>.gov-co-footer-auto>.gov-co-logo-pie-blanco {
+    border-left: 1px solid #fff;
+}
+
+.gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad>.footer-politicas>div>div>div>.gov-co-politicas {
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    flex-flow: row wrap;
+    -webkit-box-pack: justify;
+    align-content: center;
+}
+
+.footer-logo-autoridad img {
+    height: 90px !important;
+}
+
+.footer-logo-SENA {
+    height: 120px !important;
+}
+
+.footer-logo-container {
+    display: flex;
+    width: 321px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad>.footer-logo-autoridad>div>div>div {
+    position: relative;
+}
+
+.footer-logo-col {
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.footer-logo-icontec {
+    height: 110px !important;
+}
+
+img {
+    border: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+img {
+    overflow-clip-margin: content-box;
+    overflow: clip;
+}
+
+.w-100 {
+    width: 100% !important;
+}
+
+.pt-4,
+.py-4 {
+    padding-top: 1.5rem !important;
+}
+
+.footer-presentacion,
+.footer-politicas {
+    width: 100% !important;
+}
+
+.w-70 {
+    width: 77% !important;
+}
+
+
+
+
+
+@media (min-width: 576px) {
+    .gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad>.footer-logo-autoridad {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad>.footer-logo-autoridad>div>div>div {
+        display: -webkit-box;
+        display: flex;
+        -webkit-box-pack: end;
+        justify-content: flex-end;
+    }
+
+    .gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad>.footer-presentacion {
+        width: 70%;
+    }
+
+    .gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad>.footer-politicas {
+        width: 100%;
+    }
+
+    .gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad>div {
+        -webkit-box-flex: initial;
+        flex: initial;
+    }
+
+    .gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad>.footer-politicas>div>div>div>.gov-co-politicas {
+        width: 100%;
+        margin: 0 auto;
+        padding: 10px;
+    }
+
+
+}
+
+@media screen and (max-width: 992px) {
+    .footer-logo-container {
+        width: 100%;
+    }
+
+    .footer-logo-icontec {
+        height: 110px;
+    }
+
+    .footer-logo-autoridad {
+        text-align: center;
+        width: 100%;
+    }
+
+    .gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad>.footer-presentacion {
+        width: 60%;
+        margin: 0 auto;
+    }
+
+    .gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad>.footer-presentacion>div {
+        width: 85%;
+        margin: 0;
+    }
+}

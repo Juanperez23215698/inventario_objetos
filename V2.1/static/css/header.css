@@ -1,0 +1,323 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.header {
+    position: relative;
+    width: 100%;
+    top: 0;
+    background: #015dca;
+}
+
+.header .top,
+.footer .bottom {
+    height: 40px;
+    padding: 8px 0;
+    background: #015dca;
+    color: #fff;
+    box-sizing: border-box;
+    max-width: 1021px;
+    margin: 0 auto;
+}
+
+.header .top span {
+    float: right;
+    display: block;
+    padding: 10px 0 0px;
+}
+
+.header .top span a {
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+}
+
+a:visited {
+    outline: none;
+    color: #000066;
+}
+
+a:visited {
+    color: #663399;
+    text-decoration: none;
+}
+
+a {
+    outline: none;
+    color: #0552C2;
+}
+
+a,
+.ms-link:visited {
+    color: #0072c6;
+    text-decoration: none;
+}
+
+a:-webkit-any-link {
+    color: -webkit-link;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+a {
+    outline: none;
+    color: #0552C2;
+}
+
+a,
+.ms-link:visited {
+    color: #0072c6;
+    text-decoration: none;
+}
+
+a:-webkit-any-link {
+    color: -webkit-link;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#s4-workspace img {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: none;
+    line-height: normal;
+    vertical-align: middle;
+}
+
+.row1 {
+    background: #eeeeee;
+}
+
+
+.wrapper {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+#header {
+    padding: 0;
+    background-color: white;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+#header .logoSena {
+    padding: 45px 0 !important;
+    max-width: 165px;
+    margin-left: 120px;
+    background-color: transparent;
+    -moz-transform: skewX(20deg);
+    -webkit-transform: skewX(20deg);
+    -o-transform: skewX(20deg);
+    transform: skewX(20deg);
+}
+
+#upper,
+#header,
+#topnav,
+#container,
+#homepage,
+#footer,
+#copyrigh {
+    margin: 0 auto;
+}
+
+.clear {
+    display: block;
+    clear: both;
+}
+
+address,
+article,
+aside,
+figcaption,
+figure,
+footer,
+header,
+nav,
+section {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: block;
+    unicode-bidi: isolate;
+}
+
+.oneHeader {
+    width: 53%;
+    height: 108px;
+}
+
+.first {
+    margin-left: 0;
+}
+
+.oneHeader,
+.twoHeader,
+.oneLogo,
+.twoLogo,
+.threeLogo,
+.oneSpace,
+.gridAccess,
+.oneNews,
+.twoNews,
+.oneContent,
+.twoContent {
+    display: inline;
+    float: left;
+    margin: 0 0 0 2%;
+    list-style: none;
+}
+
+.halfHeader,
+.oneHeader,
+.oneHome,
+.twoHome {
+    display: inline;
+    float: left;
+    margin: 0 0 0 3%;
+    list-style: none;
+}
+
+.skew {
+    position: relative;
+    top: -13px;
+    width: 35%;
+}
+
+.skew {
+    -moz-transform: skewX(-20deg);
+    -webkit-transform: skewX(-20deg);
+    -o-transform: skewX(-20deg);
+    transform: skewX(-20deg);
+    background-color: transparent;
+    /* border-right: 1px #d4d4d4 solid; */
+    margin-top: -2px;
+    z-index: 500;
+}
+
+div {
+    display: block;
+    unicode-bidi: isolate;
+}
+
+.oneHeader {
+    list-style: none;
+}
+
+img {
+    border: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+img {
+    overflow-clip-margin: content-box;
+    overflow: clip;
+}
+
+.header .top,
+.footer .bottom {
+    height: 40px;
+    padding: 8px 0;
+    background: #015dca;
+    color: #fff;
+    box-sizing: border-box;
+    max-width: 1021px;
+    margin: 0 auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (min-width: 801px) and (max-width: 1023px) {
+
+    .oneHeader,
+    .row1 {
+        height: 95px !important;
+    }
+
+    #upper,
+    #header,
+    #nav,
+    #container,
+    #copy {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .skew {
+        width: 37%;
+    }
+
+    #header .logoSena {
+        max-width: 115px !important;
+    }
+
+}
+
+@media screen and (max-width: 1024px) {
+
+    .header .top,
+    .footer .bottom {
+        padding-right: 2rem;
+        padding-left: 2rem;
+    }
+
+    .wrapper #header,
+    #upper,
+    #copy,
+    #container {
+        padding: 0 2rem;
+    }
+}
+
+@media screen and (max-width: 1100px) {
+    .wrapper #header {
+        padding: 0 3rem;
+    }
+}
+
+@media screen and (max-width: 1150px) {
+
+    .wrapper #header,
+    #upper,
+    #copy,
+    #container {
+        padding: 0 3rem;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+
+    .header .top,
+    .footer .bottom {
+        padding-right: 5rem;
+        padding-left: 5rem;
+    }
+
+    .wrapper #header,
+    #upper,
+    #copy {
+        padding: 0 5rem;
+    }
+}
