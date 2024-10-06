@@ -1,5 +1,7 @@
-from flask import session, request, render_template
+from flask import session, request, render_template, jsonify
 from conexion.conexionBD import connectionBD
+from flask import redirect, url_for
+import json
 # FUNCION LOGIN
 
 def login(request):
@@ -161,59 +163,6 @@ def mostrar_prestatarios():
         if connection.is_connected():
             connection.close()
 
-
-# MOSTRAR TODOS LOS PRÉSTAMOS
-def mostrar_prestamos():
-    try:
-        connection = connectionBD()
-        cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM vista_prestamos")
-        prestamos = cursor.fetchall()
-        cursor.close()
-        connection.close()
-        return render_template("todos_prestamos.html", prestamos=prestamos)
-    except Exception as e:
-        print(f"Error en la función mostrar_prestamos: {e}")
-        return render_template("todos_prestamos.html", prestamos=[])
-    finally:
-        if connection.is_connected():
-            connection.close()
-            
-# MOSTRAR PRÉSTAMOS EN CURSO
-def mostrar_prestamos_en_curso():
-    try:
-        connection = connectionBD()
-        cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM prestamos_en_curso")
-        prestamos = cursor.fetchall()
-        print("Prestamos en curso:", prestamos)
-        cursor.close()
-        connection.close()
-        return render_template("prestamos_en_curso.html", prestamos=prestamos)
-    except Exception as e:
-        print(f"Error en la función mostrar_prestamos_en_curso: {e}")
-        return render_template("prestamos_en_curso.html", prestamos=[])
-    finally:
-        if connection.is_connected():
-            connection.close()
-
-# MOSTRAR PRÉSTAMOS CULMINADOS
-def mostrar_prestamos_culminados():
-    try:
-        connection = connectionBD()
-        cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM vista_devoluciones")
-        prestamos = cursor.fetchall()
-        cursor.close()
-        connection.close()
-        return render_template("prestamos_culminados.html", prestamos=prestamos)
-    except Exception as e:
-        print(f"Error en la función mostrar_prestamos_culminados: {e}")
-        return render_template("prestamos_culminados.html", prestamos=[])
-    finally:
-        if connection.is_connected():
-            connection.close()
-
 #FUNCION BUSCAR
 def buscar_productos(search):
     connection = None
@@ -259,39 +208,7 @@ def buscar_productos(search):
     finally:
         if connection and connection.is_connected():
             connection.close()    
-
-def buscar_prestamos(search):
-    connection = None
-    try:
-        connection = connectionBD()
-        cursor = connection.cursor(dictionary=True)
-
-        query = """
-            SELECT p.*, i.NombrePrestatario, i.ApellidoPrestatario, pr.NombreProducto
-            FROM prestamos p
-            JOIN prestatario i ON p.IdPrestatario = i.IdPrestatario
-            JOIN productosgenerales pr ON p.IdProducto = pr.IdProducto
-            WHERE p.IdPrestamo LIKE %s
-            OR i.NombrePrestatario LIKE %s
-            OR i.ApellidoPrestatario LIKE %s
-            OR pr.NombreProducto LIKE %s
-            OR p.EstadoPrestamo LIKE %s
-            ORDER BY p.FechaHoraPrestamo DESC
-        """
-        
-        search_param = f"%{search}%"
-        cursor.execute(query, (search_param, search_param, search_param, search_param, search_param))
-        resultados = cursor.fetchall()
-        cursor.close()
-        
-        return resultados
-    except Exception as e:
-        print(f"Error en la función buscar_prestamos: {e}")
-        return []
-    finally:
-        if connection and connection.is_connected():
-            connection.close()
-            
+       
 # FUNCION FILTRAR INVENTARIO
 def filtrar_inventario(filtro, orden):
     connection = None
@@ -327,103 +244,102 @@ def filtrar_inventario(filtro, orden):
         if connection and connection.is_connected():
             connection.close()
 
-#BUSCAR PRESTAMOS 
-def buscar_prestamos(search):
-    connection = None
+# Función para agregar un préstamo
+def agregar_prestamo_func():
+    if request.method == 'POST':
+        try:
+            nombre = request.form['nombre_prestatario']
+            identificacion = request.form['identificacion_prestatario']
+            ficha = request.form['ficha_prestatario']
+            telefono = request.form['telefono_prestatario']
+            fecha = request.form['fecha_prestamo']
+            observaciones = request.form['observaciones_prestamo']
+            objetos = request.form['objetosSeleccionados']
+
+            connection = connectionBD()
+            cursor = connection.cursor()
+            cursor.execute("""
+                INSERT INTO prestamos (NombrePrestatario, IdentificacionPrestatario, FichaPrestatario, TelefonoPrestatario, FechaPrestamo, ObservacionesPrestamo, ObjetosPrestados)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+            """, (nombre, identificacion, ficha, telefono, fecha, observaciones, objetos))
+
+            # Reducir el stock de los productos prestados
+            objetosPrestados = json.loads(objetos)
+            for objeto in objetosPrestados:
+                cursor.execute("""
+                    UPDATE productosgenerales
+                    SET CantidadProducto = CantidadProducto - 1
+                    WHERE IdProducto = %s
+                """, (objeto['id'],))
+
+            connection.commit()
+            cursor.close()
+            connection.close()
+
+            return jsonify({'status': 'success', 'message': 'Préstamo agregado exitosamente.'})
+        except Exception as e:
+            print(f"Error al agregar el préstamo: {e}")
+            if 'connection' in locals() and connection.is_connected():
+                connection.close()
+            return jsonify({'status': 'error', 'message': 'Error al agregar el préstamo.'})
+
+# Función para ver préstamos
+def ver_prestamos_func():
     try:
         connection = connectionBD()
         cursor = connection.cursor(dictionary=True)
-
-        query = """
-            SELECT p.*, i.NombrePrestatario, i.ApellidoPrestatario, pr.NombreProducto
-            FROM prestamos p
-            JOIN prestatario i ON p.IdPrestatario = i.IdPrestatario
-            JOIN productosgenerales pr ON p.IdProducto = pr.IdProducto
-            WHERE p.IdPrestamo LIKE %s
-            OR i.NombrePrestatario LIKE %s
-            OR i.ApellidoPrestatario LIKE %s
-            OR pr.NombreProducto LIKE %s
-            OR p.EstadoPrestamo LIKE %s
-            ORDER BY p.FechaHoraPrestamo DESC
-        """
-        
-        search_param = f"%{search}%"
-        cursor.execute(query, (search_param, search_param, search_param, search_param, search_param))
-        resultados = cursor.fetchall()
+        cursor.execute("SELECT * FROM prestamos")
+        prestamos = cursor.fetchall()
         cursor.close()
-        
-        return resultados
+        connection.close()
+        return (prestamos)
     except Exception as e:
-        print(f"Error en la función buscar_prestamos: {e}")
+        print(f"Error al obtener los préstamos: {e}")
         return []
     finally:
-        if connection and connection.is_connected():
+        if connection.is_connected():
+            connection.close()
+            
+# Función para editar un préstamo
+def editar_prestamo_func(id):
+    if request.method == 'POST':
+        try:
+            nombre = request.form['nombre_prestatario']
+            identificacion = request.form['identificacion_prestatario']
+            ficha = request.form['ficha_prestatario']
+            telefono = request.form['telefono_prestatario']
+            fecha = request.form['fecha_prestamo']
+            observaciones = request.form['observaciones_prestamo']
+            objetos = request.form['objetosSeleccionados']
+
+            connection = connectionBD()
+            cursor = connection.cursor()
+            cursor.execute("""
+                UPDATE prestamos
+                SET NombrePrestatario = %s, IdentificacionPrestatario = %s, FichaPrestatario = %s, TelefonoPrestatario = %s, FechaPrestamo = %s, ObservacionesPrestamo = %s, ObjetosPrestados = %s
+                WHERE IdPrestamo = %s
+            """, (nombre, identificacion, ficha, telefono, fecha, observaciones, objetos, id))
+            connection.commit()
+            cursor.close()
             connection.close()
 
-#BUSCAR PRESTAMOS EN CURSO
-def buscar_prestamos_en_curso(search):
-    connection = None
-    try:
-        connection = connectionBD()
-        cursor = connection.cursor(dictionary=True)
-
-        query = """
-            SELECT p.*, i.NombrePrestatario, i.ApellidoPrestatario, pr.NombreProducto
-            FROM prestamos p
-            JOIN prestatario i ON p.IdPrestatario = i.IdPrestatario
-            JOIN productosgenerales pr ON p.IdProducto = pr.IdProducto
-            WHERE p.EstadoPrestamo = 'En curso'
-            AND (p.IdPrestamo LIKE %s
-            OR i.NombrePrestatario LIKE %s
-            OR i.ApellidoPrestatario LIKE %s
-            OR pr.NombreProducto LIKE %s
-            OR p.EstadoPrestamo LIKE %s)
-            ORDER BY p.FechaHoraPrestamo DESC
-        """
-        
-        search_param = f"%{search}%"
-        cursor.execute(query, (search_param, search_param, search_param, search_param, search_param))
-        resultados = cursor.fetchall()
-        cursor.close()
-        
-        return resultados
-    except Exception as e:
-        print(f"Error en la función buscar_prestamos_en_curso: {e}")
-        return []
-    finally:
-        if connection and connection.is_connected():
+            return jsonify({'status': 'success', 'message': 'Préstamo editado exitosamente.'})
+        except Exception as e:
+            print(f"Error al editar el préstamo: {e}")
+            if 'connection' in locals() and connection.is_connected():
+                connection.close()
+            return jsonify({'status': 'error', 'message': 'Error al editar el préstamo.'})
+    else:
+        try:
+            connection = connectionBD()
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute("SELECT * FROM prestamos WHERE IdPrestamo = %s", (id,))
+            prestamo = cursor.fetchone()
+            cursor.close()
             connection.close()
-
-#BUSCAR PRESTAMOS CULMINADOS
-def buscar_prestamos_culminados(search):
-    connection = None
-    try:
-        connection = connectionBD()
-        cursor = connection.cursor(dictionary=True)
-
-        query = """
-            SELECT * FROM vista_devoluciones
-            WHERE IdDevoluciones LIKE %s
-            OR IdPrestamo LIKE %s
-            OR IdPrestatario LIKE %s
-            OR NombrePrestatario LIKE %s
-            OR IdProducto LIKE %s
-            OR NombreProducto LIKE %s
-            OR EstadoDevolucion LIKE %s
-            OR EstadoPrestamo LIKE %s
-            ORDER BY FechaHoraDevolucion DESC
-        """
-        
-        search_param = f"%{search}%"
-        cursor.execute(query, (search_param, search_param, search_param, search_param, search_param, search_param, search_param, search_param))
-        resultados = cursor.fetchall()
-        cursor.close()
-        
-        return resultados
-    except Exception as e:
-        print(f"Error en la función buscar_prestamos_culminados: {e}")
-        return []
-    finally:
-        if connection and connection.is_connected():
-            connection.close()
-
+            return render_template("editar_prestamo.html", prestamo=prestamo)
+        except Exception as e:
+            print(f"Error al obtener el préstamo: {e}")
+            if 'connection' in locals() and connection.is_connected():
+                connection.close()
+            return redirect(url_for('ver_prestamos'))

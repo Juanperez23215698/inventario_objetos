@@ -7,7 +7,8 @@
     <i class="fas fa-arrow-left"></i> Regresar
 </a>
 
-<link rel="stylesheet" href="/static/css/prestar_objetos.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/prestar_objetos.css') }}">
+<script src="{{ url_for('static', filename='javascripts/prestar_objetos.js') }}"></script>
 
 <h1>Prestar Objetos</h1>
 
@@ -19,7 +20,7 @@
                     Detalles del Préstamo
                 </div>
                 <div class="full-width panel-content">
-                    <form method="POST" action="/registrar_prestamo">
+                    <form id="formPrestarObjetos" method="POST" action="/guardar_prestamo" onsubmit="return false;">
                         <div class="mdl-grid">
                             <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -73,13 +74,58 @@
     </div>
 </div>
 
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--12-col">
+        <div class="full-width panel mdl-shadow--2dp">
+            <div class="full-width panel-tittle bg-primary text-center tittles">
+                Información del Préstamo
+            </div>
+            <div class="full-width panel-content">
+                <table id="tablaPrestamoInfo" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive">
+                    <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric">Nombre del Prestatario</th>
+                            <th class="mdl-data-table__cell--non-numeric">Identificación</th>
+                            <th class="mdl-data-table__cell--non-numeric">Ficha</th>
+                            <th class="mdl-data-table__cell--non-numeric">Teléfono</th>
+                            <th class="mdl-data-table__cell--non-numeric">Fecha del Préstamo</th>
+                            <th class="mdl-data-table__cell--non-numeric">Objetos Prestados</th>
+                            <th class="mdl-data-table__cell--non-numeric">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for prestamo in prestamos %}
+                        <tr>
+                            <td class="mdl-data-table__cell--non-numeric">{{ prestamo.NombrePrestatario }}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{ prestamo.IdentificacionPrestatario }}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{ prestamo.FichaPrestatario }}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{ prestamo.TelefonoPrestatario }}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{ prestamo.FechaPrestamo }}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{ prestamo.ObjetosPrestados }}</td>
+                            <td>
+                                <a class="icon_edit" href="{{ url_for('editar_prestamo', id=prestamo.IdPrestamo) }}" style="color: #39a900; text-decoration: none;">
+                                    <i class="fas fa-edit"></i> Editar
+                                </a>
+                                <a class="icon_delete" href="{{ url_for('confirmar_eliminar_prestamo', id=prestamo.IdPrestamo) }}" style="color: red; text-decoration: none;">
+                                    <i class="fas fa-trash-alt"></i> Eliminar
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal para seleccionar objetos -->
 <div id="modalSeleccionarObjetos" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
         <h2>Seleccionar Objetos</h2>
-        <div class="search-container" style="text-align: right; margin-bottom: 10px;">
-            <input type="search" id="searchInputModal" class="search_input" placeholder="Buscar objetos...">
+        <div class="search-container">
+            <input type="search" id="searchInputObjetos" class="search_input" placeholder="Buscar por nombre, descripción...">
         </div>
         <table id="tablaObjetos" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive">
             <thead>
@@ -118,202 +164,59 @@
     </div>
 </div>
 
-<div class="mdl-grid">
-    <div class="mdl-cell mdl-cell--12-col">
-        <div class="full-width panel mdl-shadow--2dp">
-            <div class="full-width panel-tittle bg-primary text-center tittles">
-                Información del Préstamo
-            </div>
-            <div class="full-width panel-content">
-                <table id="tablaPrestamoInfo" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive">
-                    <thead>
-                        <tr>
-                            <th class="mdl-data-table__cell--non-numeric">Nombre del Prestatario</th>
-                            <th class="mdl-data-table__cell--non-numeric">Identificación</th>
-                            <th class="mdl-data-table__cell--non-numeric">Ficha</th>
-                            <th class="mdl-data-table__cell--non-numeric">Teléfono</th>
-                            <th class="mdl-data-table__cell--non-numeric">Objeto Prestado</th>
-                            <th class="mdl-data-table__cell--non-numeric">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Los datos se cargarán aquí dinámicamente -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    var modal = document.getElementById("modalSeleccionarObjetos");
-    var modalConfirmacion = document.getElementById("modalConfirmacion");
-    var btn = document.getElementById("btnSeleccionarObjetos");
-    var span = document.getElementsByClassName("close")[0];
-    var btnSi = document.getElementById("btnSi");
-    var btnNo = document.getElementById("btnNo");
-    var objetosSeleccionados = [];
-
-    btn.onclick = function() {
-        modal.style.display = "block";
-        cargarInventario();
-    }
-
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-        if (event.target == modalConfirmacion) {
-            modalConfirmacion.style.display = "none";
-        }
-    }
-
-    function cargarInventario() {
-        fetch('/get_inventario')
-            .then(response => response.json())
-            .then(data => {
-                const tbody = document.querySelector('#tablaObjetos tbody');
-                function renderizarTabla(productos) {
-                    tbody.innerHTML = '';
-                    productos.forEach(producto => {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td class="mdl-data-table__cell--non-numeric">${producto.nombre}</td>
-                            <td class="mdl-data-table__cell--non-numeric">${producto.descripcion}</td>
-                            <td class="mdl-data-table__cell--non-numeric">${producto.stock}</td>
-                            <td class="mdl-data-table__cell--non-numeric">
-                                <button class="seleccionar-objeto mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-id="${producto.id}">Seleccionar</button>
-                            </td>
-                        `;
-                        tbody.appendChild(tr);
-                    });
-                    agregarEventListeners();
-                }
-
-                renderizarTabla(data);
-
-                const searchInput = document.getElementById('searchInputModal');
-                let typingTimer;
-                const doneTypingInterval = 300;
-
-                searchInput.addEventListener('input', function() {
-                    clearTimeout(typingTimer);
-                    const searchTerm = this.value.toLowerCase();
-                    
-                    typingTimer = setTimeout(function() {
-                        const filteredProducts = data.filter(producto => 
-                            producto.nombre.toLowerCase().includes(searchTerm) ||
-                            producto.descripcion.toLowerCase().includes(searchTerm)
-                        );
-                        renderizarTabla(filteredProducts);
-                    }, doneTypingInterval);
-                });
-            })
-            .catch(error => console.error('Error al cargar el inventario:', error));
-    }
-
-    function agregarEventListeners() {
-        document.querySelectorAll('.seleccionar-objeto').forEach(button => {
-            button.addEventListener('click', function() {
-                const productoId = this.getAttribute('data-id');
-                const productoNombre = this.closest('tr').querySelector('td').textContent;
-                objetosSeleccionados.push({id: productoId, nombre: productoNombre});
-                modal.style.display = "none";
-                modalConfirmacion.style.display = "block";
-            });
-        });
-    }
-
-    btnSi.onclick = function() {
-        modalConfirmacion.style.display = "none";
-        modal.style.display = "block";
-    }
-
-    btnNo.onclick = function() {
-        modalConfirmacion.style.display = "none";
-        mostrarObjetosSeleccionados();
-    }
-
-    function mostrarObjetosSeleccionados() {
-        const listaObjetos = document.createElement('div');
-        listaObjetos.id = 'listaObjetosSeleccionados';
-        listaObjetos.className = 'lista-objetos-seleccionados';
-
-        const objetosAgrupados = objetosSeleccionados.reduce((acc, obj) => {
-            acc[obj.id] = acc[obj.id] || { nombre: obj.nombre, cantidad: 0 };
-            acc[obj.id].cantidad++;
-            return acc;
-        }, {});
-
-        for (const id in objetosAgrupados) {
-            const objeto = objetosAgrupados[id];
-            const li = document.createElement('div');
-            li.className = 'objeto-seleccionado';
-            li.textContent = objeto.cantidad > 1 ? `${objeto.nombre} (${objeto.cantidad})` : objeto.nombre;
-            listaObjetos.appendChild(li);
-        }
-
-        const form = document.querySelector('form');
-        const existingList = document.getElementById('listaObjetosSeleccionados');
-        const existingButton = document.getElementById('botonPrestar');
-        
-        if (existingList) {
-            form.removeChild(existingList);
-        }
-        if (existingButton) {
-            form.removeChild(existingButton);
-        }
-        
-        form.appendChild(listaObjetos);
-        const botonPrestar = document.createElement('button');
-        botonPrestar.type = 'submit';
-        botonPrestar.className = 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored bg-primary';
-        botonPrestar.textContent = 'Prestar';
-        botonPrestar.style.marginTop = '20px';
-        form.appendChild(botonPrestar);
-
-        const objetosSeleccionadosInput = document.getElementById('objetosSeleccionadosInput');
-        objetosSeleccionadosInput.value = JSON.stringify(objetosSeleccionados);
-
-        actualizarTablaPrestamoInfo();
-    }
-
-    function actualizarTablaPrestamoInfo() {
-        const tbody = document.querySelector('#tablaPrestamoInfo tbody');
-        tbody.innerHTML = '';
-
-        const nombrePrestatario = document.getElementById('nombrePrestatario').value;
-        const identificacion = document.getElementById('identificacionPrestatario').value;
-        const ficha = document.getElementById('fichaPrestatario').value;
-        const telefono = document.getElementById('telefonoPrestatario').value;
-
-        objetosSeleccionados.forEach(objeto => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td class="mdl-data-table__cell--non-numeric">${nombrePrestatario}</td>
-                <td class="mdl-data-table__cell--non-numeric">${identificacion}</td>
-                <td class="mdl-data-table__cell--non-numeric">${ficha}</td>
-                <td class="mdl-data-table__cell--non-numeric">${telefono}</td>
-                <td class="mdl-data-table__cell--non-numeric">${objeto.nombre}</td>
-                <td class="mdl-data-table__cell--non-numeric">
-                    <button class="ver-detalles mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-id="${objeto.id}">Ver Detalles</button>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-
-        agregarEventListenersDetalles();
-    }
 
 
+<style>
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
 
-});
-</script>
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
 
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.lista-objetos-seleccionados {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.objeto-seleccionado {
+    padding: 5px 10px;
+    margin: 5px 0;
+    background-color: #e0e0e0;
+    border-radius: 3px;
+    display: inline-block;
+    margin-right: 10px;
+}
+</style>
 
 {% endblock %}
