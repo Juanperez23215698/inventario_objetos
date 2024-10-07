@@ -74,8 +74,6 @@ def registrar(request):
     return False  # Registro fallido
 
 # FUNCION BUSCAR OBJETO
-
-
 def BuscarObjeto():
     try:
         if request.method == "POST":

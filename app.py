@@ -50,10 +50,6 @@ def prestatarios():
 def inventario():
     return render_template('inventario.html')
 
-@app.route('/prestar_objetos')
-def prestar_objetos():
-    return render_template('prestar_objetos.html')
-
 # REGISTRARME
 @app.route('/register', methods=['GET', 'POST'])
 def registrar_usuarios():
@@ -63,7 +59,6 @@ def registrar_usuarios():
         else:
             return render_template('register.html', error="Error en el registro. Inténtalo de nuevo.")
     return render_template('register.html')
-
 
 # SOBRE NOSOTROS - ABOUT US
 @app.route('/sobre_nosotros')
@@ -85,18 +80,10 @@ def ob_consumibles():
 def ob_devolutivos():
     return render_template('devolutivos.html')
 
-# PRESTAR OBJETOS
-@app.route('/prestar_objeto')
-def prestar_objeto():
-    return render_template('prestar_objeto.html')
-
 # OBJETOS
 @app.route('/objetos')
 def ob_generales():
     return render_template('objetos.html')
-
-# PRÉSTAMOS
-
 
 # MOSTRAR INVENTARIO
 @app.route('/mostrar_inventario', methods=["GET", "POST"])
@@ -122,15 +109,10 @@ def get_prestatarios():
         print(f"Error al obtener los prestatarios: {e}")
         return jsonify([])
 
-
-
 # MOSTRAR OBJETOS
 @app.route('/mostrar_objetos', methods=["GET", "POST"])
 def listar_objetos():
     return mostrar_objetos()
-
-
-# REGISTRAR PRÉSTAMO - FUNCIONA
 
 # REGISTRAR PRODUCTO - FUNCIONA
 @app.route('/registrar_producto', methods=['POST'])
@@ -234,7 +216,6 @@ def confirmar_eliminar_objeto(id):
             connection.close()
         return redirect(url_for('inventario_objetos'))
     
-
 # MOSTRAR PRESTATARIOS
 @app.route('/mostrar_prestatarios', methods=["GET", "POST"])
 def listar_prestatarios():
@@ -351,9 +332,6 @@ def confirmar_eliminar_prestatario(id):
             connection.close()
         return redirect(url_for('listar_prestatarios'))
     
-
-
-
 # MOSTRAR ADMINISTRADORES
 @app.route('/mostrar_administradores', methods=["GET", "POST"])
 def listar_administradores():
@@ -490,7 +468,6 @@ def filtrar_inventario():
 @app.errorhandler(404)
 def not_found(error):
     return redirect('/')
-
 
 # USUARIOS
 @app.route('/usuarios')
