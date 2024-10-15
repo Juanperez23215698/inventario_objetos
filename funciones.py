@@ -341,3 +341,35 @@ def editar_prestamo_func(id):
             if 'connection' in locals() and connection.is_connected():
                 connection.close()
             return redirect(url_for('ver_prestamos'))
+
+def registrar_prestamo_func(datos):
+    try:
+        connection = connectionBD()
+        cursor = connection.cursor()
+
+        # Extraer datos del préstamo
+        nombre_prestatario = datos['nombrePrestatario']
+        identificacion_prestatario = datos['identificacionPrestatario']
+        ficha_prestatario = datos['fichaPrestatario']
+        telefono_prestatario = datos['telefonoPrestatario']
+        observaciones = datos['observaciones']
+        objetos_prestados = json.dumps(datos['objetosPrestados'])  # Convertir a JSON
+
+        # Asegúrate de que el IdProducto sea válido
+        id_producto = datos['objetosPrestados'][0]['idProducto']  # Asegúrate de que esto sea correcto
+
+        # Insertar el préstamo en la base de datos
+        cursor.execute("""
+            INSERT INTO prestamos (NombrePrestatario, IdentificacionPrestatario, FichaPrestatario, TelefonoPrestatario, FechaPrestamo, ObservacionesPrestamo, ObjetosPrestados, EstadoPrestamo, IdProducto)
+            VALUES (%s, %s, %s, %s, NOW(), %s, %s, 'Activo', %s)
+        """, (nombre_prestatario, identificacion_prestatario, ficha_prestatario, telefono_prestatario, observaciones, objetos_prestados, id_producto))
+
+        connection.commit()
+        return {'mensaje': 'Préstamo registrado exitosamente.'}
+    except Exception as e:
+        print(f"Error al registrar el préstamo: {e}")
+        return {'error': 'Error al registrar el préstamo.'}
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()

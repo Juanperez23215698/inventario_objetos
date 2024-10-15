@@ -50,6 +50,10 @@ def prestatarios():
 def inventario():
     return render_template('inventario.html')
 
+@app.route('/prestar_objetos')
+def prestar_objetos():
+    return render_template('prestar_objetos.html')
+
 # REGISTRARME
 @app.route('/register', methods=['GET', 'POST'])
 def registrar_usuarios():
