@@ -34,14 +34,14 @@ El proyecto **Inventario de Objetos** tiene como finalidad:
 ## 📌 **Instalación** 
 git clone https://github.com/Juanperez23215698/inventario_objetos.git
 
-**Depenedencias Necesarias: **
+**Depenedencias Necesarias:**
 pip install -r requirements.txt
 
-**Iniciar proyecto: **
+**Iniciar proyecto:**
 python run.py
 
 ---
 
-## 👥 **Contribuidores ** 
+## 👥 **Contribuidores** 
 Juan David Cardenas Perez (Lider) - Desarrollador Full Stack 👩‍💻
 Jeiron David Martinez Acevedo - Desarrollo Full Stack 👨‍💻
