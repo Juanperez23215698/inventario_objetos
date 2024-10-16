@@ -44,4 +44,5 @@ python run.py
 
 ## 👥 **Contribuidores** 
 Juan David Cardenas Perez (Lider) - Desarrollador Full Stack 👩‍💻
+
 Jeiron David Martinez Acevedo - Desarrollo Full Stack 👨‍💻
