@@ -512,3 +512,7 @@ def ver_prestamos():
 @app.route('/editar_prestamo/<int:id>', methods=['GET', 'POST'])
 def editar_prestamo(id):
     return editar_prestamo_func(id)
+
+@app.route('/culminar_prestamo/<int:id_prestamo>', methods=['POST'])
+def culminar_prestamo(id_prestamo):
+    return culminar_prestamo_func(id_prestamo)

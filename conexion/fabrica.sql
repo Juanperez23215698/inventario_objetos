@@ -36,7 +36,7 @@ CREATE TABLE `prestamos` (
     `NombrePrestatario` varchar(255) NOT NULL,
     `IdentificacionPrestatario` varchar(50) NOT NULL,
     `FichaPrestatario` varchar(50) NOT NULL,
-    `TelefonoPrestatario` int NOT NULL,
+    `TelefonoPrestatario` varchar(50) NOT NULL,
     `FechaPrestamo` datetime NOT NULL,
     `ObservacionesPrestamo` text,
     `ObjetosPrestados` json NOT NULL,

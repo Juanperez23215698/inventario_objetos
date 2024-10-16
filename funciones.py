@@ -286,16 +286,50 @@ def ver_prestamos_func():
     try:
         connection = connectionBD()
         cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM prestamos")
+        cursor.execute("SELECT * FROM prestamos")  # Asegúrate de que esta consulta incluya el estado
         prestamos = cursor.fetchall()
-        cursor.close()
-        connection.close()
-        return (prestamos)
+        return prestamos
     except Exception as e:
         print(f"Error al obtener los préstamos: {e}")
         return []
     finally:
         if connection.is_connected():
+            connection.close()
+
+def culminar_prestamo_func(id_prestamo):
+    try:
+        connection = connectionBD()
+        cursor = connection.cursor()
+
+        # Obtener el préstamo para registrar la devolución
+        cursor.execute("SELECT * FROM prestamos WHERE IdPrestamo = %s", (id_prestamo,))
+        prestamo = cursor.fetchone()
+
+        if prestamo:
+            # Insertar en la tabla de devoluciones
+            cursor.execute("""
+                INSERT INTO devoluciones (IdPrestamo, FechaHoraDevolucion, EstadoDevolucion, Observaciones, EstadoPrestamo, CantidadDevolutiva)
+                VALUES (%s, NOW(), 'Bueno', 'Devolución realizada', 'Devuelto', 1)
+            """, (id_prestamo,))
+
+            # Actualizar el estado del préstamo a 'Culminado'
+            cursor.execute("""
+                UPDATE prestamos
+                SET EstadoPrestamo = 'Culminado'
+                WHERE IdPrestamo = %s
+            """, (id_prestamo,))
+
+            connection.commit()
+            return jsonify({'status': 'success', 'message': 'Préstamo culminado exitosamente.'})
+        else:
+            return jsonify({'status': 'error', 'message': 'Préstamo no encontrado.'})
+
+    except Exception as e:
+        print(f"Error al culminar el préstamo: {e}")
+        return jsonify({'status': 'error', 'message': 'Error al culminar el préstamo.'})
+    finally:
+        if connection.is_connected():
+            cursor.close()
             connection.close()
             
 # Función para editar un préstamo
@@ -373,3 +407,4 @@ def registrar_prestamo_func(datos):
         if connection.is_connected():
             cursor.close()
             connection.close()
+

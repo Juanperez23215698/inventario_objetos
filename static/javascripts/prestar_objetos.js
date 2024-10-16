@@ -194,15 +194,42 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 renderizarTablaPrestamos(data);
+                agregarBuscador(data);
             })
             .catch(error => console.error('Error al cargar los préstamos:', error));
+    }
+
+    function agregarBuscador(prestamos) {
+        const searchInput = document.getElementById('searchInputPrestamos');
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const filteredPrestamos = prestamos.filter(prestamo => {
+                return prestamo.NombrePrestatario.toLowerCase().includes(query) ||
+                       prestamo.IdentificacionPrestatario.toLowerCase().includes(query) ||
+                       prestamo.TelefonoPrestatario.toLowerCase().includes(query);
+            });
+            renderizarTablaPrestamos(filteredPrestamos);
+        });
     }
 
     function renderizarTablaPrestamos(prestamos) {
         const tbody = document.querySelector('#tablaPrestamoInfo tbody');
         tbody.innerHTML = '';
 
+        // Separar préstamos activos y culminados
+        const prestamosActivos = [];
+        const prestamosCulminados = [];
+
         prestamos.forEach(prestamo => {
+            if (prestamo.EstadoPrestamo === 'Activo') {
+                prestamosActivos.push(prestamo);
+            } else if (prestamo.EstadoPrestamo === 'Culminado') {
+                prestamosCulminados.push(prestamo);
+            }
+        });
+
+        // Renderizar préstamos activos
+        prestamosActivos.forEach(prestamo => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td class="mdl-data-table__cell--non-numeric">${prestamo.NombrePrestatario}</td>
@@ -211,17 +238,75 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td class="mdl-data-table__cell--non-numeric">${prestamo.TelefonoPrestatario}</td>
                 <td class="mdl-data-table__cell--non-numeric">${prestamo.FechaPrestamo}</td>
                 <td class="mdl-data-table__cell--non-numeric">${formatearObjetosPrestados(prestamo.ObjetosPrestados)}</td>
+                <td class="mdl-data-table__cell--non-numeric">${prestamo.EstadoPrestamo}</td>
                 <td>
-                    <a class="icon_edit" href="/editar_prestamo/${prestamo.IdPrestamo}" style="color: #39a900; text-decoration: none;">
-                        <i class="fas fa-edit"></i> Editar
-                    </a>
-                    <a class="icon_delete" href="/confirmar_eliminar_prestamo/${prestamo.IdPrestamo}" style="color: red; text-decoration: none;">
-                        <i class="fas fa-trash-alt"></i> Eliminar
-                    </a>
+                    <button class="btnCulminar mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-id="${prestamo.IdPrestamo}" style="color: #fff; background-color: #f44336;">
+                        Culminar
+                    </button>
                 </td>
             `;
             tbody.appendChild(tr);
         });
+
+        // Renderizar préstamos culminados al final
+        prestamosCulminados.forEach(prestamo => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="mdl-data-table__cell--non-numeric">${prestamo.NombrePrestatario}</td>
+                <td class="mdl-data-table__cell--non-numeric">${prestamo.IdentificacionPrestatario}</td>
+                <td class="mdl-data-table__cell--non-numeric">${prestamo.FichaPrestatario}</td>
+                <td class="mdl-data-table__cell--non-numeric">${prestamo.TelefonoPrestatario}</td>
+                <td class="mdl-data-table__cell--non-numeric">${prestamo.FechaPrestamo}</td>
+                <td class="mdl-data-table__cell--non-numeric">${formatearObjetosPrestados(prestamo.ObjetosPrestados)}</td>
+                <td class="mdl-data-table__cell--non-numeric">${prestamo.EstadoPrestamo}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        // Agregar event listeners a los botones de culminar
+        agregarEventListenersCulminar();
+    }
+    
+    function agregarEventListenersCulminar() {
+        const botonesCulminar = document.querySelectorAll('.btnCulminar');
+        botonesCulminar.forEach(boton => {
+            boton.addEventListener('click', function() {
+                const idPrestamo = this.getAttribute('data-id');
+                culminarPrestamo(idPrestamo);
+            });
+        });
+    }
+    
+    function culminarPrestamo(idPrestamo) {
+        const modal = document.getElementById('modalConfirmacionCulminar');
+        const btnConfirmar = document.getElementById('btnConfirmarCulminar');
+        const btnCancelar = document.getElementById('btnCancelarCulminar');
+    
+        modal.style.display = 'block'; // Mostrar el modal de confirmación
+    
+        btnConfirmar.onclick = function() {
+            fetch(`/culminar_prestamo/${idPrestamo}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    cargarPrestamos(); // Recargar la tabla de préstamos
+                } else {
+                    alert(data.message);
+                }
+                modal.style.display = 'none'; // Cerrar el modal
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al culminar el préstamo');
+                modal.style.display = 'none'; // Cerrar el modal
+            });
+        };
+    
+        btnCancelar.onclick = function() {
+            modal.style.display = 'none'; // Cerrar el modal sin hacer nada
+        };
     }
 
     function formatearObjetosPrestados(objetos) {
