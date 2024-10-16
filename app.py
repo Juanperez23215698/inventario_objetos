@@ -40,11 +40,6 @@ def administradores():
 def inicio_login():
     return render_template('inicio_login.html')
 
-# PRESTATARIOS
-@app.route('/prestatarios')
-def prestatarios():
-    return render_template('prestatarios.html')
-
 # INVENTARIO
 @app.route('/inventario')
 def inventario():
@@ -93,25 +88,6 @@ def ob_generales():
 @app.route('/mostrar_inventario', methods=["GET", "POST"])
 def inventario_objetos():
     return mostrar_inventario()
-
-
-# LISTAR PRESTATARIOS - FUNCIONA
-@app.route('/get_prestatarios', methods=['GET'])
-def get_prestatarios():
-    try:
-        connection = connectionBD()
-        cursor = connection.cursor()
-        cursor.execute("SELECT IdPrestatario, NombrePrestatario, ApellidoPrestatario FROM prestatario")
-        prestatarios = cursor.fetchall()
-        cursor.close()
-        connection.close()
-        
-        opciones = [{'id': prestatario[0], 'nombre': prestatario[1], 'apellido': prestatario[2]} for prestatario in prestatarios]
-        return jsonify(opciones)
-    
-    except Exception as e:
-        print(f"Error al obtener los prestatarios: {e}")
-        return jsonify([])
 
 # MOSTRAR OBJETOS
 @app.route('/mostrar_objetos', methods=["GET", "POST"])
@@ -219,123 +195,7 @@ def confirmar_eliminar_objeto(id):
         if 'connection' in locals() and connection.is_connected():
             connection.close()
         return redirect(url_for('inventario_objetos'))
-    
-# MOSTRAR PRESTATARIOS
-@app.route('/mostrar_prestatarios', methods=["GET", "POST"])
-def listar_prestatarios():
-    return mostrar_prestatarios()
-
-# REGISTRAR PRESTATARIO - FUNCIONA
-@app.route('/registrar_prestatario', methods=['POST'])
-def registrar_prestatario():
-    if request.method == 'POST':
-        try:
-            nombre = request.form['NombrePrestatario']
-            apellido = request.form['ApellidoPrestatario']
-            tipoidentificacion = request.form['TipoIdentificacion']
-            numeroidentificacion = request.form['NumeroIdentificacion']
-            correoprestatario = request.form['CorreoPrestatario']
-            celular = request.form['CelularPrestatario']
-
-            connection = connectionBD()
-            cursor = connection.cursor()
-            cursor.execute("""
-                INSERT INTO prestatario (NombrePrestatario, ApellidoPrestatario, TipoIdentificacion, NumeroIdentificacion, CorreoPrestatario, CelularPrestatario)
-                VALUES (%s, %s, %s, %s, %s, %s)
-            """, (nombre, apellido, tipoidentificacion, numeroidentificacion, correoprestatario, celular))
-            connection.commit()
-            cursor.close()
-            connection.close()
-
-            return redirect(url_for('listar_prestatarios'))
-        except Exception as e:
-            print(f"Error al registrar el prestatario: {e}")
-            if 'connection' in locals() and connection.is_connected():
-                connection.close()
-            return render_template('prestatarios.html', error="Error al registrar el prestatario.")
-    else:
-        return redirect(url_for('prestatarios'))
-
-
-# EDITAR PRESTATARIO - FUNCIONA
-@app.route('/editar_prestatario/<int:id>', methods=['GET', 'POST'])
-def editar_prestatario(id):
-    if request.method == 'POST':
-        try:
-            nombre = request.form['NombrePrestatario']
-            apellido = request.form['ApellidoPrestatario']
-            tipoidentificacion = request.form['TipoIdentificacion']
-            numeroidentificacion = request.form['NumeroIdentificacion']
-            correoprestatario = request.form['CorreoPrestatario']
-            celular = request.form['CelularPrestatario']
-
-            connection = connectionBD()
-            cursor = connection.cursor()
-            cursor.execute("""
-                UPDATE prestatario
-                SET NombrePrestatario = %s, ApellidoPrestatario = %s, TipoIdentificacion = %s, NumeroIdentificacion = %s, CorreoPrestatario = %s, CelularPrestatario = %s
-                WHERE IdPrestatario = %s
-            """, (nombre, apellido, tipoidentificacion, numeroidentificacion, correoprestatario, celular, id))
-            connection.commit()
-            cursor.close()
-            connection.close()
-            return redirect(url_for('listar_prestatarios'))
-        except Exception as e:
-            print(f"Error al actualizar el prestatario: {e}")
-            if 'connection' in locals() and connection.is_connected():
-                connection.close()
-            return render_template('editar_prestatario.html', id=id, error=True)
-    else:
-        try:
-            connection = connectionBD()
-            cursor = connection.cursor(dictionary=True)
-            cursor.execute("SELECT * FROM prestatario WHERE IdPrestatario = %s", (id,))
-            prestatario = cursor.fetchone()
-            cursor.close()
-            connection.close()
-            return render_template('editar_prestatario.html', prestatario=prestatario)
-        except Exception as e:
-            print(f"Error al obtener el prestatario: {e}")
-            if 'connection' in locals() and connection.is_connected():
-                connection.close()
-            return redirect(url_for('listar_prestatarios'))
-    
-# ELIMINAR PRESTATARIO - FUNCIONA
-@app.route('/eliminar_prestatario/<int:id>', methods=['POST'])
-def eliminar_prestatario(id):
-    try:
-        connection = connectionBD()
-        cursor = connection.cursor()
-        cursor.execute("DELETE FROM prestatario WHERE IdPrestatario = %s", (id,))
-        connection.commit()
-        cursor.close()
-        connection.close()
-        return redirect(url_for('listar_prestatarios'))
-
-    except Exception as e:
-        print(f"Error al eliminar el prestatario: {e}")
-        if 'connection' in locals() and connection.is_connected():
-            connection.close()
-        return redirect(url_for('listar_prestatarios'))
-
-# CONFIRMAR ELIMINAR PRESTATARIO
-@app.route('/confirmar_eliminar_prestatario/<int:id>')
-def confirmar_eliminar_prestatario(id):
-    try:
-        connection = connectionBD()
-        cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM prestatario WHERE IdPrestatario = %s", (id,))
-        prestatario = cursor.fetchone()
-        cursor.close()
-        connection.close()
-        return render_template('confirmar_eliminar_prestatario.html', prestatario=prestatario)
-
-    except Exception as e:
-        print(f"Error al obtener el prestatario: {e}")
-        if 'connection' in locals() and connection.is_connected():
-            connection.close()
-        return redirect(url_for('listar_prestatarios'))
-    
+        
 # MOSTRAR ADMINISTRADORES
 @app.route('/mostrar_administradores', methods=["GET", "POST"])
 def listar_administradores():

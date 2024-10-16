@@ -74,16 +74,7 @@ INSERT INTO productosgenerales (NombreProducto, DescripcionProducto, TipoProduct
 
 -- 10 inserciones para usuarios
 INSERT INTO usuarios (NombreUsuario, ApellidoUsuario, TipoIdentificacion, NumeroIdentificacion, CorreoUsuario, CelularUsuario, ContrasenaUsuario) VALUES
-('Laura', 'Gómez', 'CC', 1098765432, 'laura@email.com', 3101234567, 'laura123'),
-('Carlos', 'Rodríguez', 'CC', 1087654321, 'carlos@email.com', 3202345678, 'carlos456'),
-('Ana', 'Martínez', 'TI', 1076543210, 'ana@email.com', 3303456789, 'ana789'),
-('Diego', 'López', 'CC', 1065432109, 'diego@email.com', 3404567890, 'diego012'),
-('María', 'Sánchez', 'CC', 1054321098, 'maria@email.com', 3505678901, 'maria345'),
-('Andrés', 'Pérez', 'TI', 1043210987, 'andres@email.com', 3606789012, 'andres678'),
-('Sofía', 'Díaz', 'CC', 1032109876, 'sofia@email.com', 3707890123, 'sofia901'),
-('Javier', 'Torres', 'CC', 1021098765, 'javier@email.com', 3808901234, 'javier234'),
-('Valentina', 'Rojas', 'TI', 1010987654, 'valentina@email.com', 3909012345, 'valentina567'),
-('Gabriel', 'Castro', 'CC', 1009876543, 'gabriel@email.com', 3001123456, 'gabriel890');
+('juan david ', 'Cardenas perez', 'CC', 1131104356, 'Juanchotv123@gmail.com', 3053577992, '123');
 
 -- 10 inserciones para prestamos
 INSERT INTO prestamos (NombrePrestatario, IdentificacionPrestatario, FichaPrestatario, TelefonoPrestatario, FechaPrestamo, ObservacionesPrestamo, ObjetosPrestados, TipoProducto) VALUES

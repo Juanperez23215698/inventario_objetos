@@ -2,8 +2,8 @@ from flask import session, request, render_template, jsonify
 from conexion.conexionBD import connectionBD
 from flask import redirect, url_for
 import json
-# FUNCION LOGIN
 
+# FUNCION LOGIN
 def login(request):
     try:
         connection = connectionBD()
@@ -140,23 +140,6 @@ def mostrar_administradores():
     except Exception as e:
         print(f"Error en la función mostrar_administradores: {e}")
         return render_template("administradores.html", usuarios=[])
-    finally:
-        if connection.is_connected():
-            connection.close()
-
-# MOSTRAR PRESTATARIOS
-def mostrar_prestatarios():
-    try:
-        connection = connectionBD()
-        cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM prestatario")
-        prestatarios = cursor.fetchall()
-        cursor.close()
-        connection.close()
-        return render_template("prestatarios.html", prestatarios=prestatarios)
-    except Exception as e:
-        print(f"Error en la función mostrar_prestatarios: {e}")
-        return render_template("prestatarios.html", prestatarios=[])
     finally:
         if connection.is_connected():
             connection.close()
