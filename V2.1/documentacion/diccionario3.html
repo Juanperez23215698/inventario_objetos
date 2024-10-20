@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diccionario de DTOs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Diccionario de DTOs</h1>
+
+<h2>ProductoGeneralDTO</h2>
+<table>
+    <tr>
+        <th>Atributo</th>
+        <th>Tipo</th>
+    </tr>
+    <tr>
+        <td>id_producto</td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <td>nombre_producto</td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <td>descripcion_producto</td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <td>tipo_producto</td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <td>cantidad_producto</td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <td>observaciones_producto</td>
+        <td>string</td>
+    </tr>
+</table>
+
+<h2>UsuarioDTO</h2>
+<table>
+    <tr>
+        <th>Atributo</th>
+        <th>Tipo</th>
+    </tr>
+    <tr>
+        <td>id_usuario</td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <td>nombre_usuario</td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <td>apellido_usuario</td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <td>tipo_identificacion</td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <td>numero_identificacion</td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <td>correo_usuario</td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <td>celular_usuario</td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <td>contrasena_usuario</td>
+        <td>string</td>
+    </tr>
+</table>
+
+<h2>PrestamoDTO</h2>
+<table>
+    <tr>
+        <th>Atributo</th>
+        <th>Tipo</th>
+    </tr>
+    <tr>
+        <td>id_prestamo</td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <td>nombre_prestatario</td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <td>identificacion_prestatario</td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <td>ficha_prestatario</td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <td>telefono_prestatario</td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <td>fecha_prestamo</td>
+        <td>datetime</td>
+    </tr>
+    <tr>
+        <td>observaciones_prestamo</td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <td>objetos_prestados</td>
+        <td>json</td>
+    </tr>
+    <tr>
+        <td>tipo_producto</td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <td>estado_prestamo</td>
+        <td>string</td>
+    </tr>
+</table>
+
+<h2>DevolucionDTO</h2>
+<table>
+    <tr>
+        <th>Atributo</th>
+        <th>Tipo</th>
+    </tr>
+    <tr>
+        <td>id_devoluciones</td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <td>id_prestamo</td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <td>fecha_hora_devolucion</td>
+        <td>datetime</td>
+    </tr>
+    <tr>
+        <td>estado_devolucion</td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <td>observaciones</td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <td>estado_prestamo</td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <td>cantidad_devolutiva</td>
+        <td>int</td>
+    </tr>
+</table>
+
+</body>
+</html>
