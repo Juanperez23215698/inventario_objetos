@@ -278,43 +278,64 @@ def ver_prestamos_func():
     finally:
         if connection.is_connected():
             connection.close()
-
+            
 def culminar_prestamo_func(id_prestamo):
+    connection = None
     try:
         connection = connectionBD()
-        cursor = connection.cursor()
-
-        # Obtener el préstamo para registrar la devolución
+        cursor = connection.cursor(dictionary=True)
+        
+        # Obtener información del préstamo
         cursor.execute("SELECT * FROM prestamos WHERE IdPrestamo = %s", (id_prestamo,))
         prestamo = cursor.fetchone()
-
+        
         if prestamo:
-            # Insertar en la tabla de devoluciones
-            cursor.execute("""
-                INSERT INTO devoluciones (IdPrestamo, FechaHoraDevolucion, EstadoDevolucion, Observaciones, EstadoPrestamo, CantidadDevolutiva)
-                VALUES (%s, NOW(), 'Bueno', 'Devolución realizada', 'Devuelto', 1)
-            """, (id_prestamo,))
+            # Obtener lista de objetos prestados
+            objetos_prestados = json.loads(prestamo['ObjetosPrestados'])
+            
+            # Devolver stock por cada artículo
+            for objeto in objetos_prestados:
+                cursor.execute("""
+                    UPDATE productosgenerales 
+                    SET CantidadProducto = CantidadProducto + 1
+                    WHERE IdProducto = %s
+                """, (objeto['id'],))
 
-            # Actualizar el estado del préstamo a 'Culminado'
+            # Registrar la devolución
             cursor.execute("""
-                UPDATE prestamos
+                INSERT INTO devoluciones (
+                    IdPrestamo, 
+                    FechaHoraDevolucion, 
+                    EstadoDevolucion, 
+                    Observaciones, 
+                    EstadoPrestamo
+                ) VALUES (%s, NOW(), 'Bueno', 'Devolución completada', 'Devuelto')
+            """, (id_prestamo,))
+                
+            
+            # Actualizar estado del préstamo
+            cursor.execute("""
+                UPDATE prestamos 
                 SET EstadoPrestamo = 'Culminado'
                 WHERE IdPrestamo = %s
             """, (id_prestamo,))
-
+            
             connection.commit()
-            return jsonify({'status': 'success', 'message': 'Préstamo culminado exitosamente.'})
+            return jsonify({'status': 'success', 'message': 'Préstamo culminado exitosamente'})
         else:
-            return jsonify({'status': 'error', 'message': 'Préstamo no encontrado.'})
-
+            return jsonify({'status': 'error', 'message': 'Préstamo no encontrado'})
+            
     except Exception as e:
+        if connection:
+            connection.rollback()
         print(f"Error al culminar el préstamo: {e}")
-        return jsonify({'status': 'error', 'message': 'Error al culminar el préstamo.'})
+        return jsonify({'status': 'error', 'message': f'Error al culminar el préstamo: {str(e)}'})
+        
     finally:
-        if connection.is_connected():
+        if connection and connection.is_connected():
             cursor.close()
             connection.close()
-            
+
 # Función para editar un préstamo
 def editar_prestamo_func(id):
     if request.method == 'POST':
