@@ -311,7 +311,6 @@ def culminar_prestamo_func(id_prestamo):
                     EstadoPrestamo
                 ) VALUES (%s, NOW(), 'Bueno', 'Devolución completada', 'Devuelto')
             """, (id_prestamo,))
-                
             
             # Actualizar estado del préstamo
             cursor.execute("""

@@ -190,3 +190,44 @@
     margin-left: 10px;
     text-decoration: none;
 }
+
+.objeto-seleccionado {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.objeto-seleccionado:hover {
+    background-color: #f0f0f0;
+}
+
+/* Estilos específicos para el botón eliminar */
+.objeto-seleccionado .mdl-button--icon {
+    min-width: 32px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #757575;
+}
+
+.objeto-seleccionado .mdl-button--icon:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #ff4444;
+}
+
+.objeto-seleccionado .material-icons {
+    font-size: 20px;
+    line-height: 32px;
+}
+
+/* Contenedor flex para alinear elementos */
+.objeto-seleccionado > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}

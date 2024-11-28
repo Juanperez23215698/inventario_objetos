@@ -44,7 +44,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td class="mdl-data-table__cell--non-numeric">${producto.descripcion}</td>
                 <td class="mdl-data-table__cell--non-numeric">${producto.stock}</td>
                 <td class="mdl-data-table__cell--non-numeric">
-                    <button class="seleccionar-objeto mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-id="${producto.id}" ${producto.stock <= 0 ? 'disabled' : ''}>
+                    <input type="number" 
+                           class="cantidad-input mdl-textfield__input" 
+                           min="1" 
+                           max="${producto.stock}"
+                           value="1"
+                           style="width: 60px;"
+                           ${producto.stock <= 0 ? 'disabled' : ''}
+                    >
+                </td>
+                <td class="mdl-data-table__cell--non-numeric">
+                    <button class="seleccionar-objeto mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" 
+                            data-id="${producto.id}" 
+                            data-stock="${producto.stock}"
+                            ${producto.stock <= 0 ? 'disabled' : ''}>
                         Seleccionar
                     </button>
                 </td>
@@ -52,6 +65,51 @@ document.addEventListener('DOMContentLoaded', function () {
             tbody.appendChild(tr);
         });
         agregarEventListeners();
+    }
+    
+    function agregarEventListeners() {
+        document.querySelectorAll('.seleccionar-objeto').forEach(button => {
+            button.addEventListener('click', function() {
+                const productoId = this.getAttribute('data-id');
+                const stockDisponible = parseInt(this.getAttribute('data-stock'));
+                const cantidadInput = this.closest('tr').querySelector('.cantidad-input');
+                const cantidad = parseInt(cantidadInput.value);
+                const productoNombre = this.closest('tr').querySelector('td').textContent;
+    
+                if (cantidad <= 0) {
+                    alert('La cantidad debe ser mayor a 0');
+                    return;
+                }
+    
+                if (cantidad > stockDisponible) {
+                    alert('Monto mayor al deseado');
+                    return;
+                }
+    
+                // Agregar el objeto seleccionado tantas veces como indique la cantidad
+                for (let i = 0; i < cantidad; i++) {
+                    objetosSeleccionados.push({id: productoId, nombre: productoNombre});
+                }
+                
+                modal.style.display = "none";
+                modalConfirmacion.style.display = "block";
+            });
+        });
+    
+        // Validación adicional para el input de cantidad
+        document.querySelectorAll('.cantidad-input').forEach(input => {
+            input.addEventListener('input', function() {
+                const valor = parseInt(this.value);
+                const max = parseInt(this.max);
+    
+                if (valor < 0) {
+                    this.value = 1;
+                } else if (valor > max) {
+                    this.value = max;
+                    alert('Monto mayor al deseado');
+                }
+            });
+        });
     }
 
     document.getElementById('searchInputObjetos').addEventListener('input', function() {
@@ -71,18 +129,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    function agregarEventListeners() {
-        document.querySelectorAll('.seleccionar-objeto').forEach(button => {
-            button.addEventListener('click', function() {
-                const productoId = this.getAttribute('data-id');
-                const productoNombre = this.closest('tr').querySelector('td').textContent;
-                objetosSeleccionados.push({id: productoId, nombre: productoNombre});
-                modal.style.display = "none";
-                modalConfirmacion.style.display = "block";
-            });
-        });
-    }
-
     btnSi.onclick = function() {
         modalConfirmacion.style.display = "none";
         modal.style.display = "block";
@@ -97,21 +143,55 @@ document.addEventListener('DOMContentLoaded', function () {
         const listaObjetos = document.createElement('div');
         listaObjetos.id = 'listaObjetosSeleccionados';
         listaObjetos.className = 'lista-objetos-seleccionados';
-
-        const objetosAgrupados = objetosSeleccionados.reduce((acc, obj) => {
-            acc[obj.id] = acc[obj.id] || { nombre: obj.nombre, cantidad: 0 };
+    
+        const objetosAgrupados = objetosSeleccionados.reduce((acc, obj, index) => {
+            acc[obj.id] = acc[obj.id] || { 
+                nombre: obj.nombre, 
+                cantidad: 0,
+                indices: [] 
+            };
             acc[obj.id].cantidad++;
+            acc[obj.id].indices.push(index);
             return acc;
         }, {});
-
+    
         for (const id in objetosAgrupados) {
             const objeto = objetosAgrupados[id];
             const li = document.createElement('div');
             li.className = 'objeto-seleccionado';
-            li.textContent = objeto.cantidad > 1 ? `${objeto.nombre} (${objeto.cantidad})` : objeto.nombre;
+            
+            // Contenedor para el texto y el botón
+            const contenido = document.createElement('div');
+            contenido.style.display = 'flex';
+            contenido.style.justifyContent = 'space-between';
+            contenido.style.alignItems = 'center';
+            
+            // Texto del objeto
+            const texto = document.createElement('span');
+            texto.textContent = objeto.cantidad > 1 ? 
+                `${objeto.nombre} (${objeto.cantidad})` : 
+                objeto.nombre;
+            
+            // Botón eliminar
+            const btnEliminar = document.createElement('button');
+            btnEliminar.className = 'mdl-button mdl-js-button mdl-button--icon';
+            btnEliminar.innerHTML = '<i class="material-icons">X</i>';
+            btnEliminar.style.marginLeft = '10px';
+            
+            btnEliminar.onclick = function() {
+                // Eliminar todos los objetos con este ID
+                objetosSeleccionados = objetosSeleccionados.filter(obj => obj.id !== id);
+                mostrarObjetosSeleccionados(); // Actualizar la lista
+            };
+    
+            contenido.appendChild(texto);
+            contenido.appendChild(btnEliminar);
+            li.appendChild(contenido);
             listaObjetos.appendChild(li);
-        }
 
+            
+        }
+    
         const form = document.querySelector('form');
         const existingList = document.getElementById('listaObjetosSeleccionados');
         const existingButton = document.getElementById('botonPrestar');
@@ -124,17 +204,21 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         
         form.appendChild(listaObjetos);
-        const botonPrestar = document.createElement('button');
-        botonPrestar.id = 'botonPrestar';
-        botonPrestar.type = 'button';
-        botonPrestar.className = 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored bg-primary';
-        botonPrestar.textContent = 'Prestar';
-        botonPrestar.style.marginTop = '20px';
-        botonPrestar.onclick = function() {
-            guardarDatosPrestamo();
-        };
-        form.appendChild(botonPrestar);
-
+    
+        // Solo mostrar el botón si hay objetos seleccionados
+        if (objetosSeleccionados.length > 0) {
+            const botonPrestar = document.createElement('button');
+            botonPrestar.id = 'botonPrestar';
+            botonPrestar.type = 'button';
+            botonPrestar.className = 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored bg-primary';
+            botonPrestar.textContent = 'Prestar';
+            botonPrestar.style.marginTop = '20px';
+            botonPrestar.onclick = function() {
+                guardarDatosPrestamo();
+            };
+            form.appendChild(botonPrestar);
+        }
+    
         const objetosSeleccionadosInput = document.getElementById('objetosSeleccionadosInput');
         objetosSeleccionadosInput.value = JSON.stringify(objetosSeleccionados);
     }

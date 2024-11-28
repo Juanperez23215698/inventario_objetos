@@ -337,3 +337,49 @@ footer nav ul li a:hover {
 footer nav ul li a img {
     width: 30px;
 }
+
+/* Carrcel de imagenes */
+
+.vertical-carousel {
+    height: 100%;  
+    width: 50%;    
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+    padding-top: 20px;
+    margin-left: 100px;
+}
+
+.carousel-container {
+    animation: scrollVertical 15s linear infinite;
+}
+
+.carousel-item {
+    min-width: 300px;
+    height: 100%;
+    padding: 0 10px;
+    text-align: center;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.carousel-item h3 {
+    color: #fff;
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+@keyframes scrollVertical {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-100%); }
+}
+
+/* Pausa la animación al pasar el mouse */
+.carousel-container:hover {
+    animation-play-state: paused;
+}
