@@ -3,83 +3,237 @@
 {% block title %}Inventario - Inventario de Objetos{% endblock %}
 
 {% block content %}
-<a href="/inicio_login" class="regresar" style="color: #39a900; text-decoration: none;">
-    <i class="fas fa-arrow-left"></i> Regresar
-</a>
+<div class="button-container">
+    <a href="/inicio_login" class="regresar" style="color: #39a900; text-decoration: none;">
+        <i class="fas fa-arrow-left"></i> Regresar
+    </a>
+    <div class="button-group">
+        <a href="/prestar_objetos" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+            Préstamos
+        </a>
+        <a href="/mostrar_administradores" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+            Administradores
+        </a>
+    </div>
+</div>
 
 <h1>Inventario de Objetos</h1>
 
-<div class="search-container">
-    <form name="formSearch" method="POST" action="{{ url_for('search_route') }}" class="search-container"
-        autocomplete="off">
-        <input type="search" name="buscar" class="search_input" placeholder="Buscar...">
-        <button type="submit" class="search_btn">
-            <i class="fa-solid fa-magnifying-glass"></i> Buscar
-        </button>
-    </form>
+<!-- Tabla Objetos Registro y Lista -->
 
-    <div class="filter-dropdown">
-        <button class="filter-btn">
-            <i class="fa-solid fa-sliders"></i> Filtrar
-        </button>
-        <div class="dropdown-content">
-            <a href="#">Menor stock</a>
-            <a href="#">Mayor stock</a>
-            <a href="#">Ordenar A-Z</a>
-            <a href="#">Formación</a>
-            <a href="#">Consumibles</a>
+<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+    <div class="mdl-tabs__tab-bar">
+        <a href="#tabListProducts" class="mdl-tabs__tab is-active" style="text-decoration: none; color: black;">Lista</a>
+        <a href="#tabNewProduct" class="mdl-tabs__tab" style="text-decoration: none; color: black;">Nuevo</a>
+    </div>
+
+    <br>
+    <div class="mdl-tabs__panel is-active" id="tabListProducts">
+        <div class="search-container">
+            <input type="search" id="searchInput" class="search_input" placeholder="Buscar por nombre, descripción, ID o tipo...">
+        </div>
+
+        <div id="searchMessage" class="search-message" style="display: none;">
+            <p>Mostrando resultados para la búsqueda: "<span id="searchTerm"></span>"</p>
+            <p>Se encontraron <span id="resultCount"></span> resultado(s).</p>
+        </div>
+
+        <p style="color: black;">Objetos en total: {{ inventario|length }}</p>
+
+        <!-- Tabla de inventario -->
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--12-col">
+                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive">
+                    <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric">ID</th>
+                            <th class="mdl-data-table__cell--non-numeric">Nombre Producto</th>
+                            <th class="mdl-data-table__cell--non-numeric">Stock</th>
+                            <th class="mdl-data-table__cell--non-numeric">Descripción</th>
+                            <th class="mdl-data-table__cell--non-numeric">Tipo Objeto</th>
+                            <th class="mdl-data-table__cell--non-numeric">Observaciones</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventoryTable">
+                        {% for producto in inventario %}
+                        <tr>
+                            <td class="mdl-data-table__cell--non-numeric">{{ producto.IdProducto }}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{ producto.NombreProducto }}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{ producto.CantidadProducto }}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{ producto.DescripcionProducto }}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{ producto.TipoProducto }}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{ producto.ObservacionesProducto }}</td>
+                            <td>
+                                <a class="icon_edit" href="{{ url_for('editar_objeto', id=producto.IdProducto) }}" style="color: #39a900; text-decoration: none;">
+                                    <i class="fas fa-edit"></i> Editar
+                                </a>
+                                <a class="icon_delete" href="{{ url_for('confirmar_eliminar_objeto', id=producto.IdProducto) }}" style="color: red; text-decoration: none;">
+                                    <i class="fas fa-trash-alt"></i> Eliminar
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="full-width divider-menu-h"></div>
-<div class="mdl-grid">
-    <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">
-        <div class="table-responsive">
-            {% if inventario %}
-            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive">
-                <thead>
-                    <tr>
-                        <th style="text-align: end;" class="mdl-data-table__cell--non-numeric">ID</th>
-                        <th style="text-align: end;" class="mdl-data-table__cell--non-numeric">Nombre Producto</th>
-                        <th style="text-align: end;" class="mdl-data-table__cell--non-numeric">Stock</th>
-                        <th style="text-align: end;" class="mdl-data-table__cell--non-numeric">Descripcion</th>
-                        <th style="text-align: end;" class="mdl-data-table__cell--non-numeric">Tipo Objeto</th>
-                        <th style="text-align: end;" class="mdl-data-table__cell--non-numeric">Observaciones</th>
-                        <th>Opciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for mostrar in inventario %}
-                    <tr>
-                        <td style="text-align: end;" class="mdl-data-table__cell--non-numeric">{{ mostrar.IdProducto }}
-                        </td>
-                        <td style="text-align: end;" class="mdl-data-table__cell--non-numeric">{{ mostrar.NombreProducto
-                            }}</td>
-                        <td style="text-align: end;" class="mdl-data-table__cell--non-numeric">{{
-                            mostrar.CantidadProducto }}</td>
-                            <td style="text-align: end;" class="mdl-data-table__cell--non-numeric">{{ mostrar.DescripcionProducto
-                                }}</td>
-                        <td style="text-align: end;" class="mdl-data-table__cell--non-numeric">{{ mostrar.TipoProducto
-                            }}</td>
-                        <td style="text-align: end;" class="mdl-data-table__cell--non-numeric">{{
-                            mostrar.ObservacionesProducto }}</td>
-                        <td>
-                            <a class="icon_edit" href="{{ url_for('editar_objeto', id=mostrar.IdProducto) }}"
-                                style="color: #39a900; text-decoration: none;">
-                                <i class="fas fa-edit"></i> Editar
-                            </a>
-                            <a class="icon_delete" href="{{ url_for('confirmar_eliminar_objeto', id=mostrar.IdProducto) }}"
-                                style="color: red; text-decoration: none;"><i class="fas fa-trash-alt"></i> Eliminar</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% else %}
-            <p>No hay objetos para mostrar.</p>
-            {% endif %}
+    <div class="mdl-tabs__panel" id="tabNewProduct">
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--12-col">
+                <div class="full-width panel mdl-shadow--2dp">
+                    <div class="full-width panel-tittle bg-primary text-center tittles">
+                        Nuevo Producto
+                    </div>
+                    <div class="full-width panel-content">
+                        <form method="POST" action="{{ url_for('registrar_producto') }}">
+                            <div class="mdl-grid">
+                                <div class="mdl-cell mdl-cell--12-col">
+                                    <legend class="text-condensedLight"><i class="zmdi zmdi-border-color"></i>
+                                        &nbsp; INFORMACIÓN BÁSICA</legend><br>
+                                </div>
+                                <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text"
+                                            pattern="-?[A-Za-z0-9áéíóúÁÉÍÓÚñ ]*(\.[0-9]+)?" name="NombreProducto"
+                                            id="NombreProducto">
+                                        <label class="mdl-textfield__label" for="NombreProducto">Nombre Producto</label>
+                                        <span class="mdl-textfield__error">Nombre inválido</span>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--12-col">
+                                    <legend class="text-condensedLight"><i class="zmdi zmdi-border-color"></i>
+                                        &nbsp; Descripción Producto</legend><br>
+                                </div>
+                                <div class="mdl-cell mdl-cell--12-col">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text"
+                                            pattern="-?[A-Za-z0-9áéíóúÁÉÍÓÚ ]*(\.[0-9]+)?" name="DescripcionProducto"
+                                            id="DescripcionProducto">
+                                        <label class="mdl-textfield__label" for="DescripcionProducto">Descripción
+                                            Producto</label>
+                                        <span class="mdl-textfield__error">DescripcionProducto inválido</span>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--12-col">
+                                    <legend class="text-condensedLight"><i class="zmdi zmdi-border-color"></i>
+                                        &nbsp; TIPO PRODUCTO</legend><br>
+                                </div>
+                                <div class="mdl-cell mdl-cell--12-col">
+                                    <div class="mdl-textfield mdl-js-textfield">
+                                        <select class="mdl-textfield__input" name="TipoProducto">
+                                            <option value="" disabled="" selected="">Seleccionar Tipo</option>
+                                            <option value="Devolutivos">Devolutivos</option>
+                                            <option value="Consumibles">Consumibles</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?"
+                                            id="CantidadProducto" name="CantidadProducto">
+                                        <label class="mdl-textfield__label" for="StrockProduct">Cantidad</label>
+                                        <span class="mdl-textfield__error">Número inválido</span>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text" id="ObservacionesProducto"
+                                            name="ObservacionesProducto">
+                                        <label class="mdl-textfield__label" for="markProduct">Obervaciones
+                                            Producto</label>
+                                        <span class="mdl-textfield__error">Obervaciones Inválidas</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-center">
+                                <button type="submit"
+                                    class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            <div class="mdl-tooltip" for="btn-addProduct">Agregar Producto</div>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <br>
+    <br>
+    <br>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    var typingTimer;
+    var doneTypingInterval = 300;
+
+    $('#searchInput').on('input', function() {
+        clearTimeout(typingTimer);
+        var searchTerm = $(this).val();
+        
+        if (searchTerm) {
+            typingTimer = setTimeout(function() {
+                performSearch(searchTerm);
+            }, doneTypingInterval);
+        } else {
+            $('#searchMessage').hide();
+            performSearch('');
+        }
+    });
+
+    function performSearch(searchTerm) {
+        $.ajax({
+            url: '/buscar_ajax',
+            type: 'POST',
+            data: JSON.stringify({'buscar': searchTerm}),
+            contentType: 'application/json;charset=UTF-8',
+            success: function(response) {
+                updateTable(response.inventario);
+                updateSearchMessage(searchTerm, response.inventario.length);
+            }
+        });
+    }
+
+    function updateTable(inventario) {
+        var tableBody = $('#inventoryTable');
+        tableBody.empty();
+        $.each(inventario, function(i, producto) {
+            var row = `
+                <tr>
+                    <td class="mdl-data-table__cell--non-numeric">${producto.IdProducto}</td>
+                    <td class="mdl-data-table__cell--non-numeric">${producto.NombreProducto}</td>
+                    <td class="mdl-data-table__cell--non-numeric">${producto.CantidadProducto}</td>
+                    <td class="mdl-data-table__cell--non-numeric">${producto.DescripcionProducto}</td>
+                    <td class="mdl-data-table__cell--non-numeric">${producto.TipoProducto}</td>
+                    <td class="mdl-data-table__cell--non-numeric">${producto.ObservacionesProducto}</td>
+                    <td>
+                        <a class="icon_edit" href="/editar_objeto/${producto.IdProducto}" style="color: #39a900; text-decoration: none;">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <a class="icon_delete" href="/confirmar_eliminar_objeto/${producto.IdProducto}" style="color: red; text-decoration: none;">
+                            <i class="fas fa-trash-alt"></i> Eliminar
+                        </a>
+                    </td>
+                </tr>
+            `;
+            tableBody.append(row);
+        });
+    }
+
+    function updateSearchMessage(searchTerm, resultCount) {
+        if (searchTerm) {
+            $('#searchTerm').text(searchTerm);
+            $('#resultCount').text(resultCount);
+            $('#searchMessage').show();
+        } else {
+            $('#searchMessage').hide();
+        }
+    }
+});
+</script>
 {% endblock %}

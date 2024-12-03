@@ -22,7 +22,7 @@
                     Detalles del Objeto
                 </div>
                 <div class="full-width panel-content">
-                    <form method="POST" action="/registrar_prestamo">
+                    <form id="confirmarPrestamoForm" method="POST" action="{{ url_for('confirmar_prestamo_objeto', id=prestamo.IdProducto) }}">
                         <div class="mdl-grid">
                             <input type="hidden" name="id_producto" value="{{ objeto.IdProducto }}">
                             <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
@@ -137,7 +137,7 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        fetch('/get_instructores')
+        fetch('/get_prestatarios')
             .then(response => response.json())
             .then(data => {
                 const selectInstructor = document.getElementById('select_instructor');
@@ -148,10 +148,35 @@
                     selectInstructor.appendChild(option);
                 });
             })
-            .catch(error => console.error('Error al obtener los instructores:', error));
+            .catch(error => console.error('Error al obtener los prestatarios:', error));
     });
 
 </script>
 <script src="/static/javascripts/select_search.js"></script>
+
+<script>
+document.getElementById('confirmarPrestamoForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    var form = event.target;
+    var formData = new FormData(form);
+
+    fetch(form.action, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            location.reload(); // Recargar la página
+        } else {
+            alert(data.message); // Mostrar mensaje de error
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al confirmar el préstamo');
+    });
+});
+</script>
 
 {% endblock %}

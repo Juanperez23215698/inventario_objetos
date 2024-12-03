@@ -110,83 +110,123 @@
     <br>
     <br>
     <br>
-
-    <div class="mdl-tabs__panel" id="tabListProducts">
-        <form name="formSearch" method="POST" action="{{ url_for('search_route') }}" class="search-container"
-            autocomplete="off">
-            <input type="search" name="buscar" class="search_input" placeholder="Buscar...">
-            <button type="submit" class="search_btn">
-                <i class="fa-solid fa-magnifying-glass"></i> Buscar
-            </button>
-
-            <div class="filter-dropdown">
-                <button class="filter-btn">
-                    <i class="fa-solid fa-sliders"></i> Filtrar
-                </button>
-                <div class="dropdown-content">
-                    <a href="#">Menor stock</a>
-                    <a href="#">Mayor stock</a>
-                    <a href="#">Ordenar A-Z</a>
-                    <a href="#">Formación</a>
-                    <a href="#">Consumibles</a>
-                </div>
-            </div>
-        </form>
-
-        {% if objetos %}
-        <p style="color: black;">Objetos encontrados: {{ objetos|length }}</p>
-        <div class="mdl-grid">
-            {% for mostrar in objetos %}
-            <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--4-col-tablet mdl-cell--4-col-desktop">
-                <div class="full-width text-center" style="padding: 30px 0;">
-                    <div class="mdl-card mdl-shadow--2dp full-width product-card">
-                        <div class="mdl-card__supporting-text">
-                            <div class="mdl-card__actions">
-                                <span class="nombre_objeto">{{ mostrar.NombreProducto }}</span>
-                                <span class="boton_prestar">
-                                    <a class="icon_prestar" style="color: #015dca; text-decoration: none;"
-                                        href="{{ url_for('confirmar_prestamo_objeto', id=mostrar.IdProducto) }}">
-                                        <i class="fas fa-handshake"></i> Prestar
-                                    </a>
-
-                                </span>
-                            </div>
-                        </div>
-                        <div class="mdl-card__actions mdl-card--border">
-                            <small class="titulo_objeto">Número ID: <span class="resultado"> {{
-                                    mostrar.IdProducto }}</span></small><br>
-                            <small class="titulo_objeto">Descripción: <span class="resultado">{{
-                                    mostrar.DescripcionProducto }}</span></small><br>
-                            <small class="titulo_objeto">Tipo Producto: <span class="resultado">{{ mostrar.TipoProducto
-                                    }}</span></small><br>
-                            <small class="titulo_objeto">Cantidad: <span class="resultado">{{ mostrar.CantidadProducto
-                                    }}</span></small><br>
-                            <small class="titulo_objeto">Observaciones: <span class="resultado">{{
-                                    mostrar.ObservacionesProducto }}</span></small>
-                            <br><br>
-                            <div class="button_edit">
-                                <a class="icon_edit" style="color: white; text-decoration: none;"
-                                    href="{{ url_for('editar_objeto', id=mostrar.IdProducto) }}">
-                                    <i class="fas fa-edit"></i> Editar
-                                </a>
-                            </div>
-                            <div class="button_delete">
-                                <a class="icon_delete" style="color: white; text-decoration: none;"
-                                    href="{{ url_for('confirmar_eliminar_objeto', id=mostrar.IdProducto) }}">
-                                    <i class="fas fa-trash-alt"></i> Eliminar
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        {% else %}
-        <p>No hay objetos para mostrar.</p>
-        {% endif %}
+    
+    <!-- Buscador en tiempo real -->
+    <div class="search-container">
+        <input type="search" id="searchInput" class="search_input" placeholder="Buscar por nombre, descripción, ID o tipo...">
     </div>
-</div>
+    
+    <!-- Mensaje de búsqueda -->
+    <div id="searchMessage" class="search-message" style="display: none;">
+        <p>Mostrando resultados para la búsqueda: "<span id="searchTerm"></span>"</p>
+        <p>Se encontraron <span id="resultCount"></span> resultado(s).</p>
+    </div>
+    
+    <p style="color: black;">Objetos en total: {{ objetos|length }}</p>
+    
+    <!-- Tabla de objetos -->
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive">
+                <thead>
+                    <tr>
+                        <th class="mdl-data-table__cell--non-numeric">ID</th>
+                        <th class="mdl-data-table__cell--non-numeric">Nombre Producto</th>
+                        <th class="mdl-data-table__cell--non-numeric">Stock</th>
+                        <th class="mdl-data-table__cell--non-numeric">Descripción</th>
+                        <th class="mdl-data-table__cell--non-numeric">Tipo Objeto</th>
+                        <th class="mdl-data-table__cell--non-numeric">Observaciones</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody id="objectsTable">
+                    {% for mostrar in objetos %}
+                    <tr>
+                        <td class="mdl-data-table__cell--non-numeric">{{ mostrar.IdProducto }}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{ mostrar.NombreProducto }}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{ mostrar.CantidadProducto }}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{ mostrar.DescripcionProducto }}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{ mostrar.TipoProducto }}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{ mostrar.ObservacionesProducto }}</td>
+                        <td>
+                            <a class="icon_prestar" href="{{ url_for('confirmar_prestamo_objeto', id=mostrar.IdProducto) }}" style="color: #015dca; text-decoration: none;">
+                                <i class="fas fa-handshake"></i> Prestar
+                            </a>
+                            <a class="icon_edit" href="{{ url_for('editar_objeto', id=mostrar.IdProducto) }}" style="color: #39a900; text-decoration: none;">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            <a class="icon_delete" href="{{ url_for('confirmar_eliminar_objeto', id=mostrar.IdProducto) }}" style="color: red; text-decoration: none;">
+                                <i class="fas fa-trash-alt"></i> Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        var typingTimer;
+        var doneTypingInterval = 300;
+    
+        function performSearch(searchTerm) {
+            var table = document.getElementById('objectsTable');
+            var rows = table.getElementsByTagName('tr');
+            var resultCount = 0;
+    
+            for (var i = 0; i < rows.length; i++) {
+                var row = rows[i];
+                var showRow = false;
+                var cells = row.getElementsByTagName('td');
+    
+                for (var j = 0; j < cells.length; j++) {
+                    var cell = cells[j];
+                    if (cell.textContent.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
+                        showRow = true;
+                        break;
+                    }
+                }
+    
+                if (showRow) {
+                    row.style.display = '';
+                    resultCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+    
+            updateSearchMessage(searchTerm, resultCount);
+        }
+    
+        function updateSearchMessage(searchTerm, resultCount) {
+            var searchMessage = document.getElementById('searchMessage');
+            var searchTermSpan = document.getElementById('searchTerm');
+            var resultCountSpan = document.getElementById('resultCount');
+    
+            if (searchTerm) {
+                searchTermSpan.textContent = searchTerm;
+                resultCountSpan.textContent = resultCount;
+                searchMessage.style.display = 'block';
+            } else {
+                searchMessage.style.display = 'none';
+            }
+        }
+    
+        document.getElementById('searchInput').addEventListener('input', function() {
+            clearTimeout(typingTimer);
+            var searchTerm = this.value;
+            
+            if (searchTerm) {
+                typingTimer = setTimeout(function() {
+                    performSearch(searchTerm);
+                }, doneTypingInterval);
+            } else {
+                document.getElementById('searchMessage').style.display = 'none';
+                performSearch('');
+            }
+        });
+    </script>
 
 
 {% endblock %}
