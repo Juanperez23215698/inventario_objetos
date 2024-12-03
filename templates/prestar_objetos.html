@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% block title %}Prestar Objetos - Inventario de Objetos{% endblock %}
+
+{% block content %}
+<div class="button-container">
+    <a href="/inicio_login" class="regresar" style="color: #39a900; text-decoration: none;">
+        <i class="fas fa-arrow-left"></i> Regresar
+    </a>
+    <div class="button-group">
+        <a href="/mostrar_inventario" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+            Inventario
+        </a>
+        <a href="/mostrar_administradores" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+            Administradores
+        </a>
+    </div>
+</div>
+
+<h1>PRESTAMO DE OBJETOS</h1>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/prestar_objetos.css') }}">
+<script src="{{ url_for('static', filename='javascripts/prestar_objetos.js') }}"></script>
+
+<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+    <div class="mdl-tabs__tab-bar">
+        <a href="#formularioPrestamo" id="btnMostrarFormulario" class="mdl-tabs__tab is-active" style="text-decoration: none; color: black;">
+            Realizar Préstamo
+        </a>
+        <a href="#listaPrestamos" id="btnMostrarLista" class="mdl-tabs__tab" style="text-decoration: none; color: black;">
+            Listar Préstamos
+        </a>
+    </div>
+</div>
+
+<!-- Sección Formulario -->
+<div id="formularioPrestamo" style="display: block;">
+    <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--12-col">
+                <div class="full-width panel mdl-shadow--2dp">
+                    <div class="full-width panel-tittle bg-primary text-center tittles">
+                        Detalles del Préstamo
+                    </div>
+                    <div class="full-width panel-content">
+                        <form id="formPrestarObjetos" method="POST" action="/guardar_prestamo" onsubmit="return false;">
+                            <div class="mdl-grid">
+                                <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text" id="nombrePrestatario" name="nombre_prestatario" required>
+                                        <label class="mdl-textfield__label" for="nombrePrestatario">Nombre completo del prestatario</label>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text" id="identificacionPrestatario" name="identificacion_prestatario" required>
+                                        <label class="mdl-textfield__label" for="identificacionPrestatario">Número de identificación</label>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text" id="fichaPrestatario" name="ficha_prestatario" required>
+                                        <label class="mdl-textfield__label" for="fichaPrestatario">Ficha</label>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="tel" id="telefonoPrestatario" name="telefono_prestatario" required>
+                                        <label class="mdl-textfield__label" for="telefonoPrestatario">Número de teléfono</label>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin-bottom: 20px;">
+                                        <input type="datetime-local" class="mdl-textfield__input" style="padding-top: 20px;" min="2024-03-23T11:00" max="2030-11-23T11:00" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" id="FechaPrestamo" name="fecha_prestamo" required>
+                                        <label class="mdl-textfield__label" style="font-size: 14px; top: 8px;" for="FechaPrestamo">Fecha y hora del préstamo</label>
+                                        <span class="mdl-textfield__error">Formato inválido</span>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text" pattern=".*" id="ObservacionesPrestamo" name="observaciones_prestamo" required>
+                                        <label class="mdl-textfield__label" for="ObservacionesPrestamo">Observaciones del Préstamo</label>
+                                        <span class="mdl-textfield__error">Observaciones Inválidas</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-center">
+                                <button type="button" id="btnSeleccionarObjetos" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored bg-primary">
+                                    Seleccionar Objetos
+                                </button>
+                            </p>
+                            <input type="hidden" id="objetosSeleccionadosInput" name="objetosSeleccionados" value="">
+                        </form>
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sección Lista de Préstamos -->
+<div id="listaPrestamos" style="display: none;">
+    <div class="mdl-grid">
+        <div class="search-container">
+            <input type="search" id="searchInputPrestamos" class="search_input" placeholder="Buscar por nombre, identificación o teléfono...">
+        </div>
+        <div class="mdl-cell mdl-cell--12-col">
+            <div class="full-width panel mdl-shadow--2dp">
+                <div class="full-width panel-tittle bg-primary text-center tittles">
+                    Información del Préstamo
+                </div>
+                <div class="full-width panel-content">
+                    <table id="tablaPrestamoInfo" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive">
+                        <thead>
+                            <tr>
+                                <th class="mdl-data-table__cell--non-numeric">Nombre del Prestatario</th>
+                                <th class="mdl-data-table__cell--non-numeric">Identificación</th>
+                                <th class="mdl-data-table__cell--non-numeric">Ficha</th>
+                                <th class="mdl-data-table__cell--non-numeric">Teléfono</th>
+                                <th class="mdl-data-table__cell--non-numeric">Fecha del Préstamo</th>
+                                <th class="mdl-data-table__cell--non-numeric">Objetos Prestados</th>
+                                <th class="mdl-data-table__cell--non-numeric">Estado</th>
+                                <th class="mdl-data-table__cell--non-numeric">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for prestamo in prestamos %}
+                            <tr>
+                                <td class="mdl-data-table__cell--non-numeric">{{ prestamo.NombrePrestatario }}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{ prestamo.IdentificacionPrestatario }}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{ prestamo.FichaPrestatario }}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{ prestamo.TelefonoPrestatario }}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{ prestamo.FechaPrestamo }}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{ prestamo.ObjetosPrestados }}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{ prestamo.EstadoPrestamo }}</td>
+                                <button class="btnCulminar mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-id="{{ prestamo.IdPrestamo }}" style="color: #fff; background-color: #f44336;">
+                                    Culminar Préstamo
+                                </button>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para seleccionar objetos -->
+<div id="modalSeleccionarObjetos" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Seleccionar Objetos</h2>
+        <div class="search-container">
+            <input type="search" id="searchInputObjetos" class="search_input" placeholder="Buscar por nombre, descripción...">
+        </div>
+        <table id="tablaObjetos" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive">
+            <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--non-numeric">Nombre</th>
+                    <th class="mdl-data-table__cell--non-numeric">Descripción</th>
+                    <th class="mdl-data-table__cell--non-numeric">Stock</th>
+                    <th class="mdl-data-table__cell--non-numeric">Cantidad</th>
+                    <th class="mdl-data-table__cell--non-numeric">Seleccionar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los datos se cargarán aquí dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal de confirmación -->
+<div id="modalConfirmacion" class="modal">
+    <div class="modal-content">
+        <h2>Confirmación</h2>
+        <p>¿Desea prestar otro objeto?</p>
+        <button id="btnSi" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Sí</button>
+        <button id="btnNo" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">No</button>
+    </div>
+</div>
+
+<!-- Modal de detalles del objeto -->
+<div id="modalDetallesObjeto" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Detalles del Objeto</h2>
+        <div id="detallesObjetoContenido">
+            <!-- Los detalles del objeto se cargarán aquí dinámicamente -->
+        </div>
+    </div>
+</div>
+
+<div id="modalConfirmacionCulminar" class="modal">
+    <div class="modal-content">
+        <h2>Confirmación</h2>
+        <p>¿Desea culminar este préstamo?</p>
+        <button id="btnConfirmarCulminar" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Sí</button>
+        <button id="btnCancelarCulminar" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">No</button>
+    </div>
+</div>
+
+<script>
+    document.getElementById('btnMostrarFormulario').addEventListener('click', function() {
+    document.getElementById('formularioPrestamo').style.display = 'block';
+    document.getElementById('listaPrestamos').style.display = 'none';
+});
+
+document.getElementById('btnMostrarLista').addEventListener('click', function() {
+    document.getElementById('formularioPrestamo').style.display = 'none';
+    document.getElementById('listaPrestamos').style.display = 'block';
+});
+
+</script>
+
+{% endblock %}

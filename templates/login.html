@@ -11,21 +11,7 @@
 
 <body>
 
-    <!-- Barra de Menú -->
-    <div class="navbar">
-        <ul>
-            <!-- Logo -->
-            <!-- <li><a href="/#home" class="logo">
-                    <img src="/static/img/facebook.png">
-                </a></li> -->
-
-            <li><a href="/"><i class="fas fa-home"></i> Inicio</a></li>
-            <li><a href="/quienes_somos"><i class="fa fa-fw fa-search"></i> ¿Quiénes Somos?</a></li>
-            <li><a href="/sobre_nosotros"><i class="fa-solid fa-users"></i> Sobre Nosotros</a></li>
-            <li><a class="active" href="/loginUsu"><i class="fa fa-fw fa-user"></i> Iniciar Sesión</a></li>
-            <li><a href="/register"><i class="fa fa-fw fa-user"></i> Registrarme</a></li>
-        </ul>
-    </div>
+    {% include "barraMenuHomepage.html" %}
 
     <!-- Contenido -->
 
@@ -54,10 +40,6 @@
                 <div class="input">
                     <input type="password" class="input1" placeholder="Contraseña" required name="txtPassword">
                     <i class="fa-solid fa-lock"></i>
-                </div>
-                <div class="check">
-                    <label> <input type="checkbox">Recordar</label>
-                    <a href="#">¿Olvido su contraseña?</a>
                 </div>
                 <div class="button">
                     <button class="btn">Iniciar sesion</button>
