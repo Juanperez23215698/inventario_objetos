@@ -1,6 +1,8 @@
 from flask import Flask, request, render_template, jsonify, redirect, url_for
 from conexion.conexionBD import connectionBD
 from funciones import *
+from datetime import datetime
+import json
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
 
@@ -38,19 +40,23 @@ def administradores():
 def inicio_login():
     return render_template('inicio_login.html')
 
-# INSTRUCTORES
-@app.route('/instructores')
-def instructores():
-    return render_template('instructores.html')
-
 # INVENTARIO
 @app.route('/inventario')
 def inventario():
     return render_template('inventario.html')
 
+@app.route('/prestar_objetos')
+def prestar_objetos():
+    return render_template('prestar_objetos.html')
+
 # REGISTRARME
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def registrar_usuarios():
+    if request.method == 'POST':
+        if registrar(request):
+            return redirect(url_for('inicio_login')) 
+        else:
+            return render_template('register.html', error="Error en el registro. Inténtalo de nuevo.")
     return render_template('register.html')
 
 # SOBRE NOSOTROS - ABOUT US
@@ -73,102 +79,20 @@ def ob_consumibles():
 def ob_devolutivos():
     return render_template('devolutivos.html')
 
-# PRESTAR OBJETOS
-@app.route('/prestar_objeto')
-def prestar_objeto():
-    return render_template('prestar_objeto.html')
-
 # OBJETOS
 @app.route('/objetos')
 def ob_generales():
     return render_template('objetos.html')
-
-# PRESTAMOS
-@app.route('/prestamos')
-def prestamos():
-    return render_template('prestamos.html')
 
 # MOSTRAR INVENTARIO
 @app.route('/mostrar_inventario', methods=["GET", "POST"])
 def inventario_objetos():
     return mostrar_inventario()
 
-
-# LISTAR INSTRUCTORES - FUNCIONA
-@app.route('/get_instructores', methods=['GET'])
-def get_instructores():
-    try:
-        connection = connectionBD()
-        cursor = connection.cursor()
-        cursor.execute("SELECT IdInstructor, NombreInstructor, ApellidoInstructor FROM instructores")
-        instructores = cursor.fetchall()
-        cursor.close()
-        connection.close()
-        
-        opciones = [{'id': instructor[0], 'nombre': instructor[1], 'apellido': instructor[2]} for instructor in instructores]
-        return jsonify(opciones)
-    
-    except Exception as e:
-        print(f"Error al obtener los instructores: {e}")
-        return jsonify([])
-
-
-
 # MOSTRAR OBJETOS
 @app.route('/mostrar_objetos', methods=["GET", "POST"])
 def listar_objetos():
     return mostrar_objetos()
-
-# PRESTAR OBJETO
-@app.route('/confirmar_prestamo_objeto/<int:id>', methods=['GET'])
-def confirmar_prestamo_objeto(id):
-    try:
-        connection = connectionBD()
-        cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM productosgenerales WHERE IdProducto = %s", (id,))
-        objeto = cursor.fetchone()
-        cursor.close()
-        connection.close()
-        return render_template('confirmar_prestamo_objeto.html', objeto=objeto)
-
-    except Exception as e:
-        print(f"Error al obtener el objeto para préstamo: {e}")
-        if 'connection' in locals() and connection.is_connected():
-            connection.close()
-        return redirect(url_for('mostrar_objetos'))
-
-
-
-# REGISTRAR PRÉSTAMO - FUNCIONA
-@app.route('/registrar_prestamo', methods=['POST'])
-def registrar_prestamo():
-    try:
-        id_instructor = request.form.get('instructor')
-        id_producto = request.form.get('id_producto')
-        fecha_prestamo = request.form.get('fecha_prestamo')
-        cantidad_prestamo = request.form.get('cantidad_prestamo')
-        estado_prestamo = request.form.get('EstadoPrestamo')
-        observaciones_prestamo = request.form.get('observaciones_prestamo')
-
-        connection = connectionBD()
-        cursor = connection.cursor()
-        cursor.execute(
-            """
-            INSERT INTO prestamos (IdInstructor, IdProducto, FechaHoraPrestamo, CantidadPrestamo, EstadoPrestamo, ObservacionesPrestamo)
-            VALUES (%s, %s, %s, %s, %s, %s)
-            """,
-            (id_instructor, id_producto, fecha_prestamo, cantidad_prestamo, estado_prestamo, observaciones_prestamo)
-        )
-        connection.commit()
-        cursor.close()
-        connection.close()
-        return redirect(url_for('listar_objetos'))
-    except Exception as e:
-        print(f"Error al registrar el préstamo: {e}")
-        if 'connection' in locals() and connection.is_connected():
-            connection.close()
-        return redirect(url_for('listar_objetos'))
-
 
 # REGISTRAR PRODUCTO - FUNCIONA
 @app.route('/registrar_producto', methods=['POST'])
@@ -271,130 +195,7 @@ def confirmar_eliminar_objeto(id):
         if 'connection' in locals() and connection.is_connected():
             connection.close()
         return redirect(url_for('inventario_objetos'))
-    
-
-
-
-
-# MOSTRAR INSTRUCTORES
-@app.route('/mostrar_instructores', methods=["GET", "POST"])
-def listar_instructores():
-    return mostrar_instructores()
-
-# REGISTRAR INSTRUCTOR - FUNCIONA
-@app.route('/registrar_instructor', methods=['POST'])
-def registrar_instructor():
-    if request.method == 'POST':
-        try:
-            nombre = request.form['NombreInstructor']
-            apellido = request.form['ApellidoInstructor']
-            tipoidentificacion = request.form['TipoIdentificacion']
-            numeroidentificacion = request.form['NumeroIdentificacion']
-            correoinstructor = request.form['CorreoInstructor']
-            celular = request.form['CelularInstructor']
-
-            connection = connectionBD()
-            cursor = connection.cursor()
-            cursor.execute("""
-                INSERT INTO instructores (NombreInstructor, ApellidoInstructor, TipoIdentificacion, NumeroIdentificacion, CorreoInstructor, CelularInstructor)
-                VALUES (%s, %s, %s, %s, %s, %s)
-            """, (nombre, apellido, tipoidentificacion, numeroidentificacion, correoinstructor, celular))
-            connection.commit()
-            cursor.close()
-            connection.close()
-
-            return redirect(url_for('listar_instructores'))
-        except Exception as e:
-            print(f"Error al registrar el instructor: {e}")
-            if 'connection' in locals() and connection.is_connected():
-                connection.close()
-            return render_template('instructores.html', error="Error al registrar el instructor.")
-    else:
-        return redirect(url_for('instructores'))
-
-
-# EDITAR INSTRUCTOR - FUNCIONA
-@app.route('/editar_instructor/<int:id>', methods=['GET', 'POST'])
-def editar_instructor(id):
-    if request.method == 'POST':
-        try:
-            nombre = request.form['NombreInstructor']
-            apellido = request.form['ApellidoInstructor']
-            tipoidentificacion = request.form['TipoIdentificacion']
-            numeroidentificacion = request.form['NumeroIdentificacion']
-            correoinstructor = request.form['CorreoInstructor']
-            celular = request.form['CelularInstructor']
-
-            connection = connectionBD()
-            cursor = connection.cursor()
-            cursor.execute("""
-                UPDATE instructores
-                SET NombreInstructor = %s, ApellidoInstructor = %s, TipoIdentificacion = %s, NumeroIdentificacion = %s, CorreoInstructor = %s, CelularInstructor = %s
-                WHERE IdInstructor = %s
-            """, (nombre, apellido, tipoidentificacion, numeroidentificacion, correoinstructor, celular, id))
-            connection.commit()
-            cursor.close()
-            connection.close()
-            return redirect(url_for('listar_instructores'))
-        except Exception as e:
-            print(f"Error al actualizar el instructor: {e}")
-            if 'connection' in locals() and connection.is_connected():
-                connection.close()
-            return render_template('editar_instructor.html', id=id, error=True)
-    else:
-        try:
-            connection = connectionBD()
-            cursor = connection.cursor(dictionary=True)
-            cursor.execute("SELECT * FROM instructores WHERE IdInstructor = %s", (id,))
-            instructor = cursor.fetchone()
-            cursor.close()
-            connection.close()
-            return render_template('editar_instructor.html', instructor=instructor)
-        except Exception as e:
-            print(f"Error al obtener el instructor: {e}")
-            if 'connection' in locals() and connection.is_connected():
-                connection.close()
-            return redirect(url_for('listar_instructores'))
-    
-# ELIMINAR INSTRUCTOR - FUNCIONA
-@app.route('/eliminar_instructor/<int:id>', methods=['POST'])
-def eliminar_instructor(id):
-    try:
-        connection = connectionBD()
-        cursor = connection.cursor()
-        cursor.execute("DELETE FROM instructores WHERE IdInstructor = %s", (id,))
-        connection.commit()
-        cursor.close()
-        connection.close()
-        return redirect(url_for('listar_instructores'))
-
-    except Exception as e:
-        print(f"Error al eliminar el instructor: {e}")
-        if 'connection' in locals() and connection.is_connected():
-            connection.close()
-        return redirect(url_for('listar_instructores'))
-
-# CONFIRMAR ELIMINAR INSTRUCTOR
-@app.route('/confirmar_eliminar_instructor/<int:id>')
-def confirmar_eliminar_instructor(id):
-    try:
-        connection = connectionBD()
-        cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM instructores WHERE IdInstructor = %s", (id,))
-        instructor = cursor.fetchone()
-        cursor.close()
-        connection.close()
-        return render_template('confirmar_eliminar_instructor.html', instructor=instructor)
-
-    except Exception as e:
-        print(f"Error al obtener el instructor: {e}")
-        if 'connection' in locals() and connection.is_connected():
-            connection.close()
-        return redirect(url_for('listar_instructores'))
-    
-
-
-
+        
 # MOSTRAR ADMINISTRADORES
 @app.route('/mostrar_administradores', methods=["GET", "POST"])
 def listar_administradores():
@@ -512,102 +313,66 @@ def confirmar_eliminar_administrador(id):
         if 'connection' in locals() and connection.is_connected():
             connection.close()
         return redirect(url_for('listar_administradores'))
-
-
-# MOSTRAR PRÉSTAMOS
-@app.route('/mostrar_prestamos', methods=["GET", "POST"])
-def listar_prestamos():
-    return mostrar_prestamos()
-
-
-# CULMINAR PRESTAMO
-@app.route('/confirmar_devolucion_objeto/<int:id>', methods=['GET'])
-def confirmar_devolucion_objeto(id):
-    try:
-        connection = connectionBD()
-        cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM prestamos WHERE IdPrestamo = %s", (id,))
-        prestamo = cursor.fetchone()
-        cursor.close()
-        connection.close()
-        return render_template('confirmar_devolucion_objeto.html', prestamo=prestamo)
-
-    except Exception as e:
-        print(f"Error al obtener el prestamo para devolución: {e}")
-        if 'connection' in locals() and connection.is_connected():
-            connection.close()
-        return redirect(url_for('listar_prestamos'))
     
-# REGISTRAR DEVOLUCIÓN
-@app.route('/registrar_devolucion', methods=['POST'])
-def registrar_devolucion():
-    try:
-        idinstructor = request.form.get('IdInstructor')
-        idprestamo = request.form.get('IdPrestamo')
-        idproducto = request.form.get('IdProducto')
-        fechahoradevolucion = request.form.get('FechaHoraDevolucion')
-        estadodevolucion = request.form.get('EstadoDevolucion')
-        observacionesdevolucion = request.form.get('Observaciones')
-        estadoprestamo = request.form.get('EstadoPrestamo')
-        cantidaddevolutiva = request.form.get('CantidadDevolutiva')
-        modotiempolugar = request.form.get('ModoTiempoLugar')
+# BUSCADOR INVENTARIO
+@app.route('/buscar_ajax', methods=['POST'])
+def buscar_ajax():
+    search_term = request.json.get('buscar', '')
+    inventario = buscar_productos(search_term)
+    return jsonify({'inventario': inventario})
 
-        connection = connectionBD()
-        cursor = connection.cursor()
-        cursor.execute(
-            """
-            INSERT INTO devoluciones (IdInstructor, IdPrestamo, IdProducto, FechaHoraDevolucion, EstadoDevolucion, Observaciones, EstadoPrestamo, CantidadDevolutiva, ModoTiempoLugar)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """,
-            (idinstructor, idprestamo, idproducto, fechahoradevolucion, estadodevolucion, observacionesdevolucion, estadoprestamo, cantidaddevolutiva, modotiempolugar)
-        )
-        connection.commit()
-        cursor.close()
-        connection.close()
-        return redirect(url_for('listar_prestamos'))
-    except Exception as e:
-        print(f"Error al registrar la devolución: {e}")
-        if 'connection' in locals() and connection.is_connected():
-            connection.close()
-        return redirect(url_for('listar_prestamos'))
-
-# MOSTRAR PRÉSTAMOS EN CURSO
-@app.route('/mostrar_prestamos_en_curso', methods=["GET", "POST"])
-def listar_prestamos_en_curso():
-    return mostrar_prestamos_en_curso()
-
-# MOSTRAR PRÉSTAMOS CULMINADOS
-@app.route('/mostrar_prestamos_culminados', methods=["GET", "POST"])
-def listar_prestamos_culminados():
-    return mostrar_prestamos_culminados()
-
-
-
-
-
+@app.route('/filtrar_inventario', methods=['GET'])
+def filtrar_inventario():
+    filtro = request.args.get('filtro', 'id')
+    orden = request.args.get('orden', 'asc')
+    inventario = filtrar_inventario(filtro, orden)
+    return render_template("inventario.html", inventario=inventario)
 
 # REDIRECCIONANDO CUANDO LA PAGINA NO EXISTE
 @app.errorhandler(404)
 def not_found(error):
     return redirect('/')
 
-# TODOS PRÉSTAMOS
-@app.route('/todos_prestamos')
-def todos_prestamos():
-    return render_template('todos_prestamos.html')
-
-# PRÉSTAMOS EN CURSO
-@app.route('/prestamos_en_curso')
-def prestamos_en_curso():
-    return render_template('prestamos_en_curso.html')
-
-# PRÉSTAMOS CULMINADOS
-@app.route('/prestamos_culminados')
-def prestamos_culminados():
-    return render_template('prestamos_culminados.html')
-
 # USUARIOS
 @app.route('/usuarios')
 def usuarios():
     return render_template('usuarios.html')
 
+@app.route('/get_inventario', methods=['GET'])
+def get_inventario():
+    try:
+        connection = connectionBD()
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT IdProducto, NombreProducto, DescripcionProducto, CantidadProducto FROM productosgenerales")
+        inventario = cursor.fetchall()
+        cursor.close()
+        connection.close()
+        
+        productos = [{'id': producto['IdProducto'], 
+                      'nombre': producto['NombreProducto'], 
+                      'descripcion': producto['DescripcionProducto'], 
+                      'stock': producto['CantidadProducto']} for producto in inventario]
+        
+        return jsonify(productos)
+    except Exception as e:
+        print(f"Error al obtener el inventario: {e}")
+        return jsonify([])
+
+#PRESTAR OBJETOS
+@app.route('/agregar_prestamo', methods=['POST'])
+def agregar_prestamo():
+    return agregar_prestamo_func()
+
+# Ver Préstamos
+@app.route('/ver_prestamos', methods=['GET'])
+def ver_prestamos():
+    return ver_prestamos_func()
+
+# Editar Préstamo
+@app.route('/editar_prestamo/<int:id>', methods=['GET', 'POST'])
+def editar_prestamo(id):
+    return editar_prestamo_func(id)
+
+@app.route('/culminar_prestamo/<int:id_prestamo>', methods=['POST'])
+def culminar_prestamo(id_prestamo):
+    return culminar_prestamo_func(id_prestamo)
