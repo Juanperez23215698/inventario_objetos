@@ -10,7 +10,7 @@
     width: 100%;
     padding-top: 1rem;
     padding-bottom: 1rem;
-    text-align: center;
+    text-align: center;  /* Centra el texto dentro del footer */
 }
 
 div {
@@ -82,11 +82,9 @@ i {
     padding: 10px 0;
     background-color: #fff;
     box-shadow: 0 0 3px gray;
-    display: -webkit-box;
     display: flex;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    flex-flow: row wrap;
+    flex-direction: column;  /* Cambia a columna para centrar verticalmente */
+    align-items: center;  /* Centra horizontalmente */
 }
 
 .gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad>.footer-titulo {
@@ -144,6 +142,7 @@ i {
 
 .gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad>.footer-presentacion>div>div>div {
     padding-top: 10px;
+    text-align: center;  /* Asegura que el texto dentro de la presentación esté centrado */
 }
 
 .gov-co-footer>.gov-co-footer-pie>.gov-co-footer-auto>.gov-co-logo-pie-mesa {
@@ -204,6 +203,7 @@ a:-webkit-any-link {
     align-items: center;
     gap: 20px;
     flex-wrap: wrap;
+    justify-content: center;  /* Centra los enlaces de redes sociales */
 }
 
 .gov-co-redes-sociales .gov-co-link-presentacion {
@@ -271,6 +271,8 @@ a:visited {
 .gov-co-footer>.gov-co-footer-pie {
     width: 100%;
     background-color: #36c;
+    display: flex;
+    justify-content: center;  /* Centra el contenido del pie */
 }
 
 .gov-co-footer>.gov-co-footer-pie>.gov-co-footer-auto {
@@ -285,7 +287,6 @@ a:visited {
     align-content: center;
     margin: 0 auto;
 }
-
 
 .goc-co-link-poli {
     font-family: Montserrat, sans-serif;
@@ -317,13 +318,11 @@ a:visited {
 .footer-logo-container {
     display: flex;
     width: 321px;
-    justify-content: center;
+    justify-content: center;  /* Centra las imágenes dentro del contenedor */
     margin-bottom: 20px;
 }
 
-.gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad>.footer-logo-autoridad>div>div>div {
-    position: relative;
-}
+
 
 .footer-logo-col {
     flex-direction: column;
@@ -362,12 +361,8 @@ img {
     width: 77% !important;
 }
 
-
-
-
-
 @media (min-width: 576px) {
-    .gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad>.footer-logo-autoridad {
+    .gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad> {
         width: 100%;
         display: flex;
         justify-content: flex-end;
@@ -398,8 +393,6 @@ img {
         margin: 0 auto;
         padding: 10px;
     }
-
-
 }
 
 @media screen and (max-width: 992px) {
@@ -425,4 +418,26 @@ img {
         width: 85%;
         margin: 0;
     }
+}
+
+.gov-co-footer .gov-co-footer-presetacion>.gov-co-footer-autoridad {
+    position: relative;
+    width: 90%;
+    max-width: 964px;
+    border-radius: 8px;
+    min-width: 280px;
+    overflow: hidden;
+    margin: 0 auto 15px;
+    padding: 10px 0;
+    background-color: #fff;
+    box-shadow: 0 0 3px gray;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+
+.footer-logo-autoridad {
+    display: flex;
+    justify-content: center;
+    width: 100%; 
 }

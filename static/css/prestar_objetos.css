@@ -1,0 +1,233 @@
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.lista-objetos-seleccionados {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.objeto-seleccionado {
+    padding: 5px 10px;
+    margin: 5px 0;
+    background-color: #e0e0e0;
+    border-radius: 3px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.lista-objetos-seleccionados {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.objeto-seleccionado {
+    padding: 5px 10px;
+    margin: 5px 0;
+    background-color: #e0e0e0;
+    border-radius: 3px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.lista-objetos-seleccionados {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.objeto-seleccionado {
+    padding: 5px 10px;
+    margin: 5px 0;
+    background-color: #e0e0e0;
+    border-radius: 3px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.search-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search_input {
+    width: 100%; 
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.regresar {
+    margin-left: 0;
+    padding: 10px 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #333;
+}
+
+.button-group {
+    display: flex;
+}
+
+.button-group a {
+    margin-left: 10px;
+    text-decoration: none;
+}
+
+.objeto-seleccionado {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.objeto-seleccionado:hover {
+    background-color: #f0f0f0;
+}
+
+/* Estilos específicos para el botón eliminar */
+.objeto-seleccionado .mdl-button--icon {
+    min-width: 32px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #757575;
+}
+
+.objeto-seleccionado .mdl-button--icon:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #ff4444;
+}
+
+.objeto-seleccionado .material-icons {
+    font-size: 20px;
+    line-height: 32px;
+}
+
+/* Contenedor flex para alinear elementos */
+.objeto-seleccionado > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
