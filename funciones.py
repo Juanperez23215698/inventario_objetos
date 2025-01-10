@@ -31,48 +31,6 @@ def login(request):
 
     return False  # Autenticación fallida
 
-# FUNCION REGISTRAR
-
-def registrar(request):
-    try:
-        print("Intentando conectar a la base de datos...")
-        connection = connectionBD()
-        print("Conexión establecida.")
-        
-        if request.method == 'POST' and all(field in request.form for field in ['txtNombre', 'txtApellido', 'txtCorreo', 'txtTipoDoc', 'txtNumeroDocumento', 'txtNumeroTelefono', 'txtPassword']):
-            print("Método POST y todos los campos presentes.")
-            _nombre = request.form['txtNombre']
-            _apellido = request.form['txtApellido']
-            _correo = request.form['txtCorreo']
-            _tipo_doc = request.form['txtTipoDoc']
-            _numero_documento = request.form['txtNumeroDocumento']
-            _numero_telefono = request.form['txtNumeroTelefono']
-            _password = request.form['txtPassword']
-
-            print("Datos extraídos del formulario:")
-            print(f"Nombre: {_nombre}, Apellido: {_apellido}, Correo: {_correo}, TipoDocumento: {_tipo_doc}, NumeroDocumento: {_numero_documento}, NumeroTelefono: {_numero_telefono}, Password: {_password}")
-
-            cur = connection.cursor(dictionary=True)
-            cur.execute(
-                'INSERT INTO usuarios (NombreUsuario, ApellidoUsuario, TipoIdentificacion, NumeroIdentificacion, CorreoUsuario, CelularUsuario, ContrasenaUsuario) VALUES (%s, %s, %s, %s, %s, %s, %s)',
-                (_nombre, _apellido, _tipo_doc, _numero_documento, _correo, _numero_telefono, _password)
-            )
-            connection.commit()
-            cur.close()
-            print("Registro exitoso.")
-            return True  # Registro exitoso
-
-    except Exception as e:
-        print(f"Error en la función registrar: {e}")
-
-    finally:
-        if connection.is_connected():
-            connection.close()
-            print("Conexión cerrada.")
-
-    print("Registro fallido.")
-    return False  # Registro fallido
-
 # FUNCION BUSCAR OBJETO
 def BuscarObjeto():
     try:
@@ -127,21 +85,26 @@ def mostrar_objetos():
         if connection.is_connected():
             connection.close()
             
-# MOSTRAR ADMINISTRADORES
 def mostrar_administradores():
+    connection = None
     try:
         connection = connectionBD()
-        cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM usuarios")
-        usuarios = cursor.fetchall()
-        cursor.close()
-        connection.close()
-        return render_template("administradores.html", usuarios=usuarios)
+        if connection:
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute("SELECT * FROM usuarios")
+            usuarios = cursor.fetchall()
+            cursor.close()
+            connection.close()
+            return render_template("administradores.html", usuarios=usuarios)
+        else:
+            print("No se pudo establecer la conexión")
+            return render_template("administradores.html", usuarios=[], error="Error de conexión")
+            
     except Exception as e:
         print(f"Error en la función mostrar_administradores: {e}")
         return render_template("administradores.html", usuarios=[])
     finally:
-        if connection.is_connected():
+        if connection and connection.is_connected():
             connection.close()
 
 #FUNCION BUSCAR
@@ -231,7 +194,6 @@ def agregar_prestamo_func():
         try:
             nombre = request.form['nombre_prestatario']
             identificacion = request.form['identificacion_prestatario']
-            ficha = request.form['ficha_prestatario']
             telefono = request.form['telefono_prestatario']
             fecha = request.form['fecha_prestamo']
             observaciones = request.form['observaciones_prestamo']
@@ -240,9 +202,15 @@ def agregar_prestamo_func():
             connection = connectionBD()
             cursor = connection.cursor()
             cursor.execute("""
-                INSERT INTO prestamos (NombrePrestatario, IdentificacionPrestatario, FichaPrestatario, TelefonoPrestatario, FechaPrestamo, ObservacionesPrestamo, ObjetosPrestados)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
-            """, (nombre, identificacion, ficha, telefono, fecha, observaciones, objetos))
+                INSERT INTO prestamos (
+                    NombrePrestatario, 
+                    IdentificacionPrestatario, 
+                    TelefonoPrestatario, 
+                    FechaPrestamo, 
+                    ObservacionesPrestamo, 
+                    ObjetosPrestados
+                ) VALUES (%s, %s, %s, %s, %s, %s)
+            """, (nombre, identificacion, telefono, fecha, observaciones, objetos))
 
             # Reducir el stock de los productos prestados
             objetosPrestados = json.loads(objetos)

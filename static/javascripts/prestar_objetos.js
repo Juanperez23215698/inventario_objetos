@@ -318,7 +318,6 @@ document.addEventListener('DOMContentLoaded', function () {
             tr.innerHTML = `
                 <td class="mdl-data-table__cell--non-numeric">${prestamo.NombrePrestatario}</td>
                 <td class="mdl-data-table__cell--non-numeric">${prestamo.IdentificacionPrestatario}</td>
-                <td class="mdl-data-table__cell--non-numeric">${prestamo.FichaPrestatario}</td>
                 <td class="mdl-data-table__cell--non-numeric">${prestamo.TelefonoPrestatario}</td>
                 <td class="mdl-data-table__cell--non-numeric">${prestamo.FechaPrestamo}</td>
                 <td class="mdl-data-table__cell--non-numeric">${formatearObjetosPrestados(prestamo.ObjetosPrestados)}</td>
@@ -338,7 +337,6 @@ document.addEventListener('DOMContentLoaded', function () {
             tr.innerHTML = `
                 <td class="mdl-data-table__cell--non-numeric">${prestamo.NombrePrestatario}</td>
                 <td class="mdl-data-table__cell--non-numeric">${prestamo.IdentificacionPrestatario}</td>
-                <td class="mdl-data-table__cell--non-numeric">${prestamo.FichaPrestatario}</td>
                 <td class="mdl-data-table__cell--non-numeric">${prestamo.TelefonoPrestatario}</td>
                 <td class="mdl-data-table__cell--non-numeric">${prestamo.FechaPrestamo}</td>
                 <td class="mdl-data-table__cell--non-numeric">${formatearObjetosPrestados(prestamo.ObjetosPrestados)}</td>

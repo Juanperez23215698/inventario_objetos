@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Mi Aplicación{% endblock %}</title>
+    <title>{% block title %}Bodega Aplicativo{% endblock %}</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> 
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/logo-sena-negro.png') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos_jinja.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css">
@@ -26,6 +28,15 @@
 <body>
     {% include 'header.html' %}
     <div class="content">
+        <div class="navbar" >
+            <ul>
+                {% if request.path != '/inicio_login' %}
+                    <li><a href="/justificacion_proyecto"><i class="fas fa-home"></i> justificacion del proyecto </a></li>
+                    <li><a href="/login"><i class="fa fa-fw fa-user"></i> Iniciar Sesión</a></li>
+                {% endif %}
+                <li><a href="/sobre_nosotros"><i class="fa-solid fa-users"></i> Sobre Nosotros</a></li>
+            </ul>
+        </div>
         {% block content %}{% endblock %}
     </div>
     {% include 'footer.html' %}
@@ -37,6 +48,10 @@
     <script src="{{ url_for('static', filename='javascripts/script.js') }}"></script>
     <script src="{{ url_for('static', filename='javascripts/select_search.js') }}"></script>
     <script src="{{ url_for('static', filename='javascripts/hora_fechaLocal.js') }}"></script>
+    <link href="{{url_for('static',filename='css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('static',filename='css/w3css.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('static',filename='css/w3pro.min.css')}}" rel="stylesheet">   
+
 </body>
 
 </html>

@@ -59,12 +59,6 @@
                                 </div>
                                 <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                        <input class="mdl-textfield__input" type="text" id="fichaPrestatario" name="ficha_prestatario" required>
-                                        <label class="mdl-textfield__label" for="fichaPrestatario">Ficha</label>
-                                    </div>
-                                </div>
-                                <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                         <input class="mdl-textfield__input" type="tel" id="telefonoPrestatario" name="telefono_prestatario" required>
                                         <label class="mdl-textfield__label" for="telefonoPrestatario">Número de teléfono</label>
                                     </div>
@@ -115,7 +109,6 @@
                             <tr>
                                 <th class="mdl-data-table__cell--non-numeric">Nombre del Prestatario</th>
                                 <th class="mdl-data-table__cell--non-numeric">Identificación</th>
-                                <th class="mdl-data-table__cell--non-numeric">Ficha</th>
                                 <th class="mdl-data-table__cell--non-numeric">Teléfono</th>
                                 <th class="mdl-data-table__cell--non-numeric">Fecha del Préstamo</th>
                                 <th class="mdl-data-table__cell--non-numeric">Objetos Prestados</th>
@@ -128,7 +121,6 @@
                             <tr>
                                 <td class="mdl-data-table__cell--non-numeric">{{ prestamo.NombrePrestatario }}</td>
                                 <td class="mdl-data-table__cell--non-numeric">{{ prestamo.IdentificacionPrestatario }}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{ prestamo.FichaPrestatario }}</td>
                                 <td class="mdl-data-table__cell--non-numeric">{{ prestamo.TelefonoPrestatario }}</td>
                                 <td class="mdl-data-table__cell--non-numeric">{{ prestamo.FechaPrestamo }}</td>
                                 <td class="mdl-data-table__cell--non-numeric">{{ prestamo.ObjetosPrestados }}</td>

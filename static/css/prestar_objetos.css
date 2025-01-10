@@ -231,3 +231,22 @@
     align-items: center;
     width: 100%;
 }
+
+/* Asegúrate de que la tabla sea responsiva */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* Asegúrate de que las celdas no se expandan más allá del contenedor */
+.mdl-data-table__cell--non-numeric {
+    white-space: normal; /* Permite que el texto se envuelva */
+    word-wrap: break-word; /* Rompe las palabras largas */
+    max-width: 200px; /* Ajusta el ancho máximo según sea necesario */
+}
+
+/* Ajusta el ancho de la tabla para que no se expanda horizontalmente */
+.mdl-data-table {
+    table-layout: fixed;
+    width: 100%;
+}

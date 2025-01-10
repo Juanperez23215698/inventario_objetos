@@ -1,14 +1,13 @@
 # Importando Libreria mysql.connector para conectar Python con MySQL
 import mysql.connector
 
-
 def connectionBD():
     try:
         # connection = mysql.connector.connect(
         connection = mysql.connector.connect(
             host="localhost",
-            user="root",
-            passwd="",
+            user="juanchotv123",
+            passwd="123",
             database="fabrica",
             charset='utf8mb4',
             collation='utf8mb4_unicode_ci',
@@ -16,7 +15,7 @@ def connectionBD():
 
         )
         if connection.is_connected():
-            # print("Conexión exitosa a la BD")
+            print("Conexión exitosa a la BD")
             return connection
 
     except mysql.connector.Error as error:

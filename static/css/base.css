@@ -5,3 +5,45 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+.navbar {
+    width: 100%;
+    background-color: #39a900;
+    padding: 8px 0; /* Reduced padding to make it thinner */
+    font-family: 'Work Sans', sans-serif; /* Matches project font */
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end; /* Aligns items to the right */
+    align-items: center; /* Better vertical alignment */
+}
+
+.navbar li {
+    margin-right: 20px; /* Space between items */
+}
+
+.navbar li:last-child {
+    margin-right: 40px; /* Extra space for last item */
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500; /* Slightly less bold */
+    display: flex;
+    align-items: center; /* Aligns icon with text */
+    transition: color 0.3s ease;
+}
+
+.navbar a i {
+    margin-right: 8px; /* Space between icon and text */
+}
+
+.navbar a:hover {
+    color: #000;
+}

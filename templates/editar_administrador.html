@@ -18,7 +18,7 @@
                     Editar Administrador
                 </div>
                 <div class="full-width panel-content">
-                    <form method="POST">
+                    <form method="POST" onsubmit="return validatePassword()">
                         <div class="mdl-grid">
                             <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -71,10 +71,24 @@
                             </div>
                             <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="password" name="ContrasenaUsuario"
-                                        value="{{ usuario.ContrasenaUsuario }}" id="ContrasenaUsuario">
+                                    <div style="position: relative;">
+                                        <input class="mdl-textfield__input" type="password" name="ContrasenaUsuario"
+                                            value="{{ usuario.ContrasenaUsuario }}" id="ContrasenaUsuario">
+                                        <i class="fa-solid fa-eye" id="togglePassword" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                                    </div>
                                     <label class="mdl-textfield__label" for="ContrasenaUsuario">Contraseña Usuario</label>
                                     <span class="mdl-textfield__error">Contraseña inválida</span>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <div style="position: relative;">
+                                        <input class="mdl-textfield__input" type="password" name="ConfirmarContrasena"
+                                            id="ConfirmarContrasena">
+                                        <i class="fa-solid fa-eye" id="toggleConfirmPassword" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                                    </div>
+                                    <label class="mdl-textfield__label" for="ConfirmarContrasena">Confirmar Contraseña</label>
+                                    <span class="mdl-textfield__error">Las contraseñas no coinciden</span>
                                 </div>
                             </div>
                         </div>
@@ -92,4 +106,42 @@
         </div>
     </div>
 </div>
+
+<script>
+function validatePassword() {
+    const password = document.getElementById('ContrasenaUsuario').value;
+    const confirmPassword = document.getElementById('ConfirmarContrasena').value;
+    
+    if (password !== confirmPassword) {
+        alert('Las contraseñas no coinciden');
+        return false;
+    }
+    return true;
+}
+
+// Toggle password visibility
+document.getElementById('togglePassword').addEventListener('click', function() {
+    const password = document.getElementById('ContrasenaUsuario');
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+    this.classList.toggle('fa-eye-slash');
+});
+
+document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
+    const password = document.getElementById('ConfirmarContrasena');
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+    this.classList.toggle('fa-eye-slash');
+});
+</script>
+
+<style>
+    .fa-eye, .fa-eye-slash {
+        color: #666;
+    }
+    .fa-eye:hover, .fa-eye-slash:hover {
+        color: #333;
+    }
+    </style>
+
 {% endblock %}
