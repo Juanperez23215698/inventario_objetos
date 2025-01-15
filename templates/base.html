@@ -28,17 +28,33 @@
 <body>
     {% include 'header.html' %}
     <div class="content">
-        <div class="navbar" >
-            <ul>
-                {% if request.path != '/inicio_login' %}
-                    <li><a href="/justificacion_proyecto"><i class="fas fa-home"></i> justificacion del proyecto </a></li>
-                    <li><a href="/login"><i class="fa fa-fw fa-user"></i> Iniciar Sesión</a></li>
-                {% endif %}
-                <li><a href="/sobre_nosotros"><i class="fa-solid fa-users"></i> Sobre Nosotros</a></li>
-            </ul>
-        </div>
+        {% if request.path != '/homepage' %}
+            <div class="navbar">
+                <ul>
+                    {% if session.get('logueado') %}
+                        {% if request.path != '/login' %}
+                            <li><a href="/login"><i class="fa fa-fw fa-user"></i> Iniciar Sesión</a></li>
+                        {% endif %}
+                        <li><a href="/sobre_nosotros"><i class="fa-solid fa-users"></i> Sobre Nosotros</a></li>
+                        <li><a href="/justificacion_proyecto"><i class="fas fa-home"></i> Justificacion del proyecto </a></li>
+                    {% else %}
+                        {% if request.path != '/mostrar_inventario' %}
+                            <li><a href="/mostrar_inventario"><i class="fa fa-box-open"></i> Inventario</a></li>
+                        {% endif %}
+                        {% if request.path != '/mostrar_administradores' %}
+                            <li><a href="/mostrar_administradores"><i class="fa-solid fa-users"></i> Administradores</a></li>
+                        {% endif %}
+                        {% if request.path != '/prestar_objetos' %}
+                            <li><a href="/prestar_objetos"><i class="fas fa-hand-holding"></i> Prestar Objetos</a></li>
+                        {% endif %}
+                        <li><a href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        {% endif %}
         {% block content %}{% endblock %}
     </div>
+
     {% include 'footer.html' %}
 
     <script src="{{ url_for('static', filename='javascripts/filtrar.js') }}"></script>
