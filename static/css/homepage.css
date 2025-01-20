@@ -193,3 +193,25 @@ footer nav ul li a img {
     width: 30px;
 }
 
+.contenedor-botones {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-left: 150px;
+    margin-top: 30px;
+}
+
+.boton-cuadrado {
+    display: flex;
+    align-items: center;
+    background-color: #39a900;
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.boton-cuadrado:hover {
+    transform: translateX(10px);
+    background-color: #2d8600;
+}
+

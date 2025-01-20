@@ -307,7 +307,7 @@ document.addEventListener('DOMContentLoaded', function () {
         prestamos.forEach(prestamo => {
             if (prestamo.EstadoPrestamo === 'Activo') {
                 prestamosActivos.push(prestamo);
-            } else if (prestamo.EstadoPrestamo === 'Culminado') {
+            } else if (prestamo.EstadoPrestamo === 'Devuelto') {
                 prestamosCulminados.push(prestamo);
             }
         });
@@ -316,6 +316,7 @@ document.addEventListener('DOMContentLoaded', function () {
         prestamosActivos.forEach(prestamo => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
+                <td class="mdl-data-table__cell--non-numeric">${prestamo.IdPrestamo}</td>
                 <td class="mdl-data-table__cell--non-numeric">${prestamo.NombrePrestatario}</td>
                 <td class="mdl-data-table__cell--non-numeric">${prestamo.IdentificacionPrestatario}</td>
                 <td class="mdl-data-table__cell--non-numeric">${prestamo.TelefonoPrestatario}</td>
@@ -324,7 +325,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td class="mdl-data-table__cell--non-numeric">${prestamo.EstadoPrestamo}</td>
                 <td>
                     <button class="btnCulminar mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-id="${prestamo.IdPrestamo}" style="color: #fff; background-color: #f44336;">
-                        Culminar
+                        Devolver
                     </button>
                 </td>
             `;
@@ -335,6 +336,7 @@ document.addEventListener('DOMContentLoaded', function () {
         prestamosCulminados.forEach(prestamo => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
+                <td class="mdl-data-table__cell--non-numeric">${prestamo.IdPrestamo}</td>
                 <td class="mdl-data-table__cell--non-numeric">${prestamo.NombrePrestatario}</td>
                 <td class="mdl-data-table__cell--non-numeric">${prestamo.IdentificacionPrestatario}</td>
                 <td class="mdl-data-table__cell--non-numeric">${prestamo.TelefonoPrestatario}</td>

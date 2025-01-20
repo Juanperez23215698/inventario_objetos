@@ -40,7 +40,7 @@ CREATE TABLE `prestamos` (
     `ObservacionesPrestamo` text,
     `ObjetosPrestados` json NOT NULL,
     `TipoProducto` enum('Devolutivo(s)', 'No Devolutivo(s)') NOT NULL,
-    `EstadoPrestamo` enum('Activo', 'Culminado') NOT NULL,
+    `EstadoPrestamo` enum('Activo', 'Devuelto') NOT NULL,
     PRIMARY KEY (`IdPrestamo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -76,26 +76,22 @@ INSERT INTO usuarios (NombreUsuario, ApellidoUsuario, TipoIdentificacion, Numero
 ('juan david ', 'Cardenas perez', 'CC', 1131104356, 'Juanchotv123@gmail.com', 3053577992, '123');
 
 -- Trigger para establecer el EstadoPrestamo basado en TipoProducto
-DELIMITER //
+-- DELIMITER //
 
-CREATE TRIGGER set_estado_prestamo
-BEFORE INSERT ON prestamos
-FOR EACH ROW
-BEGIN
-    IF NEW.TipoProducto = 'Devolutivo(s)' THEN
-        SET NEW.EstadoPrestamo = 'Activo';
-    ELSEIF NEW.TipoProducto = 'No Devolutivo(s)' THEN
-        SET NEW.EstadoPrestamo = 'Culminado';
-    END IF;
-END;//
+-- CREATE TRIGGER set_estado_prestamo
+-- BEFORE INSERT ON prestamos
+-- FOR EACH ROW
+-- BEGIN
+--     IF NEW.TipoProducto = 'Devolutivo(s)' THEN
+--         SET NEW.EstadoPrestamo = 'Activo';
+--     ELSEIF NEW.TipoProducto = 'No Devolutivo(s)' THEN
+--         SET NEW.EstadoPrestamo = 'Culminado';
+--     END IF;
+-- END;//
 
-DELIMITER ;
+-- DELIMITER ;
 
-COMMIT;
-
-create user 'juanchotv123@gmail.com'@'localhost' identified by '123';
-create user 'admin'@'localhost' identified by '123';
-
+-- COMMIT;
 -- CREATE ROLE 'ADMIN';
 --     grant select,insert,update,delete ON fabrica.* TO admin;
 

@@ -1033,3 +1033,28 @@ body {
 		text-align: right;
 	}
 }
+
+.navbar ul {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0;
+    padding-right: 20px;
+    width: 100%;
+    list-style: none;
+}
+
+.navbar li {
+    margin-left: 15px;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.nav-link:hover {
+    background-color: rgba(0, 0, 0, 0);
+}

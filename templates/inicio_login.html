@@ -3,22 +3,129 @@
 {% block title %}Página de Inicio{% endblock %}
 
 {% block content %}
-<div class="contenedor-botones">
+<div class="contenedor-botones2">
     <div>
-        <a href="/mostrar_inventario" style="text-decoration: none; color: white;" class="boton-cuadrado">
+        <a href="/mostrar_inventario" style="text-decoration: none; color: white;" class="boton-cuadrado2">
             <i class="fa fa-box-open" style="color: white;"></i>
             <span>Inventario</span>
         </a>
     </div>
     <div>
-        <a href="/mostrar_administradores" style="text-decoration: none; color: white;" class="boton-cuadrado">
+        <a href="/mostrar_administradores" style="text-decoration: none; color: white;" class="boton-cuadrado2">
             <i class="fa-solid fa-users" style="color: white;"></i>
             <span>Administradores</span>
         </a>
     </div>
-    <a href="/prestar_objetos" style="text-decoration: none; color: white;" class="boton-cuadrado">
+    <a href="/prestar_objetos" style="text-decoration: none; color: white;" class="boton-cuadrado2">
         <i class="fas fa-hand-holding" style="color: white;"></i>
         <span>Prestar Objetos</span>
     </a>
 </div>
+
+<style>
+    
+.boton {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #000;
+    color: #fff;
+    border-radius: .70rem;
+    font-size: 17px;
+    font-weight: 500;
+    transition: all .50s ease;
+    text-decoration: none;
+    margin-left: 2rem;
+}
+
+.boton:hover {
+    transform: translateY(-7px) scale(0.9);
+}
+
+
+
+.contenedor-botones2 {
+    display: flex;
+    justify-content: center;
+}
+
+.contenedor-botones2 > div {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.boton-cuadrado2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+    width: 200px;
+    height: 200px;
+    margin: 10px;
+    border-radius: 50%;
+    background-color: #39a900;
+    transition: all .50s ease;
+    color: #fff;
+}
+
+.boton-cuadrado2:hover {
+    transform: translateY(-7px) scale(0.9);
+}
+
+.boton-cuadrado2 i {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.boton-cuadrado2 span {
+    font-size: 20px;
+    text-decoration: none;
+}
+
+
+
+/* Footer */
+
+footer {
+    background-color: #39a900;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    margin-top: auto;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer nav ul {
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+}
+
+footer nav ul li {
+    display: inline;
+    margin-right: 10px;
+}
+
+footer nav ul li a {
+    text-decoration: none;
+    color: #fff;
+}
+
+footer nav ul li a:hover {
+    color: #aaa;
+}
+
+footer nav ul li a img {
+    width: 30px;
+}
+</style>
+
 {% endblock %}

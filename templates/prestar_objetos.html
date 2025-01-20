@@ -39,32 +39,32 @@
                             <div class="mdl-grid">
                                 <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                        <input class="mdl-textfield__input" type="text" id="nombrePrestatario" name="nombre_prestatario" required>
+                                        <input class="mdl-textfield__input" type="text" id="nombrePrestatario" name="nombre_prestatario" >
                                         <label class="mdl-textfield__label" for="nombrePrestatario">Nombre completo del prestatario</label>
                                     </div>
                                 </div>
                                 <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                        <input class="mdl-textfield__input" type="text" id="identificacionPrestatario" name="identificacion_prestatario" required>
+                                        <input class="mdl-textfield__input" type="text" id="identificacionPrestatario" name="identificacion_prestatario" >
                                         <label class="mdl-textfield__label" for="identificacionPrestatario">Número de identificación</label>
                                     </div>
                                 </div>
                                 <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                        <input class="mdl-textfield__input" type="tel" id="telefonoPrestatario" name="telefono_prestatario" required>
+                                        <input class="mdl-textfield__input" type="tel" id="telefonoPrestatario" name="telefono_prestatario" >
                                         <label class="mdl-textfield__label" for="telefonoPrestatario">Número de teléfono</label>
                                     </div>
                                 </div>
-                                <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
+                                <!-- <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="margin-bottom: 20px;">
-                                        <input type="datetime-local" class="mdl-textfield__input" style="padding-top: 20px;" min="2024-03-23T11:00" max="2030-11-23T11:00" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" id="FechaPrestamo" name="fecha_prestamo" required>
+                                        <input type="datetime-local" class="mdl-textfield__input" style="padding-top: 20px;" min="2024-03-23T11:00" max="2030-11-23T11:00" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" id="FechaPrestamo" name="fecha_prestamo" >
                                         <label class="mdl-textfield__label" style="font-size: 14px; top: 8px;" for="FechaPrestamo">Fecha y hora del préstamo</label>
                                         <span class="mdl-textfield__error">Formato inválido</span>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                        <input class="mdl-textfield__input" type="text" pattern=".*" id="ObservacionesPrestamo" name="observaciones_prestamo" required>
+                                        <input class="mdl-textfield__input" type="text" pattern=".*" id="ObservacionesPrestamo" name="observaciones_prestamo" >
                                         <label class="mdl-textfield__label" for="ObservacionesPrestamo">Observaciones del Préstamo</label>
                                         <span class="mdl-textfield__error">Observaciones Inválidas</span>
                                     </div>
@@ -99,6 +99,7 @@
                     <table id="tablaPrestamoInfo" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width table-responsive">
                         <thead>
                             <tr>
+                                <th class="mdl-data-table__cell--non-numeric">ID Préstamo</th>
                                 <th class="mdl-data-table__cell--non-numeric">Nombre del Prestatario</th>
                                 <th class="mdl-data-table__cell--non-numeric">Identificación</th>
                                 <th class="mdl-data-table__cell--non-numeric">Teléfono</th>
@@ -111,10 +112,11 @@
                         <tbody>
                             {% for prestamo in prestamos %}
                             <tr>
+                                <td class="mdl-data-table__cell--non-numeric">{{ prestamo.IdPrestamo }}</td>
                                 <td class="mdl-data-table__cell--non-numeric">{{ prestamo.NombrePrestatario }}</td>
                                 <td class="mdl-data-table__cell--non-numeric">{{ prestamo.IdentificacionPrestatario }}</td>
                                 <td class="mdl-data-table__cell--non-numeric">{{ prestamo.TelefonoPrestatario }}</td>
-                                <td class="mdl-data-table__cell--non-numeric">{{ prestamo.FechaPrestamo }}</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{ prestamo.FechaPrestamo.strftime('%Y-%m-%d %H:%M') }}</td>
                                 <td class="mdl-data-table__cell--non-numeric">{{ prestamo.ObjetosPrestados }}</td>
                                 <td class="mdl-data-table__cell--non-numeric">{{ prestamo.EstadoPrestamo }}</td>
                                 <button class="btnCulminar mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" data-id="{{ prestamo.IdPrestamo }}" style="color: #fff; background-color: #f44336;">
@@ -179,7 +181,7 @@
 <div id="modalConfirmacionCulminar" class="modal">
     <div class="modal-content">
         <h2>Confirmación</h2>
-        <p>¿Desea culminar este préstamo?</p>
+        <p>¿Desea realizar esta devolucion?</p>
         <button id="btnConfirmarCulminar" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Sí</button>
         <button id="btnCancelarCulminar" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">No</button>
     </div>

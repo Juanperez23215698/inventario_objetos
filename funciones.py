@@ -1,7 +1,9 @@
 from flask import session, request, render_template, jsonify
 from conexion.conexionBD import connectionBD
 from flask import redirect, url_for
+from datetime import datetime
 import json
+
 
 # FUNCION LOGIN
 def login(request):
@@ -192,15 +194,20 @@ def filtrar_inventario(filtro, orden):
 def agregar_prestamo_func():
     if request.method == 'POST':
         try:
+            # Datos del formulario
             nombre = request.form['nombre_prestatario']
             identificacion = request.form['identificacion_prestatario']
             telefono = request.form['telefono_prestatario']
-            fecha = request.form['fecha_prestamo']
             observaciones = request.form['observaciones_prestamo']
             objetos = request.form['objetosSeleccionados']
 
+            fecha_actual = datetime.now().strftime('%Y-%m-%d %H:%M')
+
+            # Conexión a la base de datos
             connection = connectionBD()
             cursor = connection.cursor()
+
+            # Insertar el préstamo en la base de datos
             cursor.execute("""
                 INSERT INTO prestamos (
                     NombrePrestatario, 
@@ -210,7 +217,7 @@ def agregar_prestamo_func():
                     ObservacionesPrestamo, 
                     ObjetosPrestados
                 ) VALUES (%s, %s, %s, %s, %s, %s)
-            """, (nombre, identificacion, telefono, fecha, observaciones, objetos))
+            """, (nombre, identificacion, telefono, fecha_actual, observaciones, objetos))
 
             # Reducir el stock de los productos prestados
             objetosPrestados = json.loads(objetos)
@@ -221,6 +228,7 @@ def agregar_prestamo_func():
                     WHERE IdProducto = %s
                 """, (objeto['id'],))
 
+            # Confirmar cambios y cerrar la conexión
             connection.commit()
             cursor.close()
             connection.close()
@@ -283,12 +291,12 @@ def culminar_prestamo_func(id_prestamo):
             # Actualizar estado del préstamo
             cursor.execute("""
                 UPDATE prestamos 
-                SET EstadoPrestamo = 'Culminado'
+                SET EstadoPrestamo = 'Devuelto'
                 WHERE IdPrestamo = %s
             """, (id_prestamo,))
             
             connection.commit()
-            return jsonify({'status': 'success', 'message': 'Préstamo culminado exitosamente'})
+            return jsonify({'status': 'success', 'message': 'Préstamo devuelto exitosamente'})
         else:
             return jsonify({'status': 'error', 'message': 'Préstamo no encontrado'})
             
@@ -296,7 +304,7 @@ def culminar_prestamo_func(id_prestamo):
         if connection:
             connection.rollback()
         print(f"Error al culminar el préstamo: {e}")
-        return jsonify({'status': 'error', 'message': f'Error al culminar el préstamo: {str(e)}'})
+        return jsonify({'status': 'error', 'message': f'Error al devolver el préstamo: {str(e)}'})
         
     finally:
         if connection and connection.is_connected():
